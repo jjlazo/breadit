@@ -14,6 +14,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
+    toasts = db.relationship("Toast", back_populates="user")
+    comments = db.relationship("Comment", back_populates="user")
+    subbreadit_mod = db.relationship("Subbreadit", back_populates="moderator")
+    subscriptions = db.relationship("Subbreadit", secondary="subscriptions", back_populates="subscribers")
+
     @property
     def password(self):
         return self.hashed_password
@@ -29,5 +34,8 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'toasts': [toast.id for toast in self.toasts],
+            'comments': [comment.id for comment in self.comments],
+            'subscriptions': [subscription.id for subscription in self.subscriptions]
         }
