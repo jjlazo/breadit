@@ -1,0 +1,42 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.input{
+    width: calc(375px - 12px);
+    height: 40px;
+    font-size: 16px;
+    border: 1px solid #C4C4C4;
+    padding-left: 12px;
+    border-radius: 5px;
+}
+
+.textarea{
+    width: calc(375px - 12px);
+    height: 150px;
+    font-size: 16px;
+    border: 1px solid #C4C4C4;
+    padding-left: 12px;
+    padding-top: 8px;
+    border-radius: 5px;
+    resize: none
+}
+
+.button{
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 12px 0px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.demo{
+    background-color: white;
+    color: black;
+    padding: 10px 0px;
+    border: 2px black solid
+}

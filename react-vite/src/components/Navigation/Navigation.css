@@ -1,7 +1,15 @@
 .profile-dropdown {
   position: absolute;
   right: 10px;
-  top: 45px
+  top: 55px;
+  background-color: white;
+  padding: 10px 8px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #C4C4C4;
+}
+
+.clickable:hover{
+  cursor: pointer;
 }
 
 nav{
@@ -51,13 +59,17 @@ nav{
   border-radius: 20px 20px 0px 0px;
 }
 
-.add-subbbreadit{
-  height: 28px;
-  width: auto;
+.add-subbreadit-container{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  /* margin-top: 2px; */
   right: 8px
+}
+
+.add-subbbreadit{
+  height: 28px;
+  width: auto;
 }
 
 .add-subbbreadit:hover{

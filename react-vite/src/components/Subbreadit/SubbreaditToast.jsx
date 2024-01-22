@@ -3,11 +3,17 @@ import Sidebar from "../Sidebar";
 import { useNavigate } from "react-router-dom";
 import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply } from 'lucide-react';
 import Feed from "../Feed";
+import OpenModalButton from "../OpenModalButton";
 import SubbreaditInfo from "./SubbreaditInfo";
+import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
 import "./Subbreadit.css"
 
 function SubbreaditToast(){
     const navigate = useNavigate()
+    const [showMenu, setShowMenu] = useState(false);
+
+    const closeMenu = () => setShowMenu(false);
+
     return(
         <div className="home-container">
             <div className="container-content">
@@ -38,17 +44,28 @@ function SubbreaditToast(){
                             </div>
                             <div className="toast-update">
                                 <Eraser strokeWidth={"2.05px"} className="toast-update-icon"/>
-                                <PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>
+                                <OpenModalButton
+                                // itemText="toast"
+                                onButtonClick={closeMenu}
+                                modalComponent={<UpdatePostFormModal />}
+                                buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="comment-content-container">
                     <div className="comments-info">
-                        <button className="comments-button">
-                        <Reply/>
-                        comment
-                        </button>
+                        <OpenModalButton
+                            onButtonClick={closeMenu}
+                            modalComponent={<CommentFormModal />}
+                            buttonComponent={
+                                <button className="comments-button">
+                                <Reply/>
+                                comment
+                                </button>
+                            }
+                            />
                         <div>{"2"} comments</div>
                     </div>
                 </div>
@@ -64,7 +81,11 @@ function SubbreaditToast(){
                                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
                                     <div className="toast-update">
                                         <Eraser strokeWidth={"2.05px"} className="toast-update-icon"/>
-                                        <PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>
+                                        <OpenModalButton
+                                        onButtonClick={closeMenu}
+                                        modalComponent={<UpdateCommentFormModal />}
+                                        buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                        />
                                         <div className="edited">Edited</div>
                                     </div>
                             </div>

@@ -33,6 +33,10 @@
     height: fit-content;
 }
 
+.sub-content-button-container{
+    align-self: flex-end;
+}
+
 .sub-content-button{
     margin-top: 20px;
     font-size: 18px;
@@ -41,7 +45,6 @@
     background-color: #D5A600;
     border-radius: 20px;
     font-weight: bold;
-    align-self: flex-end;
     margin-right: 2.5%;
     margin-bottom: -7px;
     /* width: 100% */
@@ -104,6 +107,10 @@
 .toast-update-icon{
     height: 20px;
     width: auto;
+}
+
+.toast-update-icon:hover{
+    cursor: pointer
 }
 
 .single-toast-bubble{
