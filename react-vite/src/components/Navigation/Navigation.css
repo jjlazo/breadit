@@ -1,3 +1,77 @@
 .profile-dropdown {
   position: absolute;
+  right: 10px;
+  top: 55px;
+  background-color: white;
+  padding: 10px 8px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #C4C4C4;
+}
+
+.clickable:hover{
+  cursor: pointer;
+}
+
+nav{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px #C4C4C4 solid;
+}
+
+.logo{
+  height: 30px;
+  width: auto;
+}
+
+.logo:hover{
+  cursor: pointer;
+}
+
+.profile.button{
+  border: none;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.profile{
+  height: 40px;
+  width: auto;
+}
+
+.search{
+  position: relative;
+  width: fit-content;
+}
+
+.search-input{
+  height: 35px;
+  width: calc(400px - 8px);
+  border: 1.5px black solid;
+  border-radius: 30px;
+  padding-left: 8px
+}
+
+.search-input:focus {
+  border-radius: 20px 20px 0px 0px;
+}
+
+.add-subbreadit-container{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /* margin-top: 2px; */
+  right: 8px
+}
+
+.add-subbbreadit{
+  height: 28px;
+  width: auto;
+}
+
+.add-subbbreadit:hover{
+  cursor: pointer;
 }

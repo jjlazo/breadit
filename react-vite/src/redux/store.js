@@ -6,9 +6,17 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
+import postsReducer from "./posts";
+import commentsReducer from "./comments";
+import subbreaditsReducer from "./subbreadits";
+import subscriptionReducer from "./subscriptions";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  posts: postsReducer,
+  comments: commentsReducer,
+  subbreadits: subbreaditsReducer,
+  subscriptions: subscriptionReducer
 });
 
 let enhancer;
