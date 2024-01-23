@@ -35,7 +35,7 @@ class User(db.Model, UserMixin):
             'id': self.id,
             'username': self.username,
             'email': self.email,
-            'toasts': [toast.id for toast in self.toasts],
-            'comments': [comment.id for comment in self.comments],
-            'subscriptions': [subscription.id for subscription in self.subscriptions]
+            'toasts': [toast.to_dict() for toast in self.toasts],
+            # 'comments': [comment.to_dict() for comment in self.comments],
+            'subscriptions': [subbreadit.id for subbreadit in self.subscriptions]
         }

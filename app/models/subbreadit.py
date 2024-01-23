@@ -21,5 +21,5 @@ class Subbreadit(db.Model):
             'description': self.description,
             'moderator_id': self.moderator_id,
             'subscribers': [user.id for user in self.subscribers],
-            'toasts': [toast.id for toast in self.toasts]
+            'toasts': [toast.to_dict() for toast in self.toasts]
         }
