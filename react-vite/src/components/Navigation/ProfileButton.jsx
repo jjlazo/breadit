@@ -50,6 +50,7 @@ function ProfileButton() {
             <>
               <div>{user.username}</div>
               <div>{user.email}</div>
+              <hr></hr>
               <div>
                 <button onClick={logout}>Log Out</button>
               </div>

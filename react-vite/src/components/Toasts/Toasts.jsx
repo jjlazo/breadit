@@ -7,12 +7,13 @@ import TopCommunitiesInfo from "../TopCommunitiesInfo";
 import Feed from "../Feed";
 
 function Toasts({  }){
+
     return(
         <div className="home-container">
             <div className="container-content">
             <Sidebar/>
             <div className="feed">
-                <Feed data={Array(2).fill(true)}/>
+                <Feed data={Array(1).fill(true)}/>
             </div>
             <div className="sub-content">
                 <TopCommunitiesInfo data={Array(6).fill(true)}/>
