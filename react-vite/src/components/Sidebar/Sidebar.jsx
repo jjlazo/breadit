@@ -1,7 +1,7 @@
 import React from "react"
 import "./Sidebar.css"
 import { useNavigate } from "react-router-dom";
-import { Home } from 'lucide-react';
+import { Home as HomeIcon } from 'lucide-react';
 
 const Toast = () => {
     return(
@@ -22,11 +22,10 @@ function Sidebar(){
         <div className="side-bar">
             <div className="side-bar-margin"></div>
             <div onClick={() => navigate(`/`)} className="side-bar-row">
-                <Home color={"#C4C4C4"}/>
+                <HomeIcon color={"#C4C4C4"}/>
                 Home
             </div>
             <div onClick={() => navigate(`/toasts/${1}`)} className="side-bar-row">
-                {/* <Signpost color={"#C4C4C4"}/> */}
                 <Toast/>
                 Toasts
             </div>

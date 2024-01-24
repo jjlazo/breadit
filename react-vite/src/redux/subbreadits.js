@@ -23,6 +23,10 @@ export const getSubbreadits = () => async dispatch => {
     }
 }
 
+export const getSubbreaditPosts = () => async dispatch => {
+  `/api/subbreadits`
+}
+
 export const addSubbreadit = (subbreadit) => async dispatch => {
     const response = await fetch('/api/subbreadits', {
         method: "POST",

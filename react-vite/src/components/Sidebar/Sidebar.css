@@ -29,3 +29,9 @@
 .side-bar-row:hover{
     cursor: pointer;
 }
+
+@media (max-width: 1200px){
+    .side-bar{
+        display: none;
+    }
+}

@@ -23,7 +23,7 @@ function SubbreaditInfo({  }){
                     <div className="sub-content-bubble-stats-column-text-sm">Ranking</div>
                 </div>
             </div>
-            <button className="subscription-button">{"subscribe"}</button>
+            <button className="un subscription-button">{"subscribed"}</button>
         </div>
     )
 }

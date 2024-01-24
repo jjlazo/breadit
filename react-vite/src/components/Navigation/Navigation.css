@@ -75,3 +75,10 @@ nav{
 .add-subbbreadit:hover{
   cursor: pointer;
 }
+
+
+@media (max-width: 750px){
+  .search{
+    display: none;
+  }
+}

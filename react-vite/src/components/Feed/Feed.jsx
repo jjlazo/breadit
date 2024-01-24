@@ -19,8 +19,8 @@ function Feed({ data }){
     return(
         <>
         {
-            data.map((posts) => (
-            <div onClick={() => navigate(`/subbreadit/${1}/toast/${1}`)} className="content">
+            data.map((post) => (
+            <div key={post.id} onClick={() => navigate(`/subbreadit/${post.subbreadit_id}/toast/${post.id}`)} className="content">
                 <div className="toast-bubble">
                     <div className="upvote">
                         <button className="voting-button">
@@ -35,13 +35,13 @@ function Feed({ data }){
                         <div className="toast-header">
                             <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                             <div>
-                                <div onClick={(e) => navigateToSubbreadit(e)} className="toast-subbreadit"><b>b/{"subbreadit"}</b></div>
-                                <div onClick={(e) => navigateToToasts(e)} className="toast-user">posted by {"username"}</div>
+                                <div onClick={(e) => navigateToSubbreadit(e)} className="toast-subbreadit"><b>b/{post.subbreadit_name}</b></div>
+                                <div onClick={(e) => navigateToToasts(e)} className="toast-user">posted by {post.username}</div>
                             </div>
                         </div>
                         <div className="toast-content">
-                            <div className="toast-title">Title</div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                            <div className="toast-title">{post.title}</div>
+                            <div>{post.body}</div>
                         </div>
                     </div>
                 </div>

@@ -85,3 +85,10 @@
     font-size: 11px;
     color: #C4C4C4
 }
+
+
+@media (max-width: 1200px){
+    .sub-content{
+        display: none;
+    }
+}

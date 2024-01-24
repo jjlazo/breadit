@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react"
-import Sidebar from "../Sidebar";
-import { useNavigate } from "react-router-dom";
+import Sidebar from "../Sidebar"; 
+import { useNavigate, useParams } from "react-router-dom";
 import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply } from 'lucide-react';
-import Feed from "../Feed";
 import OpenModalButton from "../OpenModalButton";
 import SubbreaditInfo from "./SubbreaditInfo";
 import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
+import { useDispatch, useSelector } from 'react-redux';
+import * as postActions from '../../redux/posts'
 import "./Subbreadit.css"
 
 function SubbreaditToast(){
     const navigate = useNavigate()
+    const { toastId } = useParams()
     const [showMenu, setShowMenu] = useState(false);
+    const dispatch = useDispatch()
+
+    let post = useSelector(state => state.posts)
+
+    let postData = Object.values(post)
+
+    console.log(postData)
+
+    useEffect(() => {
+        dispatch(postActions.getPostById(toastId))
+    }, [toastId])
 
     const closeMenu = () => setShowMenu(false);
 
@@ -34,13 +47,13 @@ function SubbreaditToast(){
                             <div className="toast-header">
                                 <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                                 <div>
-                                    <div onClick={() => navigate(`/subbreadit/${1}`)} className="toast-subbreadit"><b>b/{"subbreadit"}</b></div>
-                                    <div onClick={() => navigate(`/toasts/${1}`)} className="toast-user">posted by {"username"}</div>
+                                    <div onClick={() => navigate(`/subbreadit/${1}`)} className="toast-subbreadit"><b>b/{postData[0]?.subbreadit_name}</b></div>
+                                    <div onClick={() => navigate(`/toasts/${1}`)} className="toast-user">posted by {postData[0]?.username}</div>
                                 </div>
                             </div>
                             <div className="toast-content">
-                                <div className="toast-title">Title</div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                                <div className="toast-title">{postData[0]?.title}</div>
+                                <div>{postData[0]?.body}</div>
                             </div>
                             <div className="toast-update">
                                 <Eraser strokeWidth={"2.05px"} className="toast-update-icon"/>
@@ -66,19 +79,19 @@ function SubbreaditToast(){
                                 </button>
                             }
                             />
-                        <div>{"2"} comments</div>
+                        <div>{postData[0]?.comments.length} {postData[0]?.comments.length == 1 ? 'comment' : "comments"}</div>
                     </div>
                 </div>
                 <div className="comments-content-container">
-                    {Array(2).fill(true).map((comment) => (
-                        <div className="comment-content">
+                    {postData[0]?.comments.map((comment) => (
+                        <div key={comment?.id} className="comment-content">
                             <div className="comment-content-profile">
                                 <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                                 <div className="vertical-line"></div>
                             </div>
                             <div>
-                                <div><b>username</b></div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                                <div><b>{comment?.username}</b></div>
+                                <div>{comment?.body}</div>
                                     <div className="toast-update">
                                         <Eraser strokeWidth={"2.05px"} className="toast-update-icon"/>
                                         <OpenModalButton
