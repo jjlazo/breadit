@@ -10,7 +10,7 @@ import Feed from "../Feed";
 function Toasts(){
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { toastId } = useParams()
+    const { userId } = useParams()
 
     let posts = useSelector(state => state.posts)
 
@@ -18,14 +18,14 @@ function Toasts(){
 
     useEffect(() => {
         async function wrapperFn(){
-            const response = await dispatch(postActions.getPostsBySpecificUserId(toastId))
-            if(response.errors){
-                navigate('/errors', {state: {"statusCode": 400, "message": "User Not Found"}})
+            const response = await dispatch(postActions.getPostsBySpecificUserId(userId))
+            if(response?.errors){
+                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
             } 
         }
 
         wrapperFn()
-    }, [toastId])
+    }, [userId])
 
     return(
         <div className="home-container">

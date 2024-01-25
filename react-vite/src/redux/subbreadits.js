@@ -17,10 +17,24 @@ export const getSubbreadits = () => async dispatch => {
     if(response.ok){
       const subbreadits = await response.json()
       dispatch(loadSubbreadits(subbreadits))
+      return
     }else{
         const errors = await response.json()
         return errors
     }
+}
+
+export const getSubbreaditById = (subbreaditId) => async dispatch => {
+  const response = await fetch(`/api/subbreadits/${subbreaditId}`)
+
+  if(response.ok){
+    const subbreadits = await response.json()
+    dispatch(loadSubbreadits(subbreadits))
+    return
+  }else{
+      const errors = await response.json()
+      return errors
+  }
 }
 
 export const addSubbreadit = (subbreadit) => async dispatch => {

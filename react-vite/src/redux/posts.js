@@ -71,11 +71,13 @@ export const getPostsBySpecificUserId = (userId) => async dispatch => {
   const response = await fetch(`/api/posts/specific/${userId}`)
 
   if(response.ok){
-    const post = await response.json()
-    dispatch(loadPosts(post))
+    const posts = await response.json()
+    console.log("User: ", posts)
+    dispatch(loadPosts(posts))
     return response
   }else{
       const errors = await response.json()
+      console.log("ERROR: ", errors)
       return errors
   }
 }

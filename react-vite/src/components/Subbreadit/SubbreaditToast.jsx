@@ -35,7 +35,13 @@ function SubbreaditToast(){
     }
 
     useEffect(() => {
-        dispatch(postActions.getPostById(toastId))
+        async function wrapperFn(){
+            const response = await dispatch(postActions.getPostById(toastId))
+            if(response.errors){
+                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+            } 
+        }
+        wrapperFn()
         dispatch(commentActions.getComments(toastId))
     }, [toastId])
 

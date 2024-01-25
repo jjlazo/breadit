@@ -23,7 +23,7 @@ function TopCommunitiesInfo(){
                         <img className="bubble-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                         <div>
                             <div>b/{communities.name}</div>
-                            <div className="sub-count">1539 subscribers</div>
+                            <div className="sub-count">{communities?.subscribers.length} {communities?.subscribers.length == 1 ? "subscriber" : "subscribers"}</div>
                         </div>
                     </div>
                 ))

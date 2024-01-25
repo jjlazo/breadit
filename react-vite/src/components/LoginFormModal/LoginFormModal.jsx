@@ -65,7 +65,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button onClick={handleSubmit} className="button" type="submit">keep toast'n</button>
+        <button onClick={handleSubmit} className="button" type="submit">keep toast&apos;n</button>
         <button onClick={handleDemoSubmit} className="demo button" type="submit">Demo user</button>
       </form>
     </>

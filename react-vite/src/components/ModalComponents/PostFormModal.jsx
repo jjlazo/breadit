@@ -9,7 +9,7 @@ function PostFormModal({ subbreaditId }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   // const [errors, setErrors] = useState({});
-  // const { closeModal } = useModal();
+  const { closeModal } = useModal();
 
   const sendPost = (e) => {
     e.preventDefault()
@@ -18,6 +18,7 @@ function PostFormModal({ subbreaditId }) {
       body,
       subbreaditId
     }))
+    closeModal()
   }
 
   return (

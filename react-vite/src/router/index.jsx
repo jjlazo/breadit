@@ -22,21 +22,13 @@ export const router = createBrowserRouter([
         element: <SubbreaditToast/>
       },
       {
-        path: "/toasts/:toastId",
+        path: "/toasts/:userId",
         element: <Toasts/>
       },
       {
-        path: "/u/toasts/:toastId",
+        path: "/u/toasts/:userId",
         element: <Toasts/>
       },
-      // {
-      //   path: "login",
-      //   element: <LoginFormPage />,
-      // },
-      // {
-      //   path: "signup",
-      //   element: <SignupFormPage />,
-      // },
       {
         path: "/error",
         element: <NotFound/>

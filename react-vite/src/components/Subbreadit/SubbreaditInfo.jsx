@@ -13,7 +13,7 @@ function SubbreaditInfo({ subbreaditId }){
     let subscriptions = useSelector(state => state.subscriptions)
     const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId)) 
     
-    const subbreaditData = subbreadits[subbreaditId]
+    const subbreaditData = subbreadits[subbreaditId] 
 
     const handleSub = () => {
         if(isSubbed){
@@ -26,6 +26,13 @@ function SubbreaditInfo({ subbreaditId }){
 
     useEffect(() => {
         dispatch(subbreaditActions.getSubbreadits())
+        async function wrapperFn(){
+            const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
+            if(response?.errors){
+                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+            } 
+        } 
+        wrapperFn()
     }, [subscriptions])
 
     useEffect(() => {
@@ -44,7 +51,7 @@ function SubbreaditInfo({ subbreaditId }){
             <div className="sub-content-bubble-stats">
                 <div className="sub-content-bubble-stats-column">
                     <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
-                    <div className="sub-content-bubble-stats-column-text-sm">Members</div>
+                    <div className="sub-content-bubble-stats-column-text-sm">{subbreaditData?.subscribers.length == 1 ? "Member" : "Members"}</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
                     <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>

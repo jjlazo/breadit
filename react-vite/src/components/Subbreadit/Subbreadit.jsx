@@ -7,11 +7,12 @@ import { PostFormModal } from "../ModalComponents";
 import * as postActions from '../../redux/posts'
 import * as subbreaditActions from '../../redux/subbreadits'
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./Subbreadit.css"
 
 function Subbreadits(){
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [showMenu, setShowMenu] = useState(false);
     const { subbreaditId } = useParams()
     const sessionUser = useSelector(state => state.session.user)
@@ -26,7 +27,14 @@ function Subbreadits(){
     const closeMenu = () => setShowMenu(false);
 
     useEffect(() => {
-       dispatch(postActions.getSubbreaditPosts(subbreaditId))
+       async function wrapperFn(){
+            const response = await dispatch(postActions.getSubbreaditPosts(subbreaditId))
+            if(response?.errors){
+                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+            } 
+       }
+
+       wrapperFn()
        dispatch(subbreaditActions.getSubbreadits())
     }, [subbreaditId]) 
 
