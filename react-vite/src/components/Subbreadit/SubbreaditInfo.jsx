@@ -26,6 +26,9 @@ function SubbreaditInfo({ subbreaditId }){
 
     useEffect(() => {
         dispatch(subbreaditActions.getSubbreadits())
+    }, [subscriptions])
+
+    useEffect(() => {
         async function wrapperFn(){
             const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
             if(response?.errors){
@@ -33,7 +36,7 @@ function SubbreaditInfo({ subbreaditId }){
             } 
         } 
         wrapperFn()
-    }, [subscriptions])
+    }, [])
 
     useEffect(() => {
         if(sessionUser?.id){
