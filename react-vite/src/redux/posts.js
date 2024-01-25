@@ -1,4 +1,5 @@
 export const LOAD_POSTS = 'posts/LOAD_POSTS';
+export const LOAD_POST = 'posts/LOAD_POST';
 export const CREATE_POST = 'posts/CREATE_POST';
 export const UPDATE_POST = 'posts/UPDATE_POST';
 export const REMOVE_POST = 'posts/REMOVE_POST';
@@ -6,6 +7,11 @@ export const REMOVE_POST = 'posts/REMOVE_POST';
 export const loadPosts = (posts) => ({
   type: LOAD_POSTS,
   posts
+});
+
+export const loadPost = (post) => ({
+  type: LOAD_POST,
+  post
 });
 
 export const createPost = (post) => ({
@@ -23,7 +29,7 @@ export const removePost = (postId) => ({
   postId
 });
 
-export const getPosts = (subbreaditId) => async dispatch => {
+export const getPosts = () => async dispatch => {
     const response = await fetch(`/api/posts`)
   
     if(response.ok){
@@ -35,12 +41,12 @@ export const getPosts = (subbreaditId) => async dispatch => {
     }
 }
 
-export const getPostsById = (postId) => async dispatch => {
+export const getPostById = (postId) => async dispatch => {
     const response = await fetch(`/api/posts/${postId}`)
   
     if(response.ok){
       const post = await response.json()
-      dispatch(loadPosts(post))
+      dispatch(loadPost(post))
       return response
     }else{
         const errors = await response.json()
@@ -48,8 +54,48 @@ export const getPostsById = (postId) => async dispatch => {
     }
 }
 
+export const getPostsByUserId = () => async dispatch => {
+  const response = await fetch(`/api/posts/current`)
+
+  if(response.ok){
+    const post = await response.json()
+    dispatch(loadPosts(post))
+    return response
+  }else{
+      const errors = await response.json()
+      return errors
+  }
+}
+
+export const getPostsBySpecificUserId = (userId) => async dispatch => {
+  const response = await fetch(`/api/posts/specific/${userId}`)
+
+  if(response.ok){
+    const posts = await response.json()
+    console.log("User: ", posts)
+    dispatch(loadPosts(posts))
+    return response
+  }else{
+      const errors = await response.json()
+      console.log("ERROR: ", errors)
+      return errors
+  }
+}
+
+export const getSubbreaditPosts = (subbreaditId) => async dispatch => {
+  const response = await fetch(`/api/subbreadits/${subbreaditId}/posts`)
+  
+    if(response.ok){
+      const posts = await response.json()
+      dispatch(loadPosts(posts))
+    }else{
+        const errors = await response.json()
+        return errors
+    }
+}
+
 export const addPost = (post) => async dispatch => {
-    const response = await fetch('/api/posts', {
+    const response = await fetch(`/api/posts`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -105,11 +151,17 @@ const postsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_POSTS: {
       const postsState = {};
-      if(action.posts.length){
-          action.posts.forEach((post) => {
+      if(action.posts.Posts.length){
+          action.posts.Posts.forEach((post) => {
             postsState[post.id] = post;
           });
       }
+      return postsState;
+    }
+    case LOAD_POST: {
+      const postsState = {};
+      const post = action.post.Post
+      postsState[post.id] = post
       return postsState;
     }
     case CREATE_POST:

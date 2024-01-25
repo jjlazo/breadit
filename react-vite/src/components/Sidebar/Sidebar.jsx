@@ -1,7 +1,8 @@
 import React from "react"
 import "./Sidebar.css"
 import { useNavigate } from "react-router-dom";
-import { Home } from 'lucide-react';
+import { Home as HomeIcon } from 'lucide-react';
+import { useSelector } from "react-redux";
 
 const Toast = () => {
     return(
@@ -17,19 +18,19 @@ const Toast = () => {
 }
 
 function Sidebar(){
+    const sessionUser = useSelector((store) => store.session.user);
     const navigate = useNavigate()
     return(
         <div className="side-bar">
             <div className="side-bar-margin"></div>
             <div onClick={() => navigate(`/`)} className="side-bar-row">
-                <Home color={"#C4C4C4"}/>
+                <HomeIcon color={"#C4C4C4"}/>
                 Home
             </div>
-            <div onClick={() => navigate(`/toasts/${1}`)} className="side-bar-row">
-                {/* <Signpost color={"#C4C4C4"}/> */}
+            {sessionUser?.id && <div onClick={() => navigate(`/u/toasts/${sessionUser.id}`)} className="side-bar-row">
                 <Toast/>
                 Toasts
-            </div>
+            </div>}
         </div>
     )
 }

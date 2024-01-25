@@ -1,23 +1,32 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { useDispatch, useSelector } from 'react-redux';
+import * as commentActions from '../../redux/comments'
+import { useParams } from "react-router-dom";
 import "./ModalComponents.css";
 
 function CommentFormModal() {
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
+  const [body, setBody] = useState("");
+  const { toastId } = useParams()
+  const sessionUser = useSelector((state) => state.session.user)
   // const [errors, setErrors] = useState({});
-  // const { closeModal } = useModal();
+  const { closeModal } = useModal();
+
+    const addComment = (e) => {
+      e.preventDefault()
+      dispatch(commentActions.addComment(toastId, {body}))
+      closeModal()
+  }
 
   return (
     <>
       <h2>Create a comment</h2>
-      <form className="form">
+      <form className="form" onSubmit={addComment}>
         <label>
           <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
             className="textarea"
             placeholder="Comment"
             required

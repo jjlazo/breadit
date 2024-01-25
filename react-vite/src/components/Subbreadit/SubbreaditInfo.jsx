@@ -1,21 +1,60 @@
 import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from 'react-redux';
+import * as subbreaditActions from '../../redux/subbreadits'
+import * as subscriptionActions from '../../redux/subscriptions'
+import { useNavigate, useParams } from "react-router-dom";
 import "./Subbreadit.css"
 
-function SubbreaditInfo({  }){
+function SubbreaditInfo({ subbreaditId }){
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const sessionUser = useSelector(state => state.session.user)
+    let subbreadits = useSelector(state => state.subbreadits)
+    let subscriptions = useSelector(state => state.subscriptions)
+    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId)) 
+    
+    const subbreaditData = subbreadits[subbreaditId] 
+
+    const handleSub = () => {
+        if(isSubbed){
+            dispatch(subscriptionActions.deleteSubscription(subbreaditId))
+        }else{
+            dispatch(subscriptionActions.addSubscription(subbreaditId))
+        }
+        setIsSubbed(!isSubbed)
+    }
+
+    useEffect(() => {
+        dispatch(subbreaditActions.getSubbreadits())
+        async function wrapperFn(){
+            const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
+            if(response?.errors){
+                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+            } 
+        } 
+        wrapperFn()
+    }, [subscriptions])
+
+    useEffect(() => {
+        if(sessionUser?.id){
+            dispatch(subscriptionActions.getSubscriptions(sessionUser?.id))
+        }
+    }, [])
+
     return(
         <div className="sub-content-bubble">
             <div className="sub-content-bubble-header">
                 <img onClick={() => navigate("/")} className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
-                b/{"subbreadit"}
+                b/{subbreaditData?.name}
             </div>
-            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+            <div className="sub-content-bubble-description">{subbreaditData?.description}</div>
             <div className="sub-content-bubble-stats">
                 <div className="sub-content-bubble-stats-column">
-                    <div className="sub-content-bubble-stats-column-text-md">{"6.5k"}</div>
-                    <div className="sub-content-bubble-stats-column-text-sm">Members</div>
+                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
+                    <div className="sub-content-bubble-stats-column-text-sm">{subbreaditData?.subscribers.length == 1 ? "Member" : "Members"}</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
-                    <div className="sub-content-bubble-stats-column-text-md">{"229"}</div>
+                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
                     <div className="sub-content-bubble-stats-column-text-sm">Online</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
@@ -23,7 +62,7 @@ function SubbreaditInfo({  }){
                     <div className="sub-content-bubble-stats-column-text-sm">Ranking</div>
                 </div>
             </div>
-            <button className="subscription-button">{"subscribe"}</button>
+            {sessionUser?.id && <button onClick={handleSub} className={isSubbed ? "un subscription-button" : "subscription-button"}>{isSubbed ? "unsubscribe" : "subscribe"}</button>}
         </div>
     )
 }

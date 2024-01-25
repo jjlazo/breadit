@@ -20,5 +20,7 @@ class Comment(db.Model):
             'body': self.body,
             'user_id': self.user_id,
             'toast_id': self.toast_id,
-            "username": self.user.username
+            "username": self.user.username,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }

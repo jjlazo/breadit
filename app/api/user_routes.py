@@ -23,3 +23,9 @@ def user(id):
     """
     user = User.query.get(id)
     return user.to_dict()
+
+@user_routes.route('/<int:id>/subscriptions')
+def user_subscriptions(id):
+    user = User.query.get(id)
+
+    return {"Subbreadits": [subbreadit.to_dict() for subbreadit in user.subscriptions]}

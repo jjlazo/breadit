@@ -55,7 +55,11 @@ nav{
   padding-left: 8px
 }
 
-.search-input:focus {
+/* .search-input:focus {
+  border-radius: 20px 20px 0px 0px;
+} */
+
+.focused {
   border-radius: 20px 20px 0px 0px;
 }
 
@@ -74,4 +78,47 @@ nav{
 
 .add-subbbreadit:hover{
   cursor: pointer;
+}
+
+.logout{
+  width: 100%;
+  padding: 7px 0px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.drop-down{
+  position: absolute;
+  width: calc(100% - 3px);
+  height: fit-content;
+  border-radius: 0px 0px 20px 20px;
+  background-color: white;
+  border: 1.5px black solid;
+  border-top: none;
+  max-height: 450px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.hidden{
+  display: none;
+}
+
+.drop-down-content{
+  padding: 8px 12px;
+  font-size: 15px;
+  /* border-bottom: 1px #C4C4C4 solid; */
+}
+
+.drop-down-content:hover{
+  cursor: pointer;
+  background-color: #fbfbfb;
+}
+
+@media (max-width: 750px){
+  .search{
+    display: none;
+  }
 }

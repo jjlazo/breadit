@@ -3,6 +3,7 @@ import Layout from './Layout';
 import Home from '../components/Home';
 import { Subbreadit, SubbreaditToast }  from '../components/Subbreadit';
 import Toasts from '../components/Toasts';
+import NotFound from '../components/NotFound';
 
 export const router = createBrowserRouter([
   {
@@ -21,20 +22,20 @@ export const router = createBrowserRouter([
         element: <SubbreaditToast/>
       },
       {
-        path: "/toasts/:toastId",
+        path: "/toasts/:userId",
         element: <Toasts/>
       },
-      // {
-      //   path: "login",
-      //   element: <LoginFormPage />,
-      // },
-      // {
-      //   path: "signup",
-      //   element: <SignupFormPage />,
-      // },
+      {
+        path: "/u/toasts/:userId",
+        element: <Toasts/>
+      },
+      {
+        path: "/error",
+        element: <NotFound/>
+      },
       {
         path: "*",
-        element: <h1>404 Forbidden</h1>
+        element: <NotFound/>
       }
     ],
   },

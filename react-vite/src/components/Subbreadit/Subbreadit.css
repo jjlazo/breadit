@@ -61,10 +61,17 @@
     height: 40px
 }
 
+.sub-content-bubble-description{
+    display: flex;
+    flex: 1;
+    min-width: calc(300px - 40px);
+}
+
 .subscription-button{
     width: 100%;
     font-size: 16px;
     padding: 11px 0px;
+    background-color: black;
     color: white;
     border-radius: 20px;
     font-weight: bold;
@@ -180,4 +187,9 @@
 
 .edited{
     color: #C4C4C4
+}
+
+@media (max-width: 750px){
+    .single-toast-bubble{
+        width: calc(100% - 50px)}
 }

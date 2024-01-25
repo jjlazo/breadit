@@ -1,19 +1,30 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import * as postActions from '../../redux/posts'
 import "./ModalComponents.css";
 
-function PostFormModal() {
+function PostFormModal({ subbreaditId }) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
+  const [body, setBody] = useState("");
   // const [errors, setErrors] = useState({});
-  // const { closeModal } = useModal();
+  const { closeModal } = useModal();
+
+  const sendPost = (e) => {
+    e.preventDefault()
+    dispatch(postActions.addPost({
+      title,
+      body,
+      subbreaditId
+    }))
+    closeModal()
+  }
 
   return (
     <>
       <h2>Post a toast</h2>
-      <form className="form">
+      <form className="form" onSubmit={sendPost}>
         <label>
           <input
             type="text"
@@ -26,10 +37,10 @@ function PostFormModal() {
         </label>
         <label>
           <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
             className="textarea"
-            placeholder="Message"
+            placeholder="Body"
             required
           />
         </label>

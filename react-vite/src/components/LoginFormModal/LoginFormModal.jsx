@@ -28,10 +28,21 @@ function LoginFormModal() {
     }
   };
 
+  const handleDemoSubmit = async (e) => {
+    e.preventDefault();
+    await dispatch(
+      thunkLogin({
+        email: "demo@aa.io",
+        password: "password",
+      })
+    );
+    closeModal();
+  }
+
   return (
     <>
       <h2>Log In</h2>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form">
         <label>
           <input
             type="text"
@@ -39,7 +50,7 @@ function LoginFormModal() {
             onChange={(e) => setEmail(e.target.value)}
             className="input"
             placeholder="Email"
-            required
+            // required
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
@@ -50,12 +61,12 @@ function LoginFormModal() {
             onChange={(e) => setPassword(e.target.value)}
             className="input"
             placeholder="Password"
-            required
+            // required
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button className="button" type="submit">keep toast'n</button>
-        <button className="demo button" type="submit">Demo user</button>
+        <button onClick={handleSubmit} className="button" type="submit">keep toast&apos;n</button>
+        <button onClick={handleDemoSubmit} className="demo button" type="submit">Demo user</button>
       </form>
     </>
   );

@@ -88,7 +88,7 @@ function SignupFormModal() {
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         <button className="button" type="submit">get toasty</button>
-        <button className="demo button" type="submit">Demo user</button>
+        {/* <button className="demo button" type="submit">Demo user</button> */}
       </form>
     </>
   );
