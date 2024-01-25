@@ -11,7 +11,7 @@ function SubbreaditInfo({ subbreaditId }){
     const sessionUser = useSelector(state => state.session.user)
     let subbreadits = useSelector(state => state.subbreadits)
     let subscriptions = useSelector(state => state.subscriptions)
-    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId) || sessionUser.subscriptions.includes(Number(subbreaditId))) 
+    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId)) 
     
     const subbreaditData = subbreadits[subbreaditId]
 
@@ -28,13 +28,19 @@ function SubbreaditInfo({ subbreaditId }){
         dispatch(subbreaditActions.getSubbreadits())
     }, [subscriptions])
 
+    useEffect(() => {
+        if(sessionUser?.id){
+            dispatch(subscriptionActions.getSubscriptions(sessionUser?.id))
+        }
+    }, [])
+
     return(
         <div className="sub-content-bubble">
             <div className="sub-content-bubble-header">
                 <img onClick={() => navigate("/")} className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
                 b/{subbreaditData?.name}
             </div>
-            <div>{subbreaditData?.description}</div>
+            <div className="sub-content-bubble-description">{subbreaditData?.description}</div>
             <div className="sub-content-bubble-stats">
                 <div className="sub-content-bubble-stats-column">
                     <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
@@ -49,7 +55,7 @@ function SubbreaditInfo({ subbreaditId }){
                     <div className="sub-content-bubble-stats-column-text-sm">Ranking</div>
                 </div>
             </div>
-            <button onClick={handleSub} className={isSubbed ? "un subscription-button" : "subscription-button"}>{isSubbed ? "unsubscribe" : "subscribe"}</button>
+            {sessionUser?.id && <button onClick={handleSub} className={isSubbed ? "un subscription-button" : "subscription-button"}>{isSubbed ? "unsubscribe" : "subscribe"}</button>}
         </div>
     )
 }

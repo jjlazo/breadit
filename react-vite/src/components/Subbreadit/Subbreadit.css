@@ -61,6 +61,12 @@
     height: 40px
 }
 
+.sub-content-bubble-description{
+    display: flex;
+    flex: 1;
+    min-width: calc(300px - 40px);
+}
+
 .subscription-button{
     width: 100%;
     font-size: 16px;

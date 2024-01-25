@@ -17,7 +17,14 @@ function Toasts(){
     let postArr = Object.values(posts)
 
     useEffect(() => {
-        dispatch(postActions.getPostsBySpecificUserId(toastId))
+        async function wrapperFn(){
+            const response = await dispatch(postActions.getPostsBySpecificUserId(toastId))
+            if(response.errors){
+                navigate('/errors', {state: {"statusCode": 400, "message": "User Not Found"}})
+            } 
+        }
+
+        wrapperFn()
     }, [toastId])
 
     return(

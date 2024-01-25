@@ -27,10 +27,10 @@ function Sidebar(){
                 <HomeIcon color={"#C4C4C4"}/>
                 Home
             </div>
-            <div onClick={() => navigate(`/u/toasts/${sessionUser.id}`)} className="side-bar-row">
+            {sessionUser?.id && <div onClick={() => navigate(`/u/toasts/${sessionUser.id}`)} className="side-bar-row">
                 <Toast/>
                 Toasts
-            </div>
+            </div>}
         </div>
     )
 }

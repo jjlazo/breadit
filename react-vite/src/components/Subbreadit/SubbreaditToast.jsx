@@ -70,7 +70,7 @@ function SubbreaditToast(){
                                 <div>{postData[0]?.body}</div>
                             </div>
                             <div className="toast-update">
-                                {sessionUser?.id == postData[0]?.user_id && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
                                 {sessionUser?.id == postData[0]?.user_id && <OpenModalButton
                                 // itemText="toast"
                                 onButtonClick={closeMenu}
@@ -107,7 +107,7 @@ function SubbreaditToast(){
                                 <div><b>{comment?.username}</b></div>
                                 <div>{comment?.body}</div>
                                     <div className="toast-update">
-                                        {sessionUser?.id == comment?.user_id && <Eraser onClick={(e) => deleteComment(e, comment.id)} strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                        {(sessionUser?.id == comment?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={(e) => deleteComment(e, comment.id)} strokeWidth={"2.05px"} className="toast-update-icon"/>}
                                         {sessionUser?.id == comment?.user_id && <OpenModalButton
                                         onButtonClick={closeMenu}
                                         modalComponent={<UpdateCommentFormModal commentId={comment?.id} defaultText={comment?.body} />}

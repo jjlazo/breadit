@@ -59,7 +59,6 @@ export const getPostsByUserId = () => async dispatch => {
 
   if(response.ok){
     const post = await response.json()
-    console.log(post)
     dispatch(loadPosts(post))
     return response
   }else{
@@ -73,7 +72,6 @@ export const getPostsBySpecificUserId = (userId) => async dispatch => {
 
   if(response.ok){
     const post = await response.json()
-    console.log(post)
     dispatch(loadPosts(post))
     return response
   }else{

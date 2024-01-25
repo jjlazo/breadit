@@ -15,6 +15,7 @@ function Navigation() {
   const [search, setSearch] = useState("")
   const dispatch = useDispatch()
   let subbreadits = useSelector(state => state.subbreadits)
+  const sessionUser = useSelector(state => state.session.user)
   const searchRef = useRef()
 
   let subbreaditData = Object.values(subbreadits)
@@ -70,12 +71,12 @@ function Navigation() {
           <input type="text" id="search-input" onFocus={focus} onKeyDown={handleKeyDown} value={search} onChange={(e) => setSearch(e.target.value)}  className={isFocused ? "search-input focused" : "search-input"} placeholder={`search b/${"subbreadit"}`}></input>
           {/*  */}
           <div className="add-subbreadit-container">
-            <OpenModalButton
+            {sessionUser?.id && <OpenModalButton
               // itemText="toast"
               onButtonClick={() => (closeMenu, setIsFocused(false))}
               modalComponent={<SubbreaditFormModal />}
               buttonComponent={<PlusCircle strokeWidth={"1.5px"} className="add-subbbreadit"/>}
-              />
+              />}
           </div>
           <div className={isFocused ? "drop-down" : "drop-down hidden"}>
             {search ? 

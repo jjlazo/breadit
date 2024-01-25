@@ -14,6 +14,7 @@ function Subbreadits(){
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
     const { subbreaditId } = useParams()
+    const sessionUser = useSelector(state => state.session.user)
     let posts = useSelector(state => state.posts)
 
     let postArr = Object.values(posts)
@@ -46,12 +47,12 @@ function Subbreadits(){
             <div className="sub-content">
                 <div className="sub-content-container">
                     <div className="sub-content-button-container">
-                    <OpenModalButton
+                    {sessionUser?.id && <OpenModalButton
                     // itemText="toast"
                     onButtonClick={closeMenu}
                     modalComponent={<PostFormModal subbreaditId={ subbreaditId } />}
                     buttonComponent={<button className="sub-content-button">toast</button>}
-                    />
+                    />}
                     </div>
                     <SubbreaditInfo subbreaditId={subbreaditId}/> 
                 </div>
