@@ -28,7 +28,6 @@ export const getComments = (postId) => async dispatch => {
   
     if(response.ok){
       const comments = await response.json()
-      console.log(comments)
       dispatch(loadComments(comments))
     }else{
         const errors = await response.json()

@@ -11,8 +11,10 @@ function SubbreaditInfo({ subbreaditId }){
     const sessionUser = useSelector(state => state.session.user)
     const [isSubbed, setIsSubbed] = useState(sessionUser.subscriptions.includes(Number(subbreaditId)))
     let subbreadits = useSelector(state => state.subbreadits)
+    let subscriptions = useSelector(state => state.subscriptions)
     
     const subbreaditData = subbreadits[subbreaditId]
+
 
     const handleSub = () => {
         if(isSubbed){
@@ -25,7 +27,8 @@ function SubbreaditInfo({ subbreaditId }){
 
     useEffect(() => {
         dispatch(subbreaditActions.getSubbreadits())
-    }, [isSubbed])
+        console.log(subbreaditData)
+    }, [subscriptions])
 
     return(
         <div className="sub-content-bubble">

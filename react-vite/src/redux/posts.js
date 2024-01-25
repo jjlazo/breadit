@@ -46,7 +46,6 @@ export const getPostById = (postId) => async dispatch => {
   
     if(response.ok){
       const post = await response.json()
-      console.log("POST: ", post)
       dispatch(loadPost(post))
       return response
     }else{
@@ -106,7 +105,6 @@ export const addPost = (post) => async dispatch => {
 
     if(response.ok){
         const post = await response.json()
-        console.log(post)
         dispatch(createPost(post))
         return response
     }else{
