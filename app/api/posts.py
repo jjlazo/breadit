@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Toast, Comment, db
+from app.models import Toast, Comment, User, db
 from flask_login import current_user, login_required
 from ..forms.other_forms import ToastForm, CommentForm
 
@@ -17,23 +17,30 @@ def get_posts():
 @posts_routes.route("/<int:id>")
 def get_post_by_id(id):
     post = Toast.query.get(id)
-    return {"Post": post.to_dict()}
+
+    if(post):
+        return {"Post": post.to_dict()}
+    
+    return {"errors": { "message": "Toast Not Found!" } }, 404
 
 
 # Get all posts by the current user
-@posts_routes.route("/current")
-def get_post_by_user_id():
-    user_id = current_user.id
-    posts = Toast.query.filter(Toast.user_id==user_id).all()
+# @posts_routes.route("/current")
+# def get_post_by_user_id():
+#     user_id = current_user.id
+#     posts = Toast.query.filter(Toast.user_id==user_id).all()
 
-    return {"Posts": [post.to_dict() for post in posts]}
+#     return {"Posts": [post.to_dict() for post in posts]}
 
 # Get all posts by a specific user
 @posts_routes.route("/specific/<int:id>")
 def get_post_by_specific_user_id(id):
-    posts = Toast.query.filter(Toast.user_id==id).all()
-
-    return {"Posts": [post.to_dict() for post in posts]}
+    user = User.query.get(id)
+    if(user):
+        posts = Toast.query.filter(Toast.user_id==id).all()
+        return {"Posts": [post.to_dict() for post in posts]}
+    
+    return {"errors": { "message": "User Not Found!" } }, 404
 
 
 # Create a post

@@ -13,12 +13,26 @@ def get_all_subbreadits():
     subbreadits = Subbreadit.query.all()
     return {"Subbreadits": [subbreadit.to_dict() for subbreadit in subbreadits]}
 
+# Get subbreadit by id
+@subbreadits_routes.route("/<int:id>")
+def get_subbreadit_by_id(id):
+    subbreadit = Subbreadit.query.get(id)
+    if subbreadit:
+        return {"Subbreadits": subbreadit.to_dict()}
+    
+    return {"errors": { "message": "Subbreadit Not Found!" } }, 404 
+
 
 # Get all posts of subbreadit by id
 @subbreadits_routes.route("/<int:id>/posts")
 def get_posts_by_subbreadit_id(id):
-    posts = Toast.query.filter(Toast.subbreadit_id==id).all()
-    return {"Posts": [post.to_dict() for post in posts]}
+    subbreadit = Subbreadit.query.get(id)
+
+    if(subbreadit):
+        posts = Toast.query.filter(Toast.subbreadit_id==id).all()
+        return {"Posts": [post.to_dict() for post in posts]}
+
+    return {"errors": { "message": "Subbreadit Not Found!" } }, 404
 
 
 # Create a Subbreadit
