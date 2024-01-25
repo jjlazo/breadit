@@ -85,3 +85,8 @@
     width: calc(100% - 100px);
     background-color: #C4C4C4;
 }
+
+@media (max-width: 750px){
+    .toast-bubble{
+        width: calc(100% - 50px)}
+}

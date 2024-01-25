@@ -18,17 +18,17 @@ export const editComment = (comment) => ({
   comment
 });
 
-export const removeComment = (postId, commentId) => ({
+export const removeComment = (commentId) => ({
   type: REMOVE_COMMENT,
   commentId,
-  postId
 });
 
-export const getComments = () => async dispatch => {
+export const getComments = (postId) => async dispatch => {
     const response = await fetch(`/api/posts/${postId}/comments`)
   
     if(response.ok){
       const comments = await response.json()
+      console.log(comments)
       dispatch(loadComments(comments))
     }else{
         const errors = await response.json()
@@ -36,7 +36,7 @@ export const getComments = () => async dispatch => {
     }
 }
 
-export const addComments = (postId, comment) => async dispatch => {
+export const addComment = (postId, comment) => async dispatch => {
     const response = await fetch(`/api/posts/${postId}/comments`, {
         method: "POST",
         headers: {
@@ -55,8 +55,8 @@ export const addComments = (postId, comment) => async dispatch => {
     }
 }
 
-export const updateComment = (postId, commentId, comment) => async dispatch => {
-    const response = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+export const updateComment = (commentId, comment) => async dispatch => {
+    const response = await fetch(`/api/comments/${commentId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -74,8 +74,8 @@ export const updateComment = (postId, commentId, comment) => async dispatch => {
     }
 }
 
-export const deleteComment = (postId, commentId) => async dispatch => {
-    const response = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+export const deleteComment = (commentId) => async dispatch => {
+    const response = await fetch(`/api/comments/${commentId}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
@@ -95,8 +95,8 @@ const commentsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_COMMENTS: {
       const commentsState = {};
-      if(action.comments.length){
-          action.comments.forEach((comment) => {
+      if(action.comments.Comments.length){
+          action.comments.Comments.forEach((comment) => {
             commentsState[comment.id] = comment;
           });
       }

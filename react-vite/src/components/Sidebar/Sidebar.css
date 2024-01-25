@@ -30,7 +30,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 1200px){
+@media (max-width: 800px){
     .side-bar{
         display: none;
     }

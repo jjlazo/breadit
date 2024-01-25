@@ -7,7 +7,7 @@ posts_routes = Blueprint('posts', __name__)
 
 
 # Get all posts
-@posts_routes.route('/')
+@posts_routes.route("")
 def get_posts():
     posts = Toast.query.all()
     return {"Posts": [post.to_dict() for post in posts]}
@@ -28,10 +28,16 @@ def get_post_by_user_id():
 
     return {"Posts": [post.to_dict() for post in posts]}
 
+# Get all posts by a specific user
+@posts_routes.route("/specific/<int:id>")
+def get_post_by_specific_user_id(id):
+    posts = Toast.query.filter(Toast.user_id==id).all()
+
+    return {"Posts": [post.to_dict() for post in posts]}
+
 
 # Create a post
-@posts_routes.route("/", methods=["POST"])
-@login_required
+@posts_routes.route("", methods=["POST"])
 def create_post():
     user_id = current_user.id
     subbreadit_id = request.get_json()["subbreaditId"]
@@ -58,7 +64,6 @@ def create_post():
 
 # Update a post
 @posts_routes.route("/<int:id>", methods=["PUT"])
-@login_required
 def update_post(id):
     post = Toast.query.get(id)
 
@@ -82,7 +87,6 @@ def update_post(id):
 
 # Delete a post
 @posts_routes.route("/<int:id>", methods=["DELETE"])
-@login_required
 def delete_post(id):
     post = Toast.query.get(id)
     moderator_id = post.subbreadit.moderator_id
@@ -96,9 +100,16 @@ def delete_post(id):
     return { "message": "User unauthorized"}, 401
 
 
+# Get comment(s) by toast id
+@posts_routes.route('/<int:id>/comments')
+def get_comments(id):
+    comments = Comment.query.filter(Comment.toast_id==id).all()
+
+    return {"Comments": [comment.to_dict() for comment in comments]}
+
+
 # Create a comment by post id
 @posts_routes.route('/<int:id>/comments', methods=["POST"])
-@login_required
 def create_comment(id):
     user_id = current_user.id
 

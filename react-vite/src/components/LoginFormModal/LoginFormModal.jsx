@@ -28,7 +28,7 @@ function LoginFormModal() {
     }
   };
 
-  const handleDemoSubmit = async () => {
+  const handleDemoSubmit = async (e) => {
     e.preventDefault();
     await dispatch(
       thunkLogin({
@@ -36,6 +36,7 @@ function LoginFormModal() {
         password: "password",
       })
     );
+    closeModal();
   }
 
   return (

@@ -1,21 +1,46 @@
 import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from 'react-redux';
+import * as subbreaditActions from '../../redux/subbreadits'
+import * as subscriptionActions from '../../redux/subscriptions'
+import { useNavigate, useParams } from "react-router-dom";
 import "./Subbreadit.css"
 
-function SubbreaditInfo({  }){
+function SubbreaditInfo({ subbreaditId }){
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const sessionUser = useSelector(state => state.session.user)
+    const [isSubbed, setIsSubbed] = useState(sessionUser.subscriptions.includes(Number(subbreaditId)))
+    let subbreadits = useSelector(state => state.subbreadits)
+    
+    const subbreaditData = subbreadits[subbreaditId]
+
+    const handleSub = () => {
+        if(isSubbed){
+            dispatch(subscriptionActions.deleteSubscription(subbreaditId))
+        }else{
+            dispatch(subscriptionActions.addSubscription(subbreaditId))
+        }
+        setIsSubbed(!isSubbed)
+    }
+
+    useEffect(() => {
+        dispatch(subbreaditActions.getSubbreadits())
+    }, [isSubbed])
+
     return(
         <div className="sub-content-bubble">
             <div className="sub-content-bubble-header">
                 <img onClick={() => navigate("/")} className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
-                b/{"subbreadit"}
+                b/{subbreaditData?.name}
             </div>
-            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+            <div>{subbreaditData?.description}</div>
             <div className="sub-content-bubble-stats">
                 <div className="sub-content-bubble-stats-column">
-                    <div className="sub-content-bubble-stats-column-text-md">{"6.5k"}</div>
+                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
                     <div className="sub-content-bubble-stats-column-text-sm">Members</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
-                    <div className="sub-content-bubble-stats-column-text-md">{"229"}</div>
+                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
                     <div className="sub-content-bubble-stats-column-text-sm">Online</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
@@ -23,7 +48,7 @@ function SubbreaditInfo({  }){
                     <div className="sub-content-bubble-stats-column-text-sm">Ranking</div>
                 </div>
             </div>
-            <button className="un subscription-button">{"subscribed"}</button>
+            <button onClick={handleSub} className={isSubbed ? "un subscription-button" : "subscription-button"}>{isSubbed ? "unsubscribe" : "subscribe"}</button>
         </div>
     )
 }

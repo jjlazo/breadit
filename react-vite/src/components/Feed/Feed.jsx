@@ -6,14 +6,14 @@ import "./Feed.css"
 function Feed({ data }){
     const navigate = useNavigate()
 
-    const navigateToSubbreadit = (e) => {
+    const navigateToSubbreadit = (e, subbreaditId) => {
         e.stopPropagation()
-        navigate(`/subbreadit/${1}`)
+        navigate(`/subbreadit/${subbreaditId}`)
     }
 
-    const navigateToToasts = (e) => {
+    const navigateToToasts = (e, toastId) => {
         e.stopPropagation()
-        navigate(`/toasts/${1}`)
+        navigate(`/toasts/${toastId}`)
     }
 
     return(
@@ -35,8 +35,8 @@ function Feed({ data }){
                         <div className="toast-header">
                             <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                             <div>
-                                <div onClick={(e) => navigateToSubbreadit(e)} className="toast-subbreadit"><b>b/{post.subbreadit_name}</b></div>
-                                <div onClick={(e) => navigateToToasts(e)} className="toast-user">posted by {post.username}</div>
+                                <div onClick={(e) => navigateToSubbreadit(e, post.subbreadit_id)} className="toast-subbreadit"><b>b/{post.subbreadit_name}</b></div>
+                                <div onClick={(e) => navigateToToasts(e, post.user_id)} className="toast-user">posted by {post.username}</div>
                             </div>
                         </div>
                         <div className="toast-content">

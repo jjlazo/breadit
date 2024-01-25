@@ -69,8 +69,34 @@ export const getPostsByUserId = () => async dispatch => {
   }
 }
 
+export const getPostsBySpecificUserId = (userId) => async dispatch => {
+  const response = await fetch(`/api/posts/specific/${userId}`)
+
+  if(response.ok){
+    const post = await response.json()
+    console.log(post)
+    dispatch(loadPosts(post))
+    return response
+  }else{
+      const errors = await response.json()
+      return errors
+  }
+}
+
+export const getSubbreaditPosts = (subbreaditId) => async dispatch => {
+  const response = await fetch(`/api/subbreadits/${subbreaditId}/posts`)
+  
+    if(response.ok){
+      const posts = await response.json()
+      dispatch(loadPosts(posts))
+    }else{
+        const errors = await response.json()
+        return errors
+    }
+}
+
 export const addPost = (post) => async dispatch => {
-    const response = await fetch(`/api/posts/${userId}`, {
+    const response = await fetch(`/api/posts`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -80,6 +106,7 @@ export const addPost = (post) => async dispatch => {
 
     if(response.ok){
         const post = await response.json()
+        console.log(post)
         dispatch(createPost(post))
         return response
     }else{

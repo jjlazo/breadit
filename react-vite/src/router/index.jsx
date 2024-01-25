@@ -24,6 +24,10 @@ export const router = createBrowserRouter([
         path: "/toasts/:toastId",
         element: <Toasts/>
       },
+      {
+        path: "/u/toasts/:toastId",
+        element: <Toasts/>
+      },
       // {
       //   path: "login",
       //   element: <LoginFormPage />,

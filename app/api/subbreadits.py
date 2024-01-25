@@ -8,7 +8,7 @@ from ..forms.other_forms import SubbreaditForm
 subbreadits_routes = Blueprint("subbreadits", __name__)
 
 # Get all subbreadits
-@subbreadits_routes.route("/")
+@subbreadits_routes.route("")
 def get_all_subbreadits():
     subbreadits = Subbreadit.query.all()
     return {"Subbreadits": [subbreadit.to_dict() for subbreadit in subbreadits]}
@@ -22,8 +22,7 @@ def get_posts_by_subbreadit_id(id):
 
 
 # Create a Subbreadit
-@subbreadits_routes.route("/", methods=["POST"])
-@login_required
+@subbreadits_routes.route("", methods=["POST"])
 def create_subbreadit():
     user_id = current_user.id
 
@@ -49,7 +48,6 @@ def create_subbreadit():
 
 # Create a subscription
 @subbreadits_routes.route("/<int:id>/subscription", methods=["POST"])
-@login_required
 def create_subscription(id):
     user = User.query.get(current_user.id)
     subbreadit = Subbreadit.query.get(id)
@@ -57,12 +55,11 @@ def create_subscription(id):
     user.subscriptions.append(subbreadit)
     db.session.commit()
 
-    return {"message": "Successfully subscribed"}, 201
+    return subbreadit.to_dict(), 201
 
 
 # Delete a subscription
 @subbreadits_routes.route("/<int:id>/subscription", methods=["DELETE"])
-@login_required
 def delete_subscription(id):
     user = User.query.get(current_user.id)
     subbreadit = Subbreadit.query.get(id)

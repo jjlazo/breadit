@@ -11,7 +11,6 @@ comments_routes = Blueprint("comments", __name__)
 
 # Update a comment
 @comments_routes.route("/<int:id>", methods=["PUT"])
-@login_required
 def update_comment(id):
     comment = Comment.query.get(id)
 
@@ -33,7 +32,6 @@ def update_comment(id):
 
 # Delete a comment
 @comments_routes.route("/<int:id>", methods=["DELETE"])
-@login_required
 def delete_comment(id):
     comment = Comment.query.get(id)
     moderator_id = comment.toast.subbreadit.moderator_id

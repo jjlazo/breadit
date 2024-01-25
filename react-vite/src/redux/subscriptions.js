@@ -1,23 +1,22 @@
 export const CREATE_SUBSCRIPTIONS = 'subscriptions/CREATE_SUBSCRIPTIONS';
 export const REMOVE_SUBSCRIPTION = 'subscriptions/REMOVE_SUBSCRIPTION';
 
-export const createSubscription = (subscription) => ({
+export const createSubscription = (subbreadit) => ({
   type: CREATE_SUBSCRIPTIONS,
-  subscription
+  subbreadit
 });
 
-export const removeSubscription = (subscriptionId) => ({
+export const removeSubscription = (subbreaditId) => ({
   type: REMOVE_SUBSCRIPTION,
-  subscriptionId
+  subbreaditId
 });
 
-export const addSubscription = (data) => async dispatch => {
-    const response = await fetch('/api/subscription', {
+export const addSubscription = (subbreaditId) => async dispatch => {
+    const response = await fetch(`/api/subbreadits/${subbreaditId}/subscription`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        }
     })
 
     if(response.ok){
@@ -30,8 +29,8 @@ export const addSubscription = (data) => async dispatch => {
     }
 }
 
-export const deleteSubscription = (subscriptionId) => async dispatch => {
-    const response = await fetch(`/api/subscription/${subscriptionId}`, {
+export const deleteSubscription = (subbreaditId) => async dispatch => {
+    const response = await fetch(`/api/subbreadits/${subbreaditId}/subscription`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
@@ -39,7 +38,7 @@ export const deleteSubscription = (subscriptionId) => async dispatch => {
     })
   
     if(response.ok){
-        dispatch(removeSubscription(subscriptionId))
+        dispatch(removeSubscription(subbreaditId))
     }else{
         const errors = await response.json()
         return errors
@@ -49,10 +48,10 @@ export const deleteSubscription = (subscriptionId) => async dispatch => {
 const subscriptionReducer = (state = {}, action) => {
   switch (action.type) {
     case CREATE_SUBSCRIPTIONS:
-      return { ...state, [action.subscription.id]: action.subscription };
+      return { ...state, [action.subbreadit.id]: action.subbreadit };
     case REMOVE_SUBSCRIPTION: {
       const newState = { ...state };
-      delete newState[action.subscriptionId];
+      delete newState[action.subbreaditId];
       return newState;
     }
     default:

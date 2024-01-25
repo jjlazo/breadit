@@ -7,22 +7,36 @@ import SubbreaditInfo from "./SubbreaditInfo";
 import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
 import { useDispatch, useSelector } from 'react-redux';
 import * as postActions from '../../redux/posts'
+import * as commentActions from '../../redux/comments'
 import "./Subbreadit.css"
 
 function SubbreaditToast(){
     const navigate = useNavigate()
-    const { toastId } = useParams()
+    const { subbreaditId, toastId } = useParams()
     const [showMenu, setShowMenu] = useState(false);
+    const sessionUser = useSelector((state) => state.session.user)
     const dispatch = useDispatch()
 
     let post = useSelector(state => state.posts)
+    let comments = useSelector(state => state.comments)
 
     let postData = Object.values(post)
+    let commentData = Object.values(comments)
 
-    console.log(postData)
+    const deletePost = (e) => {
+        e.preventDefault()
+        dispatch(postActions.deletePost(toastId))
+        navigate(`/u/toasts/${sessionUser.id}`)
+    }
+
+    const deleteComment = (e, commentId) => {
+        e.preventDefault()
+        dispatch(commentActions.deleteComment(commentId))
+    }
 
     useEffect(() => {
         dispatch(postActions.getPostById(toastId))
+        dispatch(commentActions.getComments(toastId))
     }, [toastId])
 
     const closeMenu = () => setShowMenu(false);
@@ -47,8 +61,8 @@ function SubbreaditToast(){
                             <div className="toast-header">
                                 <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                                 <div>
-                                    <div onClick={() => navigate(`/subbreadit/${1}`)} className="toast-subbreadit"><b>b/{postData[0]?.subbreadit_name}</b></div>
-                                    <div onClick={() => navigate(`/toasts/${1}`)} className="toast-user">posted by {postData[0]?.username}</div>
+                                    <div onClick={() => navigate(`/subbreadit/${postData[0]?.subbreadit_id}`)} className="toast-subbreadit"><b>b/{postData[0]?.subbreadit_name}</b></div>
+                                    <div onClick={() => navigate(`/toasts/${postData[0]?.user_id}`)} className="toast-user">posted by {postData[0]?.username}</div>
                                 </div>
                             </div>
                             <div className="toast-content">
@@ -56,20 +70,20 @@ function SubbreaditToast(){
                                 <div>{postData[0]?.body}</div>
                             </div>
                             <div className="toast-update">
-                                <Eraser strokeWidth={"2.05px"} className="toast-update-icon"/>
-                                <OpenModalButton
+                                {sessionUser?.id == postData[0]?.user_id && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                {sessionUser?.id == postData[0]?.user_id && <OpenModalButton
                                 // itemText="toast"
                                 onButtonClick={closeMenu}
                                 modalComponent={<UpdatePostFormModal />}
                                 buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>}
-                                />
+                                />}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="comment-content-container">
                     <div className="comments-info">
-                        <OpenModalButton
+                        {sessionUser?.id && <OpenModalButton
                             onButtonClick={closeMenu}
                             modalComponent={<CommentFormModal />}
                             buttonComponent={
@@ -78,12 +92,12 @@ function SubbreaditToast(){
                                 comment
                                 </button>
                             }
-                            />
-                        <div>{postData[0]?.comments.length} {postData[0]?.comments.length == 1 ? 'comment' : "comments"}</div>
+                            />}
+                        <div>{commentData.length} {commentData.length == 1 ? 'comment' : "comments"}</div>
                     </div>
                 </div>
                 <div className="comments-content-container">
-                    {postData[0]?.comments.map((comment) => (
+                    {commentData.map((comment) => (
                         <div key={comment?.id} className="comment-content">
                             <div className="comment-content-profile">
                                 <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
@@ -93,13 +107,13 @@ function SubbreaditToast(){
                                 <div><b>{comment?.username}</b></div>
                                 <div>{comment?.body}</div>
                                     <div className="toast-update">
-                                        <Eraser strokeWidth={"2.05px"} className="toast-update-icon"/>
-                                        <OpenModalButton
+                                        {sessionUser?.id == comment?.user_id && <Eraser onClick={(e) => deleteComment(e, comment.id)} strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                        {sessionUser?.id == comment?.user_id && <OpenModalButton
                                         onButtonClick={closeMenu}
-                                        modalComponent={<UpdateCommentFormModal />}
+                                        modalComponent={<UpdateCommentFormModal commentId={comment?.id} defaultText={comment?.body} />}
                                         buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>}
-                                        />
-                                        <div className="edited">Edited</div>
+                                        />}
+                                        {comment?.created_at != comment?.updated_at && <div className="edited">Edited</div>}
                                     </div>
                             </div>
                         </div>
@@ -110,7 +124,7 @@ function SubbreaditToast(){
             </div>
             <div className="sub-content">
                 <div className="sub-content-container">
-                    <SubbreaditInfo/> 
+                    <SubbreaditInfo subbreaditId={subbreaditId}/> 
                 </div>
             </div>
             </div>

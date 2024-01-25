@@ -4,9 +4,10 @@
     display: flex;
     flex: 1;
     padding: 0;
+    margin: 0;
     justify-content: center;
-    /* flex-direction: row; */
     /* background-color: red; */
+    /* flex-direction: row; */
 }
 
 .container-content{
@@ -24,6 +25,7 @@
     align-items: center;
     flex-direction: column;
     overflow: scroll;
+    /* background-color: blue; */
 }
 
 .content{

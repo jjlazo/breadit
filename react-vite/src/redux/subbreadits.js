@@ -15,16 +15,12 @@ export const getSubbreadits = () => async dispatch => {
     const response = await fetch(`/api/subbreadits`)
   
     if(response.ok){
-      const subbreadit = await response.json()
-      dispatch(loadSubbreadits(subbreadit))
+      const subbreadits = await response.json()
+      dispatch(loadSubbreadits(subbreadits))
     }else{
         const errors = await response.json()
         return errors
     }
-}
-
-export const getSubbreaditPosts = () => async dispatch => {
-  `/api/subbreadits`
 }
 
 export const addSubbreadit = (subbreadit) => async dispatch => {
@@ -39,7 +35,7 @@ export const addSubbreadit = (subbreadit) => async dispatch => {
     if(response.ok){
         const subbreadit = await response.json()
         dispatch(createSubbreadit(subbreadit))
-        return response
+        return subbreadit
     }else{
         const errors = await response.json()
         return errors
@@ -50,8 +46,8 @@ const subbreaditsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_SUBBREADITS: {
       const subbreaditsState = {};
-      if(action.subbreadits.length){
-          action.subbreadits.forEach((subbreadit) => {
+      if(action.subbreadits.Subbreadits.length){
+          action.subbreadits.Subbreadits.forEach((subbreadit) => {
             subbreaditsState[subbreadit.id] = subbreadit;
           });
       }

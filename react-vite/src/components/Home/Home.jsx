@@ -13,7 +13,6 @@ function Home() {
     let posts = useSelector(state => state.posts)
 
     let postArr = Object.values(posts)
-    console.log(postArr)
 
     useEffect(() => {
         dispatch(postActions.getPosts())
@@ -27,7 +26,7 @@ function Home() {
                 <Feed data={postArr}/>
             </div>
             <div className="sub-content">
-                <TopCommunitiesInfo data={Array(6).fill(true)}/>
+                <TopCommunitiesInfo/>
             </div>
             </div>
         </div>

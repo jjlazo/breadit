@@ -26,6 +26,7 @@ class Toast(db.Model):
            'user_id': self.user_id,
            'username': self.user.username,
            'subbreadit_id': self.subbreadit_id,
-           'comments': [comment.to_dict() for comment in self.comments],
-           'subbreadit_name': self.subbreadit.name
+           'moderator': self.subbreadit.moderator_id,
+           'subbreadit_name': self.subbreadit.name,
+            #'comments': [comment.to_dict() for comment in self.comments],
        }

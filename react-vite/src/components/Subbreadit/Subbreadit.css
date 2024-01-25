@@ -182,3 +182,8 @@
 .edited{
     color: #C4C4C4
 }
+
+@media (max-width: 750px){
+    .single-toast-bubble{
+        width: calc(100% - 50px)}
+}
