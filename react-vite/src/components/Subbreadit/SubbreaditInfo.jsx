@@ -9,12 +9,11 @@ function SubbreaditInfo({ subbreaditId }){
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const sessionUser = useSelector(state => state.session.user)
-    const [isSubbed, setIsSubbed] = useState(sessionUser.subscriptions.includes(Number(subbreaditId)))
     let subbreadits = useSelector(state => state.subbreadits)
     let subscriptions = useSelector(state => state.subscriptions)
+    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId) || sessionUser.subscriptions.includes(Number(subbreaditId))) 
     
     const subbreaditData = subbreadits[subbreaditId]
-
 
     const handleSub = () => {
         if(isSubbed){
@@ -27,7 +26,6 @@ function SubbreaditInfo({ subbreaditId }){
 
     useEffect(() => {
         dispatch(subbreaditActions.getSubbreadits())
-        console.log(subbreaditData)
     }, [subscriptions])
 
     return(
