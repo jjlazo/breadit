@@ -23,6 +23,8 @@ function SubbreaditToast(){
     let postData = Object.values(post)
     let commentData = Object.values(comments)
 
+    console.log(postData)
+
     const deletePost = (e) => {
         e.preventDefault()
         dispatch(postActions.deletePost(toastId))
@@ -75,6 +77,9 @@ function SubbreaditToast(){
                                 <div className="toast-title">{postData[0]?.title}</div>
                                 <div>{postData[0]?.body}</div>
                             </div>
+                            {postData[0]?.image_url && <div className="toast-image-container">
+                                <img className="toast-image" src={postData[0]?.image_url} alt="Breadit image"/>
+                            </div>}
                             <div className="toast-update">
                                 {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
                                 {sessionUser?.id == postData[0]?.user_id && <OpenModalButton

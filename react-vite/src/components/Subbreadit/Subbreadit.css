@@ -189,6 +189,19 @@
     color: #C4C4C4
 }
 
+.toast-image-container{
+    margin-top: 20px;
+    width: 75%;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.toast-image{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
 @media (max-width: 750px){
     .single-toast-bubble{
         width: calc(100% - 50px)}

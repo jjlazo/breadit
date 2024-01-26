@@ -16,10 +16,12 @@ function Feed({ data }){
         navigate(`/toasts/${toastId}`)
     }
 
+    const reversedData = data.sort((a,b) => b.id-a.id)
+
     return(
         <>
         {
-            data.map((post) => (
+            reversedData.map((post) => (
             <div key={post.id} onClick={() => navigate(`/subbreadit/${post.subbreadit_id}/toast/${post.id}`)} className="content">
                 <div className="toast-bubble">
                     <div className="upvote">
