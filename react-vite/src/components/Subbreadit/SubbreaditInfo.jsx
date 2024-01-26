@@ -14,9 +14,8 @@ function SubbreaditInfo({ }){
     let subscriptions = useSelector(state => state.subscriptions)
     const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId))
     const runOnce = useRef(false)
-    
-    const subbreaditData = subbreadits[subbreaditId] 
-    console.log(subbreaditData)
+
+    const subbreaditData = subbreadits[subbreaditId]
 
     const handleSub = () => {
         if(isSubbed){
@@ -28,17 +27,6 @@ function SubbreaditInfo({ }){
     }
 
     useEffect(() => {
-        // if(runOnce.current) return
-        dispatch(subbreaditActions.getSubbreadits())
-        // runOnce.current = true
-    }, [dispatch])
-
-    useEffect(() => {
-        // dispatch(subbreaditActions.getSubbreadits())
-        setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
-    }, [subscriptions])
-
-    useEffect(() => {
         async function wrapperFn(){
             const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
             if(response?.errors){
@@ -47,6 +35,11 @@ function SubbreaditInfo({ }){
         } 
         wrapperFn()
     }, [])
+
+    useEffect(() => {
+        dispatch(subbreaditActions.getSubbreadits())
+        setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
+    }, [subscriptions])
 
     useEffect(() => {
         if(sessionUser?.id){

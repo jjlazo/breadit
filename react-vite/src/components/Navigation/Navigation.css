@@ -94,12 +94,13 @@ nav{
   width: 402px;
   height: fit-content;
   border-radius: 0px 0px 20px 20px;
-  background-color: white;
+  background-color:white;
   border: 1.5px black solid;
   border-top: none;
   max-height: 450px;
   overflow-y: scroll;
   overflow-x: hidden;
+  z-index: 9999;
 }
 
 .hidden{

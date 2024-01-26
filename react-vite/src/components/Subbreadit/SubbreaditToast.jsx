@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react"
 import Sidebar from "../Sidebar"; 
 import { useNavigate, useParams } from "react-router-dom";
-import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply } from 'lucide-react';
+import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply, Flag } from 'lucide-react';
 import OpenModalButton from "../OpenModalButton";
 import SubbreaditInfo from "./SubbreaditInfo";
 import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
 import { useDispatch, useSelector } from 'react-redux';
 import * as postActions from '../../redux/posts'
+import * as subbreaditActions from '../../redux/subbreadits'
 import * as commentActions from '../../redux/comments'
 import "./Subbreadit.css"
 
@@ -54,6 +55,10 @@ function SubbreaditToast(){
             <div className="feed">
                 <div className="content">
                     <div className="single-toast-bubble">
+                        {postData[0]?.moderator == sessionUser?.id && <div className="moderator">
+                            You're a moderator
+                            <Flag className="mod-flag"/>
+                        </div>}
                         <div className="upvote">
                             <button className="voting-button">
                             <MoveUp className="arrows"/>
@@ -75,6 +80,9 @@ function SubbreaditToast(){
                                 <div className="toast-title">{postData[0]?.title}</div>
                                 <div>{postData[0]?.body}</div>
                             </div>
+                            {postData[0]?.image_url && <div className="toast-image-container">
+                                <img className="toast-image" src={postData[0]?.image_url} alt="Breadit image"/>
+                            </div>}
                             <div className="toast-update">
                                 {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
                                 {sessionUser?.id == postData[0]?.user_id && <OpenModalButton
