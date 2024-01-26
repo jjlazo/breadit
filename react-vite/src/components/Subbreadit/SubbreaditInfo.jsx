@@ -12,6 +12,8 @@ function SubbreaditInfo({ subbreaditId }){
     let subbreadits = useSelector(state => state.subbreadits)
     let subscriptions = useSelector(state => state.subscriptions)
     const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId)) 
+
+    console.log(subscriptions)
     
     const subbreaditData = subbreadits[subbreaditId] 
 
@@ -26,6 +28,7 @@ function SubbreaditInfo({ subbreaditId }){
 
     useEffect(() => {
         dispatch(subbreaditActions.getSubbreadits())
+        setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
     }, [subscriptions])
 
     useEffect(() => {
