@@ -80,6 +80,23 @@
     font-weight: bold
 }
 
+.no-toasts{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+    margin-top: 28px;
+}
+
+.toaster{
+    width: 150px;
+    height: auto
+}
+
+.toast-text{
+    font-size: 20px;
+}
+
 .divider{
     height: 1px;
     width: calc(100% - 100px);

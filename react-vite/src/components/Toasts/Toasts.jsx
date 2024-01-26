@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import "./Toasts.css"
 import Sidebar from "../Sidebar";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import Feed from "../Feed";
 function Toasts(){
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { state } = useLocation()
     const { userId } = useParams()
 
     let posts = useSelector(state => state.posts)
@@ -32,6 +33,13 @@ function Toasts(){
             <div className="container-content">
             <Sidebar/>
             <div className="feed">
+                <div className="subbreadit-header">
+                    <div className="subbreadit-content">
+                    <img onClick={() => navigate("/")} className="subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
+                    u/{state?.username || postArr[0]?.username}
+                    </div>
+                    <div className="subbreadit-divider"></div>
+                </div>
                 <Feed data={postArr}/>
             </div>
             <div className="sub-content">

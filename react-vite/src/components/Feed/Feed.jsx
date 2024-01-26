@@ -49,6 +49,12 @@ function Feed({ data }){
             </div>
             ))
         }
+        {!data.length && 
+        <div className="no-toasts">
+            <img className="toaster" src={"https://i.ibb.co/52Stt4B/Group-101-1.png"} alt="toaster"/>
+            <div className="toast-text"><b>No toasts found!</b></div>
+        </div>
+        }
         </>
     )
 }

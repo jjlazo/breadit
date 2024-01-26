@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import * as subbreaditActions from '../../redux/subbreadits'
 import * as subscriptionActions from '../../redux/subscriptions'
 import { useNavigate, useParams } from "react-router-dom";
 import "./Subbreadit.css"
 
-function SubbreaditInfo({ subbreaditId }){
+function SubbreaditInfo({ }){
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { subbreaditId } = useParams()
     const sessionUser = useSelector(state => state.session.user)
     let subbreadits = useSelector(state => state.subbreadits)
     let subscriptions = useSelector(state => state.subscriptions)
-    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId)) 
-
-    console.log(subscriptions)
+    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId))
+    const runOnce = useRef(false)
     
     const subbreaditData = subbreadits[subbreaditId] 
+    console.log(subbreaditData)
 
     const handleSub = () => {
         if(isSubbed){
@@ -27,7 +28,13 @@ function SubbreaditInfo({ subbreaditId }){
     }
 
     useEffect(() => {
+        // if(runOnce.current) return
         dispatch(subbreaditActions.getSubbreadits())
+        // runOnce.current = true
+    }, [dispatch])
+
+    useEffect(() => {
+        // dispatch(subbreaditActions.getSubbreadits())
         setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
     }, [subscriptions])
 

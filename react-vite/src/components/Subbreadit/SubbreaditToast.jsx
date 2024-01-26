@@ -110,7 +110,7 @@ function SubbreaditToast(){
                                 <div className="vertical-line"></div>
                             </div>
                             <div>
-                                <div className="clickable" onClick={() => navigate(`/toasts/${comment?.user_id}`)}><b>{comment?.username}</b></div>
+                                <div className="clickable" onClick={() => navigate(`/toasts/${comment?.user_id}`, {state: { username: comment?.username }})}><b>{comment?.username}</b></div>
                                 <div>{comment?.body}</div>
                                     <div className="toast-update">
                                         {(sessionUser?.id == comment?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={(e) => deleteComment(e, comment.id)} strokeWidth={"2.05px"} className="toast-update-icon"/>}

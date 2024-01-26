@@ -47,7 +47,7 @@ export const getPostById = (postId) => async dispatch => {
     if(response.ok){
       const post = await response.json()
       dispatch(loadPost(post))
-      return response
+      return post
     }else{
         const errors = await response.json()
         return errors
@@ -72,12 +72,10 @@ export const getPostsBySpecificUserId = (userId) => async dispatch => {
 
   if(response.ok){
     const posts = await response.json()
-    console.log("User: ", posts)
     dispatch(loadPosts(posts))
     return response
   }else{
       const errors = await response.json()
-      console.log("ERROR: ", errors)
       return errors
   }
 }
@@ -106,7 +104,7 @@ export const addPost = (post) => async dispatch => {
     if(response.ok){
         const post = await response.json()
         dispatch(createPost(post))
-        return response
+        return post
     }else{
         const errors = await response.json()
         return errors
