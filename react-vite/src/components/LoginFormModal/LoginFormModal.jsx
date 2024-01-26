@@ -24,7 +24,7 @@ function LoginFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      closeModal();
+      closeModal()
     }
   };
 
@@ -36,7 +36,7 @@ function LoginFormModal() {
         password: "password",
       })
     );
-    closeModal();
+    closeModal()
   }
 
   return (

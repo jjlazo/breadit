@@ -33,10 +33,12 @@ function Subbreadits(){
                 navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
             } 
        }
-
        wrapperFn()
-       dispatch(subbreaditActions.getSubbreadits())
     }, [subbreaditId]) 
+
+    useEffect(() => {
+        dispatch(subbreaditActions.getSubbreadits())
+    }, [])
 
     return(
         <div className="home-container">

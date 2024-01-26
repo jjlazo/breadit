@@ -45,13 +45,13 @@ function SubbreaditInfo({ subbreaditId }){
         if(sessionUser?.id){
             dispatch(subscriptionActions.getSubscriptions(sessionUser?.id))
         }
-    }, [])
+    }, [sessionUser])
 
     return(
         <div className="sub-content-bubble">
             <div className="sub-content-bubble-header">
-                <img onClick={() => navigate("/")} className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
-                b/{subbreaditData?.name}
+                <img className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
+                <div onClick={() => navigate(`/subbreadit/${subbreaditData?.id}`)}>b/{subbreaditData?.name}</div>
             </div>
             <div className="sub-content-bubble-description">{subbreaditData?.description}</div>
             <div className="sub-content-bubble-stats">

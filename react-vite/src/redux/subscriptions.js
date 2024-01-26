@@ -1,6 +1,7 @@
 export const LOAD_SUBSCRIPTIONS = 'subscriptions/LOAD_SUBSCRIPTIONS';
 export const CREATE_SUBSCRIPTIONS = 'subscriptions/CREATE_SUBSCRIPTIONS';
 export const REMOVE_SUBSCRIPTION = 'subscriptions/REMOVE_SUBSCRIPTION';
+export const NUKE_SUBSCRIPTIONS = 'subscriptions/NUKE_SUBSCRIPTIONS';
 
 export const loadSubscriptions = (subbreadits) => ({
   type: LOAD_SUBSCRIPTIONS,
@@ -15,6 +16,10 @@ export const createSubscription = (subbreadit) => ({
 export const removeSubscription = (subbreaditId) => ({
   type: REMOVE_SUBSCRIPTION,
   subbreaditId
+});
+
+export const removeAllSubscriptions = () => ({
+  type: NUKE_SUBSCRIPTIONS,
 });
 
 export const getSubscriptions = (userId) => async dispatch => {
@@ -64,6 +69,10 @@ export const deleteSubscription = (subbreaditId) => async dispatch => {
     }
 }
 
+export const nukeSubscriptions = () => async dispatch => {
+  dispatch(removeAllSubscriptions())
+}
+
 const subscriptionReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_SUBSCRIPTIONS: {
@@ -81,6 +90,9 @@ const subscriptionReducer = (state = {}, action) => {
       const newState = { ...state };
       delete newState[action.subbreaditId];
       return newState;
+    }
+    case NUKE_SUBSCRIPTIONS: {
+      return {}
     }
     default:
       return state;
