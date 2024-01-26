@@ -8,13 +8,13 @@ subscriptions = db.Table(
     db.Column(
         "user_id",
         db.Integer,
-        db.ForeignKey("users.id"),
+        db.ForeignKey(add_prefix_for_prod('users.id')),
         primary_key=True
     ),
     db.Column(
         "subbreadit_id",
         db.Integer,
-        db.ForeignKey("subbreadits.id"),
+        db.ForeignKey(add_prefix_for_prod('subbreadits.id')),
         primary_key=True
     )
 )

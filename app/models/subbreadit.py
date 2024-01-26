@@ -11,7 +11,7 @@ class Subbreadit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    moderator_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    moderator_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
     toasts = db.relationship("Toast", back_populates="subbreadit")

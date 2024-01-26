@@ -12,8 +12,8 @@ class Toast(db.Model):
     title = db.Column(db.String, nullable=False)
     body = db.Column(db.Text, nullable=False)
     image_url = db.Column(db.String(255))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    subbreadit_id = db.Column(db.Integer, db.ForeignKey('subbreadits.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    subbreadit_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('subbreadits.id')), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
