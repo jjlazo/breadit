@@ -27,11 +27,6 @@ function SubbreaditInfo({ }){
     }
 
     useEffect(() => {
-        dispatch(subbreaditActions.getSubbreadits())
-        setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
-    }, [subscriptions])
-
-    useEffect(() => {
         async function wrapperFn(){
             const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
             if(response?.errors){
@@ -40,6 +35,11 @@ function SubbreaditInfo({ }){
         } 
         wrapperFn()
     }, [])
+
+    useEffect(() => {
+        dispatch(subbreaditActions.getSubbreadits())
+        setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
+    }, [subscriptions])
 
     useEffect(() => {
         if(sessionUser?.id){

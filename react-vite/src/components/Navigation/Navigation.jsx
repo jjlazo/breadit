@@ -47,7 +47,7 @@ function Navigation() {
 
   useEffect(() => {
     dispatch(subbreaditActions.getSubbreadits())
-  }, [])
+  }, [window.location.pathname])
 
   const filteredSubbreaditData = () => {
     const results = subbreaditData.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))

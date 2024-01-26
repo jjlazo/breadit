@@ -7,6 +7,7 @@ import SubbreaditInfo from "./SubbreaditInfo";
 import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
 import { useDispatch, useSelector } from 'react-redux';
 import * as postActions from '../../redux/posts'
+import * as subbreaditActions from '../../redux/subbreadits'
 import * as commentActions from '../../redux/comments'
 import "./Subbreadit.css"
 
@@ -22,8 +23,6 @@ function SubbreaditToast(){
 
     let postData = Object.values(post)
     let commentData = Object.values(comments)
-
-    console.log(postData)
 
     const deletePost = (e) => {
         e.preventDefault()
