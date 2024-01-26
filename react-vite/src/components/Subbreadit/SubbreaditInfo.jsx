@@ -51,7 +51,7 @@ function SubbreaditInfo({ subbreaditId }){
         <div className="sub-content-bubble">
             <div className="sub-content-bubble-header">
                 <img className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
-                <div onClick={() => navigate(`/subbreadit/${subbreaditData?.id}`)}>b/{subbreaditData?.name}</div>
+                <div className="clickable" onClick={() => navigate(`/subbreadit/${subbreaditData?.id}`)}>b/{subbreaditData?.name}</div>
             </div>
             <div className="sub-content-bubble-description">{subbreaditData?.description}</div>
             <div className="sub-content-bubble-stats">
