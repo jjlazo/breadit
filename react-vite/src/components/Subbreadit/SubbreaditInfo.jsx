@@ -36,8 +36,8 @@ function SubbreaditInfo({ }){
             const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
             if(response?.errors){
                 navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
-            }
-        }
+            } 
+        } 
         wrapperFn()
     }, [])
 
