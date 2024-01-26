@@ -14,9 +14,9 @@ function SubbreaditInfo({ }){
     let subscriptions = useSelector(state => state.subscriptions)
     const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId))
     const runOnce = useRef(false)
-    
-    const subbreaditData = subbreadits[subbreaditId] 
-    console.log(subbreaditData)
+
+    const subbreaditData = useRef(subbreadits[subbreaditId])
+    console.log(subbreaditData.current)
 
     const handleSub = () => {
         if(isSubbed){
@@ -43,8 +43,8 @@ function SubbreaditInfo({ }){
             const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
             if(response?.errors){
                 navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
-            } 
-        } 
+            }
+        }
         wrapperFn()
     }, [])
 
@@ -58,16 +58,16 @@ function SubbreaditInfo({ }){
         <div className="sub-content-bubble">
             <div className="sub-content-bubble-header">
                 <img className="bubble-header-subbreadit" src={"https://i.ibb.co/LxDRcz0/Mask-group.png"} alt="Subbreadits"/>
-                <div className="clickable" onClick={() => navigate(`/subbreadit/${subbreaditData?.id}`)}>b/{subbreaditData?.name}</div>
+                <div className="clickable" onClick={() => navigate(`/subbreadit/${subbreaditData.current?.id}`)}>b/{subbreaditData.current?.name}</div>
             </div>
-            <div className="sub-content-bubble-description">{subbreaditData?.description}</div>
+            <div className="sub-content-bubble-description">{subbreaditData.current?.description}</div>
             <div className="sub-content-bubble-stats">
                 <div className="sub-content-bubble-stats-column">
-                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
-                    <div className="sub-content-bubble-stats-column-text-sm">{subbreaditData?.subscribers.length == 1 ? "Member" : "Members"}</div>
+                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData.current?.subscribers.length}</div>
+                    <div className="sub-content-bubble-stats-column-text-sm">{subbreaditData.current?.subscribers.length == 1 ? "Member" : "Members"}</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
-                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData?.subscribers.length}</div>
+                    <div className="sub-content-bubble-stats-column-text-md">{subbreaditData.current?.subscribers.length}</div>
                     <div className="sub-content-bubble-stats-column-text-sm">Online</div>
                 </div>
                 <div className="sub-content-bubble-stats-column">
