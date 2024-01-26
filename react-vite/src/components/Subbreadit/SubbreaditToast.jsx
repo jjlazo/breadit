@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import Sidebar from "../Sidebar"; 
 import { useNavigate, useParams } from "react-router-dom";
-import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply } from 'lucide-react';
+import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply, Flag } from 'lucide-react';
 import OpenModalButton from "../OpenModalButton";
 import SubbreaditInfo from "./SubbreaditInfo";
 import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
@@ -56,6 +56,10 @@ function SubbreaditToast(){
             <div className="feed">
                 <div className="content">
                     <div className="single-toast-bubble">
+                        {postData[0]?.moderator == sessionUser?.id && <div className="moderator">
+                            You're a moderator
+                            <Flag className="mod-flag"/>
+                        </div>}
                         <div className="upvote">
                             <button className="voting-button">
                             <MoveUp className="arrows"/>
