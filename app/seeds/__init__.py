@@ -19,11 +19,16 @@ def seed():
         # command, which will  truncate all tables prefixed with
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
-        db.session.execute(f"TRUNCATE table {SCHEMA}.comments RESTART IDENTITY CASCADE;")
-        db.session.execute(f"TRUNCATE table {SCHEMA}.toasts RESTART IDENTITY CASCADE;")
-        db.session.execute(f"TRUNCATE table {SCHEMA}.subbreadits RESTART IDENTITY CASCADE;")
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
-        db.session.commit()
+        undo_comments()
+        undo_toasts()
+        undo_subbreadits()
+        undo_users()
+        # db.session.execute(f"TRUNCATE table {SCHEMA}.comments RESTART IDENTITY CASCADE;")
+        # db.session.execute(f"TRUNCATE table {SCHEMA}.toasts RESTART IDENTITY CASCADE;")
+        # db.session.execute(f"TRUNCATE table {SCHEMA}.subbreadits RESTART IDENTITY CASCADE;")
+        # db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        # db.session.commit()
+
     seed_users()
     seed_subbreadits()
     seed_toasts()

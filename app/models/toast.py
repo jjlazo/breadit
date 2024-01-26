@@ -1,8 +1,12 @@
 from .db import db
 from datetime import datetime
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 class Toast(db.Model):
     __tablename__="toasts"
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     title = db.Column(db.String, nullable=False)

@@ -1,5 +1,6 @@
 from .db import db
 # from models import Subbreadit, User
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 
 subscriptions = db.Table(
@@ -17,6 +18,8 @@ subscriptions = db.Table(
         primary_key=True
     )
 )
+if environment == "production":
+    subscriptions.schema = SCHEMA
 
 # class Subscription(db.Model):
 #     __tablename__="subscriptions"
