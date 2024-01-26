@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
+import { validate as emailValidator } from 'react-email-validator'
 import "./SignupForm.css";
 
 function SignupFormModal() {
@@ -15,6 +16,13 @@ function SignupFormModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(!emailValidator(email)){
+      return setErrors({
+        email:
+        "Invalid Email"
+      })
+    } 
 
     if (password !== confirmPassword) {
       return setErrors({
