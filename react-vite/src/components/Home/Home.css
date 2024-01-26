@@ -1,0 +1,97 @@
+.home-container{
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: flex;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    /* background-color: red; */
+    /* flex-direction: row; */
+}
+
+.container-content{
+    /* width: 100%;
+    background-color: red; */
+    display: flex;
+    max-width: 1200px;
+    margin: 0px 20px;
+    width: 100%;
+}
+
+.feed{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+    /* background-color: blue; */
+}
+
+.content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.sub-content{
+    display: flex;
+    flex: 1;
+    height: 100%;
+    min-width: 300px;
+    justify-content: center;
+}
+
+.sub-content-bubble{
+    margin-top: 20px;
+    height: fit-content;
+    width: 86%;
+    min-width: 86%;
+    border: 1px solid #C4C4C4;
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.bubble-content{
+    display: flex;
+    flex-direction: column;
+    gap: 18px
+}
+
+.bubble-header{
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 12px
+}
+
+.bubble-subbreadits{
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.bubble-subbreadits:hover{
+    cursor: pointer;
+}
+
+.bubble-toast{
+    height: 35px;
+    width: auto
+}
+
+.sub-count{
+    margin-top: 4px;
+    font-size: 11px;
+    color: #C4C4C4
+}
+
+
+@media (max-width: 1200px){
+    .sub-content{
+        display: none;
+    }
+}

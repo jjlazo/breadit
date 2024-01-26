@@ -10,10 +10,46 @@ def seed_users():
         username='marnie', email='marnie@aa.io', password='password')
     bobbie = User(
         username='bobbie', email='bobbie@aa.io', password='password')
+    rye = User(
+        username='theWryRyeGuy', email='rye@bread.io', password='password')
+    sourdough = User(
+        username='sowrdohsubmarine', email='sour@bread.io', password='password')
+    sunny = User(
+        username='sunbakedbuns', email='solar@oven.io', password='password')
+    banana = User(
+        username='Bananas4BananaBread', email='banana@bread.io', password='password')
+    shorty = User(
+        username='shortbreadTallOrder', email='short@bread.io', password='password')
+    anon = User(
+        username='WhoKneads2Know', email='anon@aa.io', password='password')
+    rubaud = User(
+        username='RubaudsMethod', email='rubaud@aa.io', password='password')
+    bagel = User(
+        username='BagelsOnLock', email='bagels@lox.io', password='password')
+    challah = User(
+        username='ChallahBackGirl', email='challah@loaf.io', password='password')
+    loaf = User(
+        username='LoaftyPursuits', email='loafty@pursuits.io', password='password')
+    butter = User(
+        username='BreadinButter', email='bread@aa.io', password='password')
+    focaccia = User(
+        username='focacciafan400', email='focaccia@fan.com', password='password')
 
     db.session.add(demo)
     db.session.add(marnie)
     db.session.add(bobbie)
+    db.session.add(rye)
+    db.session.add(sourdough)
+    db.session.add(sunny)
+    db.session.add(banana)
+    db.session.add(shorty)
+    db.session.add(anon)
+    db.session.add(rubaud)
+    db.session.add(bagel)
+    db.session.add(challah)
+    db.session.add(loaf)
+    db.session.add(butter)
+    db.session.add(focaccia)
     db.session.commit()
 
 
@@ -28,5 +64,5 @@ def undo_users():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM users"))
-        
+
     db.session.commit()

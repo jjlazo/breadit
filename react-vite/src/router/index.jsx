@@ -1,7 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
+import Home from '../components/Home';
+import { Subbreadit, SubbreaditToast }  from '../components/Subbreadit';
+import Toasts from '../components/Toasts';
+import NotFound from '../components/NotFound';
 
 export const router = createBrowserRouter([
   {
@@ -9,16 +11,32 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <Home/>
       },
       {
-        path: "login",
-        element: <LoginFormPage />,
+        path: "/subbreadit/:subbreaditId",
+        element: <Subbreadit/>
       },
       {
-        path: "signup",
-        element: <SignupFormPage />,
+        path: "/subbreadit/:subbreaditId/toast/:toastId",
+        element: <SubbreaditToast/>
       },
+      {
+        path: "/toasts/:userId",
+        element: <Toasts/>
+      },
+      {
+        path: "/u/toasts/:userId",
+        element: <Toasts/>
+      },
+      {
+        path: "/error",
+        element: <NotFound/>
+      },
+      {
+        path: "*",
+        element: <NotFound/>
+      }
     ],
   },
 ]);

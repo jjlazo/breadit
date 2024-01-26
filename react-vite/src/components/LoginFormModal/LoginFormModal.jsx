@@ -2,6 +2,7 @@ import { useState } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { validate as emailValidator } from 'react-email-validator'
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -14,6 +15,13 @@ function LoginFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(!emailValidator(email)){
+      return setErrors({
+        email:
+        "Invalid Email"
+      })
+    } 
+
     const serverResponse = await dispatch(
       thunkLogin({
         email,
@@ -24,35 +32,49 @@ function LoginFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      closeModal();
+      closeModal()
     }
   };
 
+  const handleDemoSubmit = async (e) => {
+    e.preventDefault();
+    await dispatch(
+      thunkLogin({
+        email: "demo@aa.io",
+        password: "password",
+      })
+    );
+    closeModal()
+  }
+
   return (
     <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <h2>Log In</h2>
+      <form className="form">
         <label>
-          Email
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            className="input"
+            placeholder="Email"
+            // required
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
         <label>
-          Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            className="input"
+            placeholder="Password"
+            // required
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+        <button onClick={handleSubmit} className="button" type="submit">keep toast&apos;n</button>
+        <button onClick={handleDemoSubmit} className="demo button" type="submit">Demo user</button>
       </form>
     </>
   );

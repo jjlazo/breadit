@@ -1,0 +1,109 @@
+.content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.toast-bubble{
+    width: calc(100% - 100px);
+    padding: 20px;
+    /* background-color: blue; */
+    border-radius: 30px;
+    display: flex;
+    gap: 14px; 
+    margin: 15px 0px
+}
+
+.toast-bubble:hover{
+    background-color: #FBFBFB;
+}
+
+.upvote{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    width: fit-content;
+    font-weight: bold;
+    gap: 5px
+}
+
+.arrows{
+    height: 25px;
+    width: auto;
+}
+
+.voting-button{
+    /* padding: 8px; */
+    border-radius: 30px;
+    border: none;
+    width: 28px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F6F6F6;
+}
+
+.toast-header{
+    display: flex;
+    align-items: center;
+    gap: 16px
+}
+
+.toast-toast{ 
+    height: 45px;
+    width: auto
+}
+
+.toast-user{
+    margin-top: 4px;
+    font-size: 11px;
+    /* color: #C4C4C4 */
+}
+
+.toast-subbreadit, .toast-user:hover{
+    cursor: pointer;
+}
+
+.toast-content{
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+
+.toast-title{
+    font-weight: bold
+}
+
+.no-toasts{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+    margin-top: 28px;
+}
+
+.toaster{
+    width: 150px;
+    height: auto
+}
+
+.toast-text{
+    font-size: 20px;
+}
+
+.divider{
+    height: 1px;
+    width: calc(100% - 100px);
+    background-color: #C4C4C4;
+}
+
+@media (max-width: 750px){
+    .toast-bubble{
+        width: calc(100% - 50px)}
+}
