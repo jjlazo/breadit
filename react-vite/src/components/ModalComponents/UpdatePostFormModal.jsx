@@ -5,10 +5,10 @@ import * as postActions from '../../redux/posts'
 import { useParams } from "react-router-dom";
 import "./ModalComponents.css";
 
-function UpdatePostFormModal() {
+function UpdatePostFormModal({ defaultTitle, defaultBody }) {
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState(defaultTitle);
+  const [body, setBody] = useState(defaultBody);
   const { toastId } = useParams()
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();

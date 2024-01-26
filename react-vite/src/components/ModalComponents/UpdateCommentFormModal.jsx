@@ -5,9 +5,9 @@ import * as commentActions from '../../redux/comments'
 import { useParams } from "react-router-dom";
 import "./ModalComponents.css";
 
-function UpdateCommentFormModal({ commentId, defaultText }) {
+function UpdateCommentFormModal({ commentId, defaultBody }) {
   const dispatch = useDispatch();
-  const [body, setBody] = useState(defaultText);
+  const [body, setBody] = useState(defaultBody);
   const sessionUser = useSelector((state) => state.session.user)
   // const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
