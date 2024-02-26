@@ -19,7 +19,7 @@ class Toast(db.Model):
 
     user = db.relationship('User', back_populates="toasts")
     subbreadit = db.relationship('Subbreadit', back_populates="toasts")
-    comments = db.relationship("Comment", back_populates="toast")
+    comments = db.relationship("Comment", back_populates="toast", cascade="all,delete")
 
     def to_dict(self):
        return {
