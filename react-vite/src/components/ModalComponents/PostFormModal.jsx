@@ -28,11 +28,6 @@ function PostFormModal({ subbreaditId }) {
 
     const response = await dispatch(postActions.addPost(formData));
 
-    // const response = await dispatch(postActions.addPost({
-    //   title,
-    //   body,
-    //   subbreaditId
-    // }))
     closeModal()
     navigate(`/subbreadit/${response.subbreadit_id}/toast/${response.id}`)
   }
