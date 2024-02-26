@@ -30,129 +30,131 @@ export const removePost = (postId) => ({
 });
 
 export const getPosts = () => async dispatch => {
-    const response = await fetch(`/api/posts`)
-  
-    if(response.ok){
-      const posts = await response.json()
-      dispatch(loadPosts(posts))
-    }else{
-        const errors = await response.json()
-        return errors
-    }
+  const response = await fetch(`/api/posts`)
+
+  if (response.ok) {
+    const posts = await response.json()
+    dispatch(loadPosts(posts))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
 }
 
 export const getPostById = (postId) => async dispatch => {
-    const response = await fetch(`/api/posts/${postId}`)
-  
-    if(response.ok){
-      const post = await response.json()
-      dispatch(loadPost(post))
-      return post
-    }else{
-        const errors = await response.json()
-        return errors
-    }
+  const response = await fetch(`/api/posts/${postId}`)
+
+  if (response.ok) {
+    const post = await response.json()
+    dispatch(loadPost(post))
+    return post
+  } else {
+    const errors = await response.json()
+    return errors
+  }
 }
 
 export const getPostsByUserId = () => async dispatch => {
   const response = await fetch(`/api/posts/current`)
 
-  if(response.ok){
+  if (response.ok) {
     const post = await response.json()
     dispatch(loadPosts(post))
     return response
-  }else{
-      const errors = await response.json()
-      return errors
+  } else {
+    const errors = await response.json()
+    return errors
   }
 }
 
 export const getPostsBySpecificUserId = (userId) => async dispatch => {
   const response = await fetch(`/api/posts/specific/${userId}`)
 
-  if(response.ok){
+  if (response.ok) {
     const posts = await response.json()
     dispatch(loadPosts(posts))
     return response
-  }else{
-      const errors = await response.json()
-      return errors
+  } else {
+    const errors = await response.json()
+    return errors
   }
 }
 
 export const getSubbreaditPosts = (subbreaditId) => async dispatch => {
   const response = await fetch(`/api/subbreadits/${subbreaditId}/posts`)
-  
-    if(response.ok){
-      const posts = await response.json()
-      dispatch(loadPosts(posts))
-    }else{
-        const errors = await response.json()
-        return errors
-    }
+
+  if (response.ok) {
+    const posts = await response.json()
+    dispatch(loadPosts(posts))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
 }
 
 export const addPost = (post) => async dispatch => {
-    const response = await fetch(`/api/posts`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(post)
-    })
+  console.log("In the thunk")
+  const response = await fetch(`/api/posts`, {
+    method: "POST",
+    body: post
+  })
 
-    if(response.ok){
-        const post = await response.json()
-        dispatch(createPost(post))
-        return post
-    }else{
-        const errors = await response.json()
-        return errors
-    }
+  console.log("After response")
+
+
+
+  if (response.ok) {
+    const post = await response.json()
+    dispatch(createPost(post))
+    return post
+  } else {
+    const errors = await response.json()
+    return errors
+  }
 }
 
 export const updatePost = (postId, post) => async dispatch => {
-    const response = await fetch(`/api/posts/${postId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(post)
-    })
-  
-    if(response.ok){
-        const post = await response.json()
-        dispatch(editPost(post))
-    }else{
-        const errors = await response.json()
-        return errors
-    }
+  const response = await fetch(`/api/posts/${postId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(post)
+  })
+
+  if (response.ok) {
+    const post = await response.json()
+    dispatch(editPost(post))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
 }
 
 export const deletePost = (postId) => async dispatch => {
-    const response = await fetch(`/api/posts/${postId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-    })
-  
-    if(response.ok){
-        dispatch(removePost(postId))
-    }else{
-        const errors = await response.json()
-        return errors
-    }
+  const response = await fetch(`/api/posts/${postId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  })
+
+  if (response.ok) {
+    dispatch(removePost(postId))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
 }
 
 const postsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_POSTS: {
       const postsState = {};
-      if(action.posts.Posts.length){
-          action.posts.Posts.forEach((post) => {
-            postsState[post.id] = post;
-          });
+      if (action.posts.Posts.length) {
+        action.posts.Posts.forEach((post) => {
+          postsState[post.id] = post;
+        });
       }
       return postsState;
     }

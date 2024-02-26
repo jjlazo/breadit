@@ -10,16 +10,29 @@ function PostFormModal({ subbreaditId }) {
   const navigate = useNavigate()
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  // const [errors, setErrors] = useState({});
+  const [image, setImage] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
   const sendPost = async (e) => {
-    e.preventDefault()
-    const response = await dispatch(postActions.addPost({
-      title,
-      body,
-      subbreaditId
-    }))
+    e.preventDefault();
+
+    setErrors({});
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("body", body);
+    formData.append("image_url", image);
+    formData.append("subbreadit_id", subbreaditId);
+
+    const response = await dispatch(postActions.addPost(formData));
+
+    // const response = await dispatch(postActions.addPost({
+    //   title,
+    //   body,
+    //   subbreaditId
+    // }))
     closeModal()
     navigate(`/subbreadit/${response.subbreadit_id}/toast/${response.id}`)
   }
@@ -47,8 +60,27 @@ function PostFormModal({ subbreaditId }) {
             required
           />
         </label>
+        <label>
+          {/* <div className="error-container">
+            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
+          </div> */}
+          <input
+            type="file"
+            id="image-input"
+            accept="image/*"
+            onChange={(e) => {
+              setImage(e.target.files[0])
+              // if (errors.image_url) {
+              //   const newErrors = { ...errors };
+              //   delete newErrors.image_url;
+              //   setErrors(newErrors);
+              // }
+            }}
+          />
+          {(imageLoading) && <p>Loading...</p>}
+        </label >
         <button className="button" type="submit">post</button>
-      </form>
+      </form >
     </>
   );
 }
