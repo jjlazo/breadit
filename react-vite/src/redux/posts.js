@@ -111,10 +111,7 @@ export const addPost = (post) => async dispatch => {
 export const updatePost = (postId, post) => async dispatch => {
   const response = await fetch(`/api/posts/${postId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(post)
+    body: post
   })
 
   if (response.ok) {
@@ -122,7 +119,7 @@ export const updatePost = (postId, post) => async dispatch => {
     dispatch(editPost(post))
   } else {
     const errors = await response.json()
-    return errors
+    return {"errors": errors}
   }
 }
 
