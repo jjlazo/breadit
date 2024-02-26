@@ -60,6 +60,25 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
             required
           />
         </label>
+        <label>
+          <div className="error-container">
+            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
+          </div>
+          <input
+            type="file"
+            id="image-input"
+            accept="image/*"
+            onChange={(e) => {
+              setImage(e.target.files[0])
+              if (errors.image_url) {
+                const newErrors = { ...errors };
+                delete newErrors.image_url;
+                setErrors(newErrors);
+              }
+            }}
+          />
+          {(imageLoading) && <p>Loading...</p>}
+        </label >
         <button className="button" type="submit">update</button>
       </form>
     </>
