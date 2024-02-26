@@ -93,15 +93,10 @@ export const getSubbreaditPosts = (subbreaditId) => async dispatch => {
 }
 
 export const addPost = (post) => async dispatch => {
-  console.log("In the thunk")
   const response = await fetch(`/api/posts`, {
     method: "POST",
     body: post
   })
-
-  console.log("After response")
-
-
 
   if (response.ok) {
     const post = await response.json()
@@ -109,7 +104,7 @@ export const addPost = (post) => async dispatch => {
     return post
   } else {
     const errors = await response.json()
-    return errors
+    return {"errors": errors}
   }
 }
 

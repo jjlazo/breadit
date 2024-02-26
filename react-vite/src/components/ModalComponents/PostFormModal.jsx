@@ -25,11 +25,19 @@ function PostFormModal({ subbreaditId }) {
     formData.append("body", body);
     formData.append("image_url", image);
     formData.append("subbreadit_id", subbreaditId);
+    setImageLoading(true);
 
     const response = await dispatch(postActions.addPost(formData));
+    console.log(response);
 
-    closeModal()
-    navigate(`/subbreadit/${response.subbreadit_id}/toast/${response.id}`)
+    if (response.errors) {
+      setErrors(response.errors);
+      setImageLoading(false);
+    }
+    else {
+      closeModal()
+      navigate(`/subbreadit/${response.subbreadit_id}/toast/${response.id}`)
+    }
   }
 
   return (
@@ -56,20 +64,20 @@ function PostFormModal({ subbreaditId }) {
           />
         </label>
         <label>
-          {/* <div className="error-container">
+          <div className="error-container">
             {errors.image_url && <span className="error-message">{errors.image_url}</span>}
-          </div> */}
+          </div>
           <input
             type="file"
             id="image-input"
             accept="image/*"
             onChange={(e) => {
               setImage(e.target.files[0])
-              // if (errors.image_url) {
-              //   const newErrors = { ...errors };
-              //   delete newErrors.image_url;
-              //   setErrors(newErrors);
-              // }
+              if (errors.image_url) {
+                const newErrors = { ...errors };
+                delete newErrors.image_url;
+                setErrors(newErrors);
+              }
             }}
           />
           {(imageLoading) && <p>Loading...</p>}
