@@ -48,6 +48,13 @@ function SubbreaditToast(){
 
     const closeMenu = () => setShowMenu(false);
 
+    function setDefaultImage() {
+        const toastImage = document.getElementById("toast-image");
+        toastImage.src = "https://i.ibb.co/KwhLWfL/Group-101.png";
+        toastImage.style.width = "100px";
+        toastImage.style.height = "100px";
+    }
+
     return(
         <div className="home-container">
             <div className="container-content">
@@ -81,7 +88,7 @@ function SubbreaditToast(){
                                 <div className="toast-body">{postData[0]?.body}</div>
                             </div>
                             {postData[0]?.image_url && <div className="toast-image-container">
-                                <img className="toast-image" src={postData[0]?.image_url} alt="Breadit image"/>
+                                <img id="toast-image" className="toast-image" src={postData[0]?.image_url} onError={setDefaultImage} alt="Breadit image"/>
                             </div>}
                             <div className="toast-update">
                                 {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
