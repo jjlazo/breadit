@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import Sidebar from "../Sidebar"; 
+import Sidebar from "../Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply, Flag } from 'lucide-react';
 import OpenModalButton from "../OpenModalButton";
@@ -40,13 +40,20 @@ function SubbreaditToast(){
             const response = await dispatch(postActions.getPostById(toastId))
             if(response.errors){
                 navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
-            } 
+            }
         }
         wrapperFn()
         dispatch(commentActions.getComments(toastId))
     }, [toastId])
 
     const closeMenu = () => setShowMenu(false);
+
+    function setDefaultImage() {
+        const toastImage = document.getElementById("toast-image");
+        toastImage.src = "https://i.ibb.co/KwhLWfL/Group-101.png";
+        toastImage.style.width = "100px";
+        toastImage.style.height = "100px";
+    }
 
     return(
         <div className="home-container">
@@ -68,7 +75,7 @@ function SubbreaditToast(){
                             <MoveDown className="arrows"/>
                             </button>
                         </div>
-                        <div>
+                        <div className="toast-container">
                             <div className="toast-header">
                                 <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                                 <div>
@@ -78,10 +85,10 @@ function SubbreaditToast(){
                             </div>
                             <div className="toast-content">
                                 <div className="toast-title">{postData[0]?.title}</div>
-                                <div>{postData[0]?.body}</div>
+                                <div className="toast-body">{postData[0]?.body}</div>
                             </div>
                             {postData[0]?.image_url && <div className="toast-image-container">
-                                <img className="toast-image" src={postData[0]?.image_url} alt="Breadit image"/>
+                                <img id="toast-image" className="toast-image" src={postData[0]?.image_url} onError={setDefaultImage} alt="Breadit image"/>
                             </div>}
                             <div className="toast-update">
                                 {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
@@ -138,7 +145,7 @@ function SubbreaditToast(){
             </div>
             <div className="sub-content">
                 <div className="sub-content-container">
-                    <SubbreaditInfo subbreaditId={subbreaditId}/> 
+                    <SubbreaditInfo subbreaditId={subbreaditId}/>
                 </div>
             </div>
             </div>
