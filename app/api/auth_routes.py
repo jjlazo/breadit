@@ -34,7 +34,7 @@ client_secrets = {
     "client_secret": CLIENT_SECRET,
     "redirect_uris": [
       "http://localhost:8000/api/auth/callback",
-      "https://breadit-qg9l.onrender.com/api/auth/callback"
+      "https://breadit-poci.onrender.com/api/auth/callback"
     ]
   }
 }
@@ -53,7 +53,7 @@ ENV = os.getenv("FLASK_ENV")
 redirect_uri = "http://localhost:8000/api/auth/callback"
 
 if ENV != "development":
-    redirect_uri = "https://breadit-qg9l.onrender.com/api/auth/callback"
+    redirect_uri = "https://breadit-poci.onrender.com/api/auth/callback"
 
 flow = Flow.from_client_secrets_file(
     client_secrets_file=secrets.name,
