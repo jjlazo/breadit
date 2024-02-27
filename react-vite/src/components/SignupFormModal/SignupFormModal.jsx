@@ -12,17 +12,21 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [usernameFocused, setUsernameFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false);
   const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!emailValidator(email)){
+    if (!emailValidator(email)) {
       return setErrors({
         email:
-        "Invalid Email"
+          "Invalid Email"
       })
-    } 
+    }
 
     if (password !== confirmPassword) {
       return setErrors({
@@ -51,17 +55,20 @@ function SignupFormModal() {
       <h2>Sign Up</h2>
       {errors.server && <p>{errors.server}</p>}
       <form className="form" onSubmit={handleSubmit}>
-        <label>
+        <div className="form-field">
+
+          <label htmlFor="email" className={email.length > 0 || emailFocused ? "form-label has-content" : "form-label"}>
+            Email
+            {errors.email && <span className="error-message">{errors.email}</span>}
+          </label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="input"
-            placeholder="Email"
             required
           />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
+        </div>
         <label>
           <input
             type="text"
