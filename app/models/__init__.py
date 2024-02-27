@@ -4,3 +4,5 @@ from .toast import Toast
 from .comment import Comment
 from .subbreadit import Subbreadit
 from .subscription import subscriptions
+from .upvotes import upvotes
+from .downvotes import downvotes

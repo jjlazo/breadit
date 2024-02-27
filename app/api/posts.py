@@ -20,7 +20,7 @@ def get_post_by_id(id):
 
     if(post):
         return {"Post": post.to_dict()}
-    
+
     return {"errors": { "message": "Toast Not Found!" } }, 404
 
 
@@ -39,7 +39,7 @@ def get_post_by_specific_user_id(id):
     if(user):
         posts = Toast.query.filter(Toast.user_id==id).all()
         return {"Posts": [post.to_dict() for post in posts]}
-    
+
     return {"errors": { "message": "User Not Found!" } }, 404
 
 
@@ -138,3 +138,57 @@ def create_comment(id):
         return new_comment.to_dict()
 
     return form.errors, 400
+
+# Create an upvote
+@posts_routes.route("/<int:id>/upvote", methods=["POST"])
+def create_upvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    if toast in user.downvoted_toasts:
+        user.downvoted_toasts.remove(toast)
+        db.session.commit()
+
+    user.upvoted_toasts.append(toast)
+    db.session.commit()
+
+    return toast.to_dict(), 201
+
+
+# Delete an upvote
+@posts_routes.route("/<int:id>/upvote", methods=["DELETE"])
+def delete_upvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    user.upvoted_toasts.remove(toast)
+    db.session.commit()
+
+    return {"message": "Successfully deleted"}, 201
+
+# Create an downvote
+@posts_routes.route("/<int:id>/downvote", methods=["POST"])
+def create_downvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    if toast in user.upvoted_toasts:
+        user.upvoted_toasts.remove(toast)
+        db.session.commit()
+
+    user.downvoted_toasts.append(toast)
+    db.session.commit()
+
+    return toast.to_dict(), 201
+
+
+# Delete an downvote
+@posts_routes.route("/<int:id>/downvote", methods=["DELETE"])
+def delete_downvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    user.downvoted_toasts.remove(toast)
+    db.session.commit()
+
+    return {"message": "Successfully deleted"}, 201
