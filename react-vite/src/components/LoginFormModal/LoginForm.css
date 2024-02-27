@@ -48,3 +48,7 @@
 .google-auth * {
     width: 100%;
 }
+
+.google-auth-div {
+    text-align: center;
+}
