@@ -55,6 +55,21 @@ function LoginFormModal() {
       <h2>Log In</h2>
       <form className="form">
         <div className="form-field">
+          <label htmlFor="email" className={email.length > 0 || emailFocused ? "form-label has-content" : "form-label"}>
+            Email
+            {errors.email && <span className="error-message">{errors.email}</span>}
+          </label>
+          <input
+            id="email"
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input"
+            onFocus={() => setEmailFocused(true)}
+            onBlur={() => setEmailFocused(false)}
+          />
+        </div>
+        <div className="form-field">
           <label htmlFor="password" className={password.length > 0 || passwordFocused ? "form-label has-content" : "form-label"}>
             Password
             {errors.password && <span className="error-message">{errors.password}</span>}
