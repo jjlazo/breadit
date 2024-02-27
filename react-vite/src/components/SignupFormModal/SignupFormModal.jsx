@@ -22,7 +22,7 @@ function SignupFormModal() {
         email:
         "Invalid Email"
       })
-    } 
+    }
 
     if (password !== confirmPassword) {
       return setErrors({
@@ -97,6 +97,8 @@ function SignupFormModal() {
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         <button className="button" type="submit">get toasty</button>
         {/* <button className="demo button" type="submit">Demo user</button> */}
+        <span className="google-auth-div">-or-</span>
+        <a href={`${window.origin}/api/auth/oauth_login`} className="google-auth"><button className="button" type="button">Sign in with Google</button></a>
       </form>
     </>
   );
