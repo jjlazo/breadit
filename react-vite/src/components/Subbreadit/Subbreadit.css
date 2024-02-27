@@ -126,10 +126,23 @@
     /* background-color: blue; */
     border-radius: 30px;
     display: flex;
-    gap: 14px; 
+    gap: 14px;
     margin: 15px 0px;
     border: 1px solid #C4C4C4;
-    position: relative
+    position: relative;
+    /* overflow: hidden; */
+}
+
+.toast-container {
+    width: 95%;
+}
+
+.toast-title {
+    overflow-wrap: break-word;
+}
+
+.toast-body {
+    overflow-wrap: break-word;
 }
 
 .comments-info{
@@ -154,7 +167,7 @@
     width: calc(100% - 100px);
     /* background-color: blue; */
     display: flex;
-    gap: 14px; 
+    gap: 14px;
 }
 
 .comments-content-container{
@@ -163,7 +176,7 @@
     /* background-color: blue; */
     display: flex;
     flex-direction: column;
-    gap: 14px; 
+    gap: 14px;
 }
 
 .comment-content{

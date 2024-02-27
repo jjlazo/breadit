@@ -75,7 +75,7 @@ function SubbreaditToast(){
                             <MoveDown className="arrows"/>
                             </button>
                         </div>
-                        <div>
+                        <div className="toast-container">
                             <div className="toast-header">
                                 <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                                 <div>
@@ -85,7 +85,7 @@ function SubbreaditToast(){
                             </div>
                             <div className="toast-content">
                                 <div className="toast-title">{postData[0]?.title}</div>
-                                <div>{postData[0]?.body}</div>
+                                <div className="toast-body">{postData[0]?.body}</div>
                             </div>
                             {postData[0]?.image_url && <div className="toast-image-container">
                                 <img id="toast-image" className="toast-image" src={postData[0]?.image_url} onError={setDefaultImage} alt="Breadit image"/>
