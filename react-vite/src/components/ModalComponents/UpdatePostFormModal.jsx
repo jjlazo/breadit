@@ -16,7 +16,7 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
   const { subbreaditId } = useParams();
   const { closeModal } = useModal();
 
-  const updatePost = (e) => {
+  const updatePost = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -26,7 +26,8 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
     formData.append("subbreadit_id", subbreaditId);
     setImageLoading(true);
 
-    const response = dispatch(postActions.updatePost(toastId, formData));
+    const response = await dispatch(postActions.updatePost(toastId, formData));
+    console.log(response);
 
     if (response.errors) {
       setErrors(response.errors);
@@ -61,13 +62,10 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
           />
         </label>
         <label>
-          <div className="error-container">
-            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
-          </div>
           <input
             type="file"
             id="image-input"
-            accept="image/*"
+            accept="image/*" v
             onChange={(e) => {
               setImage(e.target.files[0])
               if (errors.image_url) {
@@ -77,6 +75,9 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
               }
             }}
           />
+          <div className="error-container">
+            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
+          </div>
           {(imageLoading) && <p>Loading...</p>}
         </label >
         <button className="button" type="submit">update</button>

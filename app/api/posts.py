@@ -72,7 +72,6 @@ def create_post():
             "title": form.title.data,
             "body": form.body.data,
             "user_id": user_id,
-            # "subbreadit_id": subbreadit_id,
             "subbreadit_id": form.subbreadit_id.data,
             "image_url": url
         }
@@ -82,7 +81,6 @@ def create_post():
         db.session.commit()
 
         return new_toast.to_dict(), 201
-    print("NO VALIDATION")
 
     return form.errors, 400
 
@@ -100,7 +98,9 @@ def update_post(id):
             image = form.data["image_url"]
 
             if image and image.filename != post.image_url:
-                removed = remove_file_from_s3(post.image_url)
+                if post.image_url:
+                    removed = remove_file_from_s3(post.image_url)
+
                 image.filename = get_unique_filename(image.filename)
                 upload = upload_file_to_s3(image)
                 print(upload)

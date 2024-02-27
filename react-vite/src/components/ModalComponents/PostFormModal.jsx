@@ -64,9 +64,6 @@ function PostFormModal({ subbreaditId }) {
           />
         </label>
         <label>
-          <div className="error-container">
-            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
-          </div>
           <input
             type="file"
             id="image-input"
@@ -80,6 +77,9 @@ function PostFormModal({ subbreaditId }) {
               }
             }}
           />
+          <div className="error-container">
+            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
+          </div>
           {(imageLoading) && <p>Loading...</p>}
         </label >
         <button className="button" type="submit">post</button>
