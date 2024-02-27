@@ -98,7 +98,7 @@ function SignupFormModal() {
         <button className="button" type="submit">get toasty</button>
         {/* <button className="demo button" type="submit">Demo user</button> */}
         -or-
-        <a href={`http://localhost:8000/api/auth/oauth_login`} className="google-auth"><button className="button" type="button">Sign in with Google</button></a>
+        <a href={`${window.origin}/api/auth/oauth_login`} className="google-auth"><button className="button" type="button">Sign in with Google</button></a>
       </form>
     </>
   );
