@@ -54,6 +54,7 @@ function PostFormModal({ subbreaditId }) {
             required
           />
         </label>
+        {/* {errors.title && <span className="error-message">{errors.title}</span>} */}
         <label>
           <textarea
             value={body}
