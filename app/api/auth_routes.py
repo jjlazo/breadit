@@ -33,7 +33,8 @@ client_secrets = {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_secret": CLIENT_SECRET,
     "redirect_uris": [
-      "http://localhost:8000/api/auth/callback"
+      "http://localhost:8000/api/auth/callback",
+      "https://breadit-qg9l.onrender.com/api/auth/callback"
     ]
   }
 }
@@ -47,10 +48,17 @@ with open(secrets.name, "w") as output:
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for local dev
 
+ENV = os.getenv("FLASK_ENV")
+
+redirect_uri = "http://localhost:8000/api/auth/callback"
+
+if ENV != "development":
+    redirect_uri = "https://breadit-qg9l.onrender.com/api/auth/callback"
+
 flow = Flow.from_client_secrets_file(
     client_secrets_file=secrets.name,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://localhost:8000/api/auth/callback"
+    redirect_uri=redirect_uri
 )
 
 secrets.close() # This method call deletes our temporary file from the /tmp folder! We no longer need it as our flow object has been configured!
@@ -140,6 +148,9 @@ def oauth_login():
 def callback():
     flow.fetch_token(authorization_response=request.url) # This method is sending the request depicted on line 6 of our flow chart! The response is depicted on line 7 of our flow chart.
     # I find it odd that the author of this code is verifying the 'state' AFTER requesting a token, but to each their own!!
+    # print("state", session["state"])
+    # print("session >>>", session)
+    # print("request args!!!!!!>>>", request.args["state"])
 
     # This is our CSRF protection for the Oauth Flow!
     if not session["state"] == request.args["state"]:
