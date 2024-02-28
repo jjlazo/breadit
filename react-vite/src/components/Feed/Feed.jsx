@@ -2,9 +2,27 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { Home, Signpost, MoveUp, MoveDown } from 'lucide-react';
 import "./Feed.css"
+import { useSelector } from 'react-redux';
+
+const getUniqueSubscribedPosts = (posts, subscriptions) => {
+    const subscribed = [];
+    const other = [];
+
+    // Separate posts based on subscriptions
+    posts.forEach((post) => {
+        if (subscriptions.includes(post.subbreadit_id)) {
+            subscribed.push(post);
+        } else {
+            other.push(post);
+        }
+    });
+
+    return { subscribed, other };
+};
 
 function Feed({ data }){
     const navigate = useNavigate()
+    const sessionUser = useSelector((state) => state.session.user);
 
     const navigateToSubbreadit = (e, subbreaditId) => {
         e.stopPropagation()
@@ -18,10 +36,17 @@ function Feed({ data }){
 
     const reversedData = data.sort((a,b) => b.id-a.id)
 
+    let postsToRender = reversedData;
+
+    if (sessionUser) {
+        const { subscribed, other } = getUniqueSubscribedPosts(reversedData, sessionUser.subscriptions);
+        postsToRender = [...subscribed, ...other];
+    }
+
     return(
         <>
         {
-            reversedData.map((post) => (
+            postsToRender.map((post) => (
             <div key={post.id} onClick={() => navigate(`/subbreadit/${post.subbreadit_id}/toast/${post.id}`)} className="content">
                 <div className="toast-bubble">
                     <div className="upvote">
