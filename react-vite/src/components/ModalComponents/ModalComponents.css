@@ -5,3 +5,22 @@
 .error-container {
     min-height: 20px;
 }
+
+#confirm-delete-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirm-button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.confirm-button.yes {
+    background-color: red;
+}
