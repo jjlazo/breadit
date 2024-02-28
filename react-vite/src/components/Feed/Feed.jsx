@@ -47,7 +47,9 @@ function Feed({ data }){
     }
 
     useEffect(()=>{
+        if(sessionUser){
         dispatch(getSubscriptions(sessionUser.id))
+        }
     }, [])
 
     return(
