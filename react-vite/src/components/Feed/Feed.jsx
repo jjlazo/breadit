@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { Home, Signpost, MoveUp, MoveDown } from 'lucide-react';
 import "./Feed.css"
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSubscriptions } from '../../redux/subscriptions'
 
 const getUniqueSubscribedPosts = (posts, subscriptions) => {
     const subscribed = [];
@@ -23,6 +24,8 @@ const getUniqueSubscribedPosts = (posts, subscriptions) => {
 function Feed({ data }){
     const navigate = useNavigate()
     const sessionUser = useSelector((state) => state.session.user);
+    const dispatch = useDispatch();
+    const subscriptions = useSelector((state)=> state.subscriptions);
 
     const navigateToSubbreadit = (e, subbreaditId) => {
         e.stopPropagation()
@@ -39,9 +42,13 @@ function Feed({ data }){
     let postsToRender = reversedData;
 
     if (sessionUser) {
-        const { subscribed, other } = getUniqueSubscribedPosts(reversedData, sessionUser.subscriptions);
+        const { subscribed, other } = getUniqueSubscribedPosts(reversedData, Object.values(subscriptions).map((sub )=> sub.id));
         postsToRender = [...subscribed, ...other];
     }
+
+    useEffect(()=>{
+        dispatch(getSubscriptions(sessionUser.id))
+    }, [])
 
     return(
         <>
