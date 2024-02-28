@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from app.models import Toast, Comment, User, db
 from flask_login import current_user, login_required
 from ..forms.other_forms import ToastForm, CommentForm
+from app.api.aws_helpers import (
+    upload_file_to_s3, get_unique_filename, remove_file_from_s3)
 
 posts_routes = Blueprint('posts', __name__)
 
@@ -47,17 +49,31 @@ def get_post_by_specific_user_id(id):
 @posts_routes.route("", methods=["POST"])
 def create_post():
     user_id = current_user.id
-    subbreadit_id = request.get_json()["subbreaditId"]
+    # subbreadit_id = request.get_json()["subbreaditId"]
 
     form = ToastForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
+        url = ""
+        image = form.data["image_url"]
+
+        if image:
+            image.filename = get_unique_filename(image.filename)
+            upload = upload_file_to_s3(image)
+            print(upload)
+
+            if "url" not in upload:
+                return {"errors": {"message": "Image upload failed"}}
+
+            url = upload["url"]
+
         params = {
             "title": form.title.data,
             "body": form.body.data,
             "user_id": user_id,
-            "subbreadit_id": subbreadit_id
+            "subbreadit_id": form.subbreadit_id.data,
+            "image_url": url
         }
 
         new_toast = Toast(**params)
@@ -79,6 +95,22 @@ def update_post(id):
 
     if (post.user_id == current_user.id):
         if form.validate_on_submit():
+            image = form.data["image_url"]
+
+            if image and image.filename != post.image_url:
+                if post.image_url:
+                    removed = remove_file_from_s3(post.image_url)
+
+                image.filename = get_unique_filename(image.filename)
+                upload = upload_file_to_s3(image)
+                print(upload)
+
+                if "url" not in upload:
+                    return {"errors": {"message": "Image upload failed"}}
+
+                url = upload["url"]
+                post.image_url = url
+
             post.title = form.title.data
             post.body = form.body.data
 
@@ -99,6 +131,9 @@ def delete_post(id):
     moderator_id = post.subbreadit.moderator_id
 
     if (post.user_id == current_user.id or moderator_id == current_user.id):
+        if post.image_url:
+            remove_file_from_s3(post.image_url)
+
         db.session.delete(post)
         db.session.commit()
 

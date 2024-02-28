@@ -33,7 +33,7 @@ function Feed({ data }){
                         <MoveDown className="arrows"/>
                         </button>
                     </div>
-                    <div>
+                    <div className="toast-container">
                         <div className="toast-header">
                             <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
                             <div>
@@ -43,7 +43,7 @@ function Feed({ data }){
                         </div>
                         <div className="toast-content">
                             <div className="toast-title">{post.title}</div>
-                            <div>{post.body}</div>
+                            <div className="toast-body">{post.body}</div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ function Feed({ data }){
             </div>
             ))
         }
-        {!data.length && 
+        {!data.length &&
         <div className="no-toasts">
             <img className="toaster" src={"https://i.ibb.co/52Stt4B/Group-101-1.png"} alt="toaster"/>
             <div className="toast-text"><b>No toasts found!</b></div>

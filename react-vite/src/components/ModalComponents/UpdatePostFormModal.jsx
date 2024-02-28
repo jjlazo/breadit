@@ -9,17 +9,33 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState(defaultTitle);
   const [body, setBody] = useState(defaultBody);
-  const { toastId } = useParams()
+  const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
+  const [imageLoading, setImageLoading] = useState(false);
+  const { toastId } = useParams();
+  const { subbreaditId } = useParams();
   const { closeModal } = useModal();
 
-  const updatePost = (e) => {
-    e.preventDefault()
-    dispatch(postActions.updatePost(toastId, {
-      title,
-      body
-    }))
-    closeModal()
+  const updatePost = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("body", body);
+    formData.append("image_url", image);
+    formData.append("subbreadit_id", subbreaditId);
+    setImageLoading(true);
+
+    const response = await dispatch(postActions.updatePost(toastId, formData));
+    console.log(response);
+
+    if (response.errors) {
+      setErrors(response.errors);
+      setImageLoading(false);
+    }
+    else {
+      closeModal()
+    }
   }
 
   return (
@@ -45,6 +61,25 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
             required
           />
         </label>
+        <label>
+          <input
+            type="file"
+            id="image-input"
+            accept="image/*" v
+            onChange={(e) => {
+              setImage(e.target.files[0])
+              if (errors.image_url) {
+                const newErrors = { ...errors };
+                delete newErrors.image_url;
+                setErrors(newErrors);
+              }
+            }}
+          />
+          <div className="error-container">
+            {errors.image_url && <span className="error-message">{errors.image_url}</span>}
+          </div>
+          {(imageLoading) && <p>Loading...</p>}
+        </label >
         <button className="button" type="submit">update</button>
       </form>
     </>
