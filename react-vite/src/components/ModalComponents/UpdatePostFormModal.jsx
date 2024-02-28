@@ -43,23 +43,6 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
     <>
       <h2>Update toast</h2>
       <form className="form" onSubmit={updatePost}>
-        {/* <label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="input"
-            placeholder="Title"
-          />
-        </label>
-        <label>
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            className="textarea"
-            placeholder="Body"
-          />
-        </label> */}
         <div className="form-field">
           <label htmlFor="title" className={title.length > 0 || titleFocused ? "form-label has-content" : "form-label"}>
             Title
