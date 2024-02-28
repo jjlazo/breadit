@@ -1,10 +1,31 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { Home, Signpost, MoveUp, MoveDown } from 'lucide-react';
 import "./Feed.css"
+import { useSelector, useDispatch } from 'react-redux';
+import { getSubscriptions } from '../../redux/subscriptions'
+
+const getUniqueSubscribedPosts = (posts, subscriptions) => {
+    const subscribed = [];
+    const other = [];
+
+    // Separate posts based on subscriptions
+    posts.forEach((post) => {
+        if (subscriptions.includes(post.subbreadit_id)) {
+            subscribed.push(post);
+        } else {
+            other.push(post);
+        }
+    });
+
+    return { subscribed, other };
+};
 
 function Feed({ data }){
     const navigate = useNavigate()
+    const sessionUser = useSelector((state) => state.session.user);
+    const dispatch = useDispatch();
+    const subscriptions = useSelector((state)=> state.subscriptions);
 
     const navigateToSubbreadit = (e, subbreaditId) => {
         e.stopPropagation()
@@ -18,10 +39,23 @@ function Feed({ data }){
 
     const reversedData = data.sort((a,b) => b.id-a.id)
 
+    let postsToRender = reversedData;
+
+    if (sessionUser) {
+        const { subscribed, other } = getUniqueSubscribedPosts(reversedData, Object.values(subscriptions).map((sub )=> sub.id));
+        postsToRender = [...subscribed, ...other];
+    }
+
+    useEffect(()=>{
+        if(sessionUser){
+        dispatch(getSubscriptions(sessionUser.id))
+        }
+    }, [])
+
     return(
         <>
         {
-            reversedData.map((post) => (
+            postsToRender.map((post) => (
             <div key={post.id} onClick={() => navigate(`/subbreadit/${post.subbreadit_id}/toast/${post.id}`)} className="content">
                 <div className="toast-bubble">
                     <div className="upvote">
