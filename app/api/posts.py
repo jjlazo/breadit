@@ -102,7 +102,7 @@ def update_post(id):
 
                 image.filename = get_unique_filename(image.filename)
                 upload = upload_file_to_s3(image)
-                print(upload)
+                # print(upload)
 
                 if "url" not in upload:
                     return {"errors": {"message": "Image upload failed"}}

@@ -132,7 +132,7 @@ def unauthorized():
 @auth_routes.route("/oauth_login")
 def oauth_login():
     authorization_url, state = flow.authorization_url()
-    print("AUTH URL: ", authorization_url) # I recommend that you print this value out to see what it's generating.
+    # print("AUTH URL: ", authorization_url) # I recommend that you print this value out to see what it's generating.
     # Ex: https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=NICE TRY&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fcallback&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&state=A0eZyFD4WH6AfqSj7XcdypQ0cMhwr9&access_type=offline
     # It SHOULD look a lot like the URL in the SECOND or THIRD line of our flow chart!
     # Note that in the auth url above the value 'access_type' is set to 'offline'. If you do not send this, the user will NOT see the Google Login screen!!
