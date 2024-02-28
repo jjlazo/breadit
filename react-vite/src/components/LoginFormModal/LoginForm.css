@@ -40,15 +40,3 @@
     padding: 10px 0px;
     border: 2px black solid
 }
-
-.google-auth {
-    width: 100%;
-}
-
-.google-auth * {
-    width: 100%;
-}
-
-.google-auth-div {
-    text-align: center;
-}
