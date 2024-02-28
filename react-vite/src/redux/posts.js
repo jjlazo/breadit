@@ -117,6 +117,7 @@ export const updatePost = (postId, post) => async dispatch => {
   if (response.ok) {
     const post = await response.json()
     dispatch(editPost(post))
+    return post;
   } else {
     const errors = await response.json()
     return {"errors": errors}

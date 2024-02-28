@@ -12,6 +12,8 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
   const [imageLoading, setImageLoading] = useState(false);
+  const [titleFocused, setTitleFocused] = useState(false);
+  const [bodyFocused, setBodyFocused] = useState(false);
   const { toastId } = useParams();
   const { subbreaditId } = useParams();
   const { closeModal } = useModal();
@@ -27,7 +29,6 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
     setImageLoading(true);
 
     const response = await dispatch(postActions.updatePost(toastId, formData));
-    console.log(response);
 
     if (response.errors) {
       setErrors(response.errors);
@@ -42,25 +43,50 @@ function UpdatePostFormModal({ defaultTitle, defaultBody }) {
     <>
       <h2>Update toast</h2>
       <form className="form" onSubmit={updatePost}>
-        <label>
+        <div className="form-field">
+          <label htmlFor="title" className={title.length > 0 || titleFocused ? "form-label has-content" : "form-label"}>
+            Title
+            {errors.title && <span className="error-message">{errors.title}</span>}
+          </label>
           <input
+            id="title"
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (errors.title) {
+                const newErrors = {...errors};
+                delete newErrors.title
+                setErrors(newErrors)
+              }
+            }}
             className="input"
-            placeholder="Title"
-            required
+            onFocus={() => setTitleFocused(true)}
+            onBlur={() => setTitleFocused(false)}
           />
-        </label>
-        <label>
+        </div>
+        <div className="form-field">
+          <label htmlFor="body" className={body.length > 0 || bodyFocused ? "form-label has-content" : "form-label"}>
+            Body
+            {errors.body && <span className="error-message">{errors.body}</span>}
+          </label>
           <textarea
+            id="body"
+            type="text"
             value={body}
-            onChange={(e) => setBody(e.target.value)}
+            onChange={(e) => {
+              setBody(e.target.value);
+              if (errors.body) {
+                const newErrors = {...errors};
+                delete newErrors.body
+                setErrors(newErrors)
+              }
+            }}
             className="textarea"
-            placeholder="Body"
-            required
+            onFocus={() => setBodyFocused(true)}
+            onBlur={() => setBodyFocused(false)}
           />
-        </label>
+        </div>
         <label>
           <input
             type="file"

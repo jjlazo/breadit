@@ -12,6 +12,8 @@ function PostFormModal({ subbreaditId }) {
   const [body, setBody] = useState("");
   const [image, setImage] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
+  const [titleFocused, setTitleFocused] = useState(false);
+  const [bodyFocused, setBodyFocused] = useState(false);
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
@@ -25,10 +27,9 @@ function PostFormModal({ subbreaditId }) {
     formData.append("body", body);
     formData.append("image_url", image);
     formData.append("subbreadit_id", subbreaditId);
-    setImageLoading(true);
 
     const response = await dispatch(postActions.addPost(formData));
-    console.log(response);
+    setImageLoading(true);
 
     if (response.errors) {
       setErrors(response.errors);
@@ -44,27 +45,52 @@ function PostFormModal({ subbreaditId }) {
     <>
       <h2>Post a toast</h2>
       <form className="form" onSubmit={sendPost}>
-        <label>
+        <div className="form-field">
+          <label htmlFor="title" className={title.length > 0 || titleFocused ? "form-label has-content" : "form-label"}>
+            Title
+            {errors.title && <span className="error-message">{errors.title}</span>}
+          </label>
           <input
+            id="title"
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (errors.title) {
+                const newErrors = {...errors};
+                delete newErrors.title
+                setErrors(newErrors)
+              }
+            }}
             className="input"
-            placeholder="Title"
-            required
+            onFocus={() => setTitleFocused(true)}
+            onBlur={() => setTitleFocused(false)}
           />
-        </label>
-        {/* {errors.title && <span className="error-message">{errors.title}</span>} */}
-        <label>
+        </div>
+        <div className="form-field">
+          <label htmlFor="body" className={body.length > 0 || bodyFocused ? "form-label has-content" : "form-label"}>
+            Body
+            {errors.body && <span className="error-message">{errors.body}</span>}
+          </label>
           <textarea
+            id="body"
+            type="text"
             value={body}
-            onChange={(e) => setBody(e.target.value)}
+            onChange={(e) => {
+              setBody(e.target.value);
+              if (errors.body) {
+                const newErrors = {...errors};
+                delete newErrors.body
+                setErrors(newErrors)
+              }
+            }}
             className="textarea"
-            placeholder="Body"
-            required
+            onFocus={() => setBodyFocused(true)}
+            onBlur={() => setBodyFocused(false)}
           />
-        </label>
-        <label>
+        </div>
+        <label className="image-input-label">
+        </label >
           <input
             type="file"
             id="image-input"
@@ -82,7 +108,7 @@ function PostFormModal({ subbreaditId }) {
             {errors.image_url && <span className="error-message">{errors.image_url}</span>}
           </div>
           {(imageLoading) && <p>Loading...</p>}
-        </label >
+
         <button className="button" type="submit">post</button>
       </form >
     </>
