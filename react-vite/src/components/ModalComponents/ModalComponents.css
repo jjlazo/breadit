@@ -1,3 +1,7 @@
 .button-component-container{
     display: flex;
 }
+
+.error-container {
+    min-height: 20px;
+}

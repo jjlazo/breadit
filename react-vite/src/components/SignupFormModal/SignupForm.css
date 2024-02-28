@@ -1,0 +1,47 @@
+.error-message {
+    color: red;
+    font-size: 9px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.form-label {
+    position: absolute;
+    top: 22px;
+    left: 10px;
+    background-color: white;
+    width: fit-content;
+    padding: 3px;
+    padding-top: 0;
+    display: block;
+    color: #C4C4C4;
+    font-size: 12px;
+    cursor: text;
+    transition: top 0.2s ease-out;
+}
+
+.has-content {
+    top: 1px;
+}
+
+.input {
+    background-color: transparent;
+}
+
+.form-field {
+    position: relative;
+    padding-top: 8px;
+}
+
+/* Remove blue background for chrome autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+}
