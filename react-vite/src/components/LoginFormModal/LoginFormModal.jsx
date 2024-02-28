@@ -86,6 +86,8 @@ function LoginFormModal() {
         </div>
         <button onClick={handleSubmit} className="button" type="submit">keep toast&apos;n</button>
         <button onClick={handleDemoSubmit} className="demo button" type="submit">Demo user</button>
+        <span className="google-auth-div">-or-</span>
+        <a href={`${window.origin}/api/auth/oauth_login`} className="google-auth"><button className="button" type="button">Sign in with Google</button></a>
       </form>
     </>
   );
