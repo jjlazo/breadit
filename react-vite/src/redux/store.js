@@ -10,13 +10,15 @@ import postsReducer from "./posts";
 import commentsReducer from "./comments";
 import subbreaditsReducer from "./subbreadits";
 import subscriptionReducer from "./subscriptions";
+import votesReducer from "./votes";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   posts: postsReducer,
   comments: commentsReducer,
   subbreadits: subbreaditsReducer,
-  subscriptions: subscriptionReducer
+  subscriptions: subscriptionReducer,
+  votes: votesReducer
 });
 
 let enhancer;

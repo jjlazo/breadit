@@ -152,7 +152,7 @@ def create_upvote(id):
     user.upvoted_toasts.append(toast)
     db.session.commit()
 
-    return toast.to_dict(), 201
+    return {"Upvote":  toast.to_dict()}
 
 
 # Delete an upvote
@@ -179,7 +179,7 @@ def create_downvote(id):
     user.downvoted_toasts.append(toast)
     db.session.commit()
 
-    return toast.to_dict(), 201
+    return {"Downvote":  toast.to_dict()}
 
 
 # Delete an downvote
