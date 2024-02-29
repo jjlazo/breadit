@@ -44,7 +44,9 @@ Users can up-vote or down-vote a toast, allowing them another manner in which to
 Users can sign up and log in with their Google account.
 
 ## Build prerequisites
-
+### For Ubuntu
 The pg_config program, it is usually installed by the libpq-dev package, if any errors arise:
 - sudo apt update
 - sudo apt-get install libpq-dev
+### For MAC/OS
+- brew install libpq
