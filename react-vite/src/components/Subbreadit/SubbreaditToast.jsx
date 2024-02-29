@@ -13,6 +13,7 @@ import * as voteActions from '../../redux/votes'
 import "./Subbreadit.css"
 import DeletePostModal from "../ModalComponents/DeletePostModal";
 import DeleteCommentModal from "../ModalComponents/DeleteCommentModal";
+import Votes from "../Votes";
 
 function SubbreaditToast() {
     const navigate = useNavigate()
@@ -24,7 +25,7 @@ function SubbreaditToast() {
     let post = useSelector(state => state.posts)
     let comments = useSelector(state => state.comments)
 
-    let postData = Object.values(post)
+    let postData = Object.values(post).filter((post) => post.id == toastId)
     let commentData = Object.values(comments)
 
     let upvotedPosts = useSelector(voteActions.selectUpvotes)
@@ -77,20 +78,26 @@ function SubbreaditToast() {
         }
     };
 
+    // useEffect(() => {
+    //     async function wrapperFn() {
+    //         const response = await dispatch(postActions.getPostById(toastId))
+    //         if (response.errors) {
+    //             navigate('/errors', { state: { "statusCode": 404, "message": response.errors.message } })
+    //         }
+    //     }
+    //     wrapperFn()
+    // }, [toastId])
+
     useEffect(() => {
-        async function wrapperFn() {
-            const response = await dispatch(postActions.getPostById(toastId))
-            if (response.errors) {
-                navigate('/errors', { state: { "statusCode": 404, "message": response.errors.message } })
-            }
-        }
-        wrapperFn()
-        dispatch(commentActions.getComments(toastId))
         if (sessionUser) {
             dispatch(voteActions.fetchDownvotes(sessionUser?.id))
             dispatch(voteActions.fetchUpvotes(sessionUser?.id))
         }
-    }, [toastId, downvote, upvote])
+    }, [downvote, upvote])
+
+    useEffect(() => {
+        dispatch(commentActions.getComments(toastId))
+    }, [])
 
     const closeMenu = () => setShowMenu(false);
 
@@ -112,7 +119,7 @@ function SubbreaditToast() {
                                 You're a moderator
                                 <Flag className="mod-flag" />
                             </div>}
-                            <div className="upvote">
+                            {/* <div className="upvote">
                                 <button className={`voting-button ${upvote ? "filled-up" : ""}`} onClick={(e) => upvoteToast(e, postData[0]?.id)}>
                                     <MoveUp className="arrows" />
                                 </button>
@@ -120,7 +127,8 @@ function SubbreaditToast() {
                                 <button className={`voting-button ${downvote ? "filled-down" : ""}`} onClick={(e) => downvoteToast(e, postData[0]?.id)}>
                                     <MoveDown className="arrows" />
                                 </button>
-                            </div>
+                            </div> */}
+                            <Votes post={postData[0]}/>
                             <div className="toast-container">
                                 <div className="toast-header">
                                     <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt="" />
@@ -178,7 +186,7 @@ function SubbreaditToast() {
                                     <div className="clickable" onClick={() => navigate(`/toasts/${comment?.user_id}`, { state: { username: comment?.username } })}><b>{comment?.username}</b></div>
                                     <div>{comment?.body}</div>
                                     <div className="toast-update">
-                                        {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) &&
+                                        {(sessionUser?.id == comment?.user_id || postData[0]?.moderator == sessionUser?.id) &&
                                             <OpenModalButton
                                                 onButtonClick={closeMenu}
                                                 modalComponent={<DeleteCommentModal comment={comment} />}

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import * as voteActions from "../../redux/votes"
+import { useModal } from '../../context/Modal';
 import { MoveUp, MoveDown } from 'lucide-react';
 import "./Feed.css"
 import { useSelector, useDispatch } from 'react-redux';
 import { getSubscriptions } from '../../redux/subscriptions'
+import Votes from "../Votes";
+import LoginFormModal from "../LoginFormModal";
 
 const getUniqueSubscribedPosts = (posts, subscriptions) => {
     const subscribed = [];
@@ -25,23 +28,29 @@ const getUniqueSubscribedPosts = (posts, subscriptions) => {
 function Feed({ data }) {
     const navigate = useNavigate()
     const dispatch = useDispatch();
+    const { setModalContent, setOnModalClose } = useModal();
     const user = useSelector(state => state.session.user);
     const subscriptions = useSelector((state)=> state.subscriptions);
 
     let upvotedPosts = useSelector(voteActions.selectUpvotes)
     let downvotedPosts = useSelector(voteActions.selectDownvotes)
 
+    const handleUnauth  = () => {
+        setModalContent(<LoginFormModal/>);
+    }
+
     const upvoteToast = (e, id) => {
         e.stopPropagation();
         const upvote = Boolean(upvotedPosts[id]) || data.find(toast => toast.id == id)?.upvotes.includes(user?.id);
         if (!user) {
-            alert("sign up or in to upvote toasts!");
+            // alert("sign up or in to upvote toasts!");
+            handleUnauth()
         }
         else if (user && upvote) {
-            dispatch(voteActions.fetchDeleteUpvote(id, user.id));
+            dispatch(voteActions.fetchDeleteUpvote(id, user?.id));
         }
         else if (user && !upvote) {
-            dispatch(voteActions.fetchCreateUpvote(id, user.id));
+            dispatch(voteActions.fetchCreateUpvote(id, user?.id));
         }
     };
 
@@ -49,13 +58,14 @@ function Feed({ data }) {
         e.stopPropagation();
         const downvote = Boolean(downvotedPosts[id]) || data.find(toast => toast.id == id)?.downvotes.includes(user?.id);
         if (!user) {
-            alert("sign up or in to downvote toasts!");
+            // alert("sign up or in to downvote toasts!");
+            handleUnauth()
         }
         else if (user && downvote) {
-            dispatch(voteActions.fetchDeleteDownvote(id, user.id));
+            dispatch(voteActions.fetchDeleteDownvote(id, user?.id));
         }
         else if (user && !downvote) {
-            dispatch(voteActions.fetchCreateDownvote(id, user.id));
+            dispatch(voteActions.fetchCreateDownvote(id, user?.id));
         }
     };
 
@@ -80,7 +90,7 @@ function Feed({ data }) {
 
     useEffect(()=>{
         if(user){
-        dispatch(getSubscriptions(user.id))
+        dispatch(getSubscriptions(user?.id))
         }
     }, [])
 
@@ -117,6 +127,7 @@ function Feed({ data }) {
                                         <MoveDown className="arrows" />
                                     </button>
                                 </div>
+                                {/* <Votes post={post}/> */}
                                 <div className="toast-container">
                                     <div className="toast-header">
                                         <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt="" />

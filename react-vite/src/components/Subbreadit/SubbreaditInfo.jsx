@@ -26,20 +26,20 @@ function SubbreaditInfo({ }){
         setIsSubbed(!isSubbed)
     }
 
-    useEffect(() => {
-        async function wrapperFn(){
-            const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
-            if(response?.errors){
-                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
-            } 
-        } 
-        wrapperFn()
-    }, [])
+    // useEffect(() => {
+    //     async function wrapperFn(){
+    //         const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
+    //         if(response?.errors){
+    //             navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+    //         } 
+    //     } 
+    //     wrapperFn()
+    // }, [])
 
-    useEffect(() => {
-        dispatch(subbreaditActions.getSubbreadits())
-        setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
-    }, [subscriptions])
+    // useEffect(() => {
+    //     dispatch(subbreaditActions.getSubbreadits())
+    //     setIsSubbed(subscriptions.hasOwnProperty(subbreaditId))
+    // }, [subscriptions])
 
     useEffect(() => {
         if(sessionUser?.id){
