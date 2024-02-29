@@ -18,7 +18,7 @@ function Subbreadits(){
     const sessionUser = useSelector(state => state.session.user)
     let posts = useSelector(state => state.posts)
 
-    let postArr = Object.values(posts)
+    let postArr = Object.values(posts).filter((subbreadit) => subbreadit.id == subbreaditId)
 
     let subbreadits = useSelector(state => state.subbreadits)
     
@@ -26,19 +26,19 @@ function Subbreadits(){
  
     const closeMenu = () => setShowMenu(false);
 
-    useEffect(() => {
-       async function wrapperFn(){
-            const response = await dispatch(postActions.getSubbreaditPosts(subbreaditId))
-            if(response?.errors){
-                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
-            } 
-       }
-       wrapperFn()
-    }, [subbreaditId]) 
+    // useEffect(() => {
+    //    async function wrapperFn(){
+    //         const response = await dispatch(postActions.getSubbreaditPosts(subbreaditId))
+    //         if(response?.errors){
+    //             navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+    //         } 
+    //    }
+    //    wrapperFn()
+    // }, [subbreaditId]) 
 
-    useEffect(() => {
-        dispatch(subbreaditActions.getSubbreadits())
-    }, [])
+    // useEffect(() => {
+    //     dispatch(subbreaditActions.getSubbreadits())
+    // }, [])
 
     return(
         <div className="home-container">

@@ -18,6 +18,8 @@ class User(db.Model, UserMixin):
     comments = db.relationship("Comment", back_populates="user")
     subbreadit_mod = db.relationship("Subbreadit", back_populates="moderator")
     subscriptions = db.relationship("Subbreadit", secondary="subscriptions", back_populates="subscribers")
+    upvoted_toasts = db.relationship("Toast", secondary="upvotes", back_populates="upvotes")
+    downvoted_toasts = db.relationship("Toast", secondary="downvotes", back_populates="downvotes")
 
     @property
     def password(self):
@@ -25,7 +27,11 @@ class User(db.Model, UserMixin):
 
     @password.setter
     def password(self, password):
-        self.hashed_password = generate_password_hash(password)
+        if password == 'OAUTH':
+            self.hashed_password = 'OAUTH'
+            return
+        else:
+            self.hashed_password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -37,5 +43,7 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'toasts': [toast.to_dict() for toast in self.toasts],
             # 'comments': [comment.to_dict() for comment in self.comments],
-            'subscriptions': [subbreadit.id for subbreadit in self.subscriptions]
+            'subscriptions': [subbreadit.id for subbreadit in self.subscriptions],
+            'upvoted_toasts': [toast.id for toast in self.upvoted_toasts],
+            'downvoted_toasts': [toast.id for toast in self.downvoted_toasts]
         }

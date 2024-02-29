@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
-from app.models import User
+from app.models import User, Toast
 
 user_routes = Blueprint('users', __name__)
 
@@ -29,3 +29,15 @@ def user_subscriptions(id):
     user = User.query.get(id)
 
     return {"Subbreadits": [subbreadit.to_dict() for subbreadit in user.subscriptions]}
+
+@user_routes.route('/<int:id>/upvotes')
+def user_upvotes(id):
+    user = User.query.get(id)
+    if user:
+        return {"Toasts": [toast.to_dict() for toast in user.upvoted_toasts]}
+
+@user_routes.route('/<int:id>/downvotes')
+def user_downvotes(id):
+    user = User.query.get(id)
+    if user:
+        return {"Toasts": [toast.to_dict() for toast in user.downvoted_toasts]}

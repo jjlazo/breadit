@@ -1,24 +1,33 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState, useContext } from "react"
 import { PlusCircle } from 'lucide-react';
 import OpenModalButton from "../OpenModalButton";
 import { SubbreaditFormModal } from "../ModalComponents";
 import ProfileButton from "./ProfileButton";
 import { useDispatch, useSelector } from 'react-redux';
+import * as postActions from '../../redux/posts'
 import * as subbreaditActions from '../../redux/subbreadits'
 import "./Navigation.css";
-import { useNavigate } from "react-router-dom";
+import { SubscriptionContext } from "../../context/SubscriptionContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Navigation() {
   const navigate = useNavigate()
+  const { setIsSubscribed } = useContext(SubscriptionContext)
+  const { subbreaditId, toastId } = useParams()
   const [showMenu, setShowMenu] = useState(false);
   const [isFocused, setIsFocused] = useState(false)
   const [search, setSearch] = useState("")
   const dispatch = useDispatch()
+  let subscriptions = useSelector(state => state.subscriptions)
   let subbreadits = useSelector(state => state.subbreadits)
   const sessionUser = useSelector(state => state.session.user)
   const searchRef = useRef()
 
   let subbreaditData = Object.values(subbreadits)
+
+  useEffect(() => {
+    dispatch(postActions.getPosts())
+  })
 
   const closeMenu = () => setShowMenu(false);
 
@@ -45,9 +54,36 @@ function Navigation() {
       setSearch("")
   } 
 
+  // useEffect(() => {
+  //   dispatch(subbreaditActions.getSubbreadits())
+  // }, [window.location.pathname])
+
   useEffect(() => {
+    setIsSubscribed(subscriptions.hasOwnProperty(subbreaditId))
     dispatch(subbreaditActions.getSubbreadits())
-  }, [window.location.pathname])
+  }, [window.location.pathname, subscriptions])
+
+  useEffect(() => {
+    async function wrapperFn() {
+        const response = await fetch(`/api/subbreadits/${subbreaditId}`)
+        if(!response.ok){
+            const errors = await response.json()
+            navigate('/errors', { state: { "statusCode": 404, "message": errors.errors.message } })
+        }
+    } 
+    wrapperFn()
+  }, [subbreaditId])
+
+  useEffect(() => {
+    async function wrapperFn() {
+        const response = await fetch(`/api/posts/${toastId}`)
+        if(!response.ok){
+            const errors = await response.json()
+            navigate('/errors', { state: { "statusCode": 404, "message": errors.errors.message } })
+        }
+    } 
+    wrapperFn()
+  }, [toastId])
 
   const filteredSubbreaditData = () => {
     const results = subbreaditData.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
