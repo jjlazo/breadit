@@ -11,6 +11,7 @@ import * as subbreaditActions from '../../redux/subbreadits'
 import * as commentActions from '../../redux/comments'
 import "./Subbreadit.css"
 import DeletePostModal from "../ModalComponents/DeletePostModal";
+import DeleteCommentModal from "../ModalComponents/DeleteCommentModal";
 
 function SubbreaditToast() {
     const navigate = useNavigate()
@@ -96,10 +97,9 @@ function SubbreaditToast() {
                                         <OpenModalButton
                                             onButtonClick={closeMenu}
                                             modalComponent={<DeletePostModal post={postData[0]} />}
-                                            buttonComponent={<Eraser strokeWidth={"2.05px"} className="toast-update-icon" />}/>
+                                            buttonComponent={<Eraser strokeWidth={"2.05px"} className="toast-update-icon" />} />
                                     }
                                     {sessionUser?.id == postData[0]?.user_id && <OpenModalButton
-                                        // itemText="toast"
                                         onButtonClick={closeMenu}
                                         modalComponent={<UpdatePostFormModal defaultTitle={postData[0]?.title} defaultBody={postData[0]?.body} />}
                                         buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon" />}
@@ -134,7 +134,12 @@ function SubbreaditToast() {
                                     <div className="clickable" onClick={() => navigate(`/toasts/${comment?.user_id}`, { state: { username: comment?.username } })}><b>{comment?.username}</b></div>
                                     <div>{comment?.body}</div>
                                     <div className="toast-update">
-                                        {(sessionUser?.id == comment?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={(e) => deleteComment(e, comment.id)} strokeWidth={"2.05px"} className="toast-update-icon" />}
+                                        {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) &&
+                                            <OpenModalButton
+                                                onButtonClick={closeMenu}
+                                                modalComponent={<DeleteCommentModal comment={comment} />}
+                                                buttonComponent={<Eraser strokeWidth={"2.05px"} className="toast-update-icon" />} />
+                                        }
                                         {sessionUser?.id == comment?.user_id && <OpenModalButton
                                             onButtonClick={closeMenu}
                                             modalComponent={<UpdateCommentFormModal commentId={comment?.id} defaultBody={comment?.body} />}
