@@ -10,8 +10,10 @@ import * as postActions from '../../redux/posts'
 import * as subbreaditActions from '../../redux/subbreadits'
 import * as commentActions from '../../redux/comments'
 import "./Subbreadit.css"
+import DeletePostModal from "../ModalComponents/DeletePostModal";
+import DeleteCommentModal from "../ModalComponents/DeleteCommentModal";
 
-function SubbreaditToast(){
+function SubbreaditToast() {
     const navigate = useNavigate()
     const { subbreaditId, toastId } = useParams()
     const [showMenu, setShowMenu] = useState(false);
@@ -36,10 +38,10 @@ function SubbreaditToast(){
     }
 
     useEffect(() => {
-        async function wrapperFn(){
+        async function wrapperFn() {
             const response = await dispatch(postActions.getPostById(toastId))
-            if(response.errors){
-                navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
+            if (response.errors) {
+                navigate('/errors', { state: { "statusCode": 404, "message": response.errors.message } })
             }
         }
         wrapperFn()
@@ -55,99 +57,108 @@ function SubbreaditToast(){
         toastImage.style.height = "100px";
     }
 
-    return(
+    return (
         <div className="home-container">
             <div className="container-content">
-            <Sidebar/>
-            <div className="feed">
-                <div className="content">
-                    <div className="single-toast-bubble">
-                        {postData[0]?.moderator == sessionUser?.id && <div className="moderator">
-                            You're a moderator
-                            <Flag className="mod-flag"/>
-                        </div>}
-                        <div className="upvote">
-                            <button className="voting-button">
-                            <MoveUp className="arrows"/>
-                            </button>
-                            0
-                            <button className="voting-button">
-                            <MoveDown className="arrows"/>
-                            </button>
-                        </div>
-                        <div className="toast-container">
-                            <div className="toast-header">
-                                <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
-                                <div>
-                                    <div onClick={() => navigate(`/subbreadit/${postData[0]?.subbreadit_id}`)} className="toast-subbreadit"><b>b/{postData[0]?.subbreadit_name}</b></div>
-                                    <div onClick={() => navigate(`/toasts/${postData[0]?.user_id}`)} className="toast-user">posted by {postData[0]?.username}</div>
+                <Sidebar />
+                <div className="feed">
+                    <div className="content">
+                        <div className="single-toast-bubble">
+                            {postData[0]?.moderator == sessionUser?.id && <div className="moderator">
+                                You're a moderator
+                                <Flag className="mod-flag" />
+                            </div>}
+                            <div className="upvote">
+                                <button className="voting-button">
+                                    <MoveUp className="arrows" />
+                                </button>
+                                0
+                                <button className="voting-button">
+                                    <MoveDown className="arrows" />
+                                </button>
+                            </div>
+                            <div className="toast-container">
+                                <div className="toast-header">
+                                    <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt="" />
+                                    <div>
+                                        <div onClick={() => navigate(`/subbreadit/${postData[0]?.subbreadit_id}`)} className="toast-subbreadit"><b>b/{postData[0]?.subbreadit_name}</b></div>
+                                        <div onClick={() => navigate(`/toasts/${postData[0]?.user_id}`)} className="toast-user">posted by {postData[0]?.username}</div>
+                                    </div>
+                                </div>
+                                <div className="toast-content">
+                                    <div className="toast-title">{postData[0]?.title}</div>
+                                    <div className="toast-body">{postData[0]?.body}</div>
+                                </div>
+                                {postData[0]?.image_url && <div className="toast-image-container">
+                                    <img id="toast-image" className="toast-image" src={postData[0]?.image_url} onError={setDefaultImage} alt="Breadit image" />
+                                </div>}
+                                <div className="toast-update">
+                                    {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) &&
+                                        <OpenModalButton
+                                            onButtonClick={closeMenu}
+                                            modalComponent={<DeletePostModal post={postData[0]} />}
+                                            buttonComponent={<Eraser strokeWidth={"2.05px"} className="toast-update-icon" />} />
+                                    }
+                                    {sessionUser?.id == postData[0]?.user_id && <OpenModalButton
+                                        onButtonClick={closeMenu}
+                                        modalComponent={<UpdatePostFormModal defaultTitle={postData[0]?.title} defaultBody={postData[0]?.body} />}
+                                        buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon" />}
+                                    />}
                                 </div>
                             </div>
-                            <div className="toast-content">
-                                <div className="toast-title">{postData[0]?.title}</div>
-                                <div className="toast-body">{postData[0]?.body}</div>
-                            </div>
-                            {postData[0]?.image_url && <div className="toast-image-container">
-                                <img id="toast-image" className="toast-image" src={postData[0]?.image_url} onError={setDefaultImage} alt="Breadit image"/>
-                            </div>}
-                            <div className="toast-update">
-                                {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={deletePost} strokeWidth={"2.05px"} className="toast-update-icon"/>}
-                                {sessionUser?.id == postData[0]?.user_id && <OpenModalButton
-                                // itemText="toast"
-                                onButtonClick={closeMenu}
-                                modalComponent={<UpdatePostFormModal defaultTitle={postData[0]?.title} defaultBody={postData[0]?.body} />}
-                                buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>}
-                                />}
-                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="comment-content-container">
-                    <div className="comments-info">
-                        {sessionUser?.id && <OpenModalButton
-                            onButtonClick={closeMenu}
-                            modalComponent={<CommentFormModal />}
-                            buttonComponent={
-                                <button className="comments-button">
-                                <Reply/>
-                                comment
-                                </button>
-                            }
+                    <div className="comment-content-container">
+                        <div className="comments-info">
+                            {sessionUser?.id && <OpenModalButton
+                                onButtonClick={closeMenu}
+                                modalComponent={<CommentFormModal />}
+                                buttonComponent={
+                                    <button className="comments-button">
+                                        <Reply />
+                                        comment
+                                    </button>
+                                }
                             />}
-                        <div>{commentData.length} {commentData.length == 1 ? 'comment' : "comments"}</div>
+                            <div>{commentData.length} {commentData.length == 1 ? 'comment' : "comments"}</div>
+                        </div>
                     </div>
-                </div>
-                <div className="comments-content-container">
-                    {commentData.map((comment) => (
-                        <div key={comment?.id} className="comment-content">
-                            <div className="comment-content-profile">
-                                <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt=""/>
-                                <div className="vertical-line"></div>
-                            </div>
-                            <div>
-                                <div className="clickable" onClick={() => navigate(`/toasts/${comment?.user_id}`, {state: { username: comment?.username }})}><b>{comment?.username}</b></div>
-                                <div>{comment?.body}</div>
+                    <div className="comments-content-container">
+                        {commentData.map((comment) => (
+                            <div key={comment?.id} className="comment-content">
+                                <div className="comment-content-profile">
+                                    <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt="" />
+                                    <div className="vertical-line"></div>
+                                </div>
+                                <div>
+                                    <div className="clickable" onClick={() => navigate(`/toasts/${comment?.user_id}`, { state: { username: comment?.username } })}><b>{comment?.username}</b></div>
+                                    <div>{comment?.body}</div>
                                     <div className="toast-update">
-                                        {(sessionUser?.id == comment?.user_id || postData[0]?.moderator == sessionUser?.id) && <Eraser onClick={(e) => deleteComment(e, comment.id)} strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                        {(sessionUser?.id == postData[0]?.user_id || postData[0]?.moderator == sessionUser?.id) &&
+                                            <OpenModalButton
+                                                onButtonClick={closeMenu}
+                                                modalComponent={<DeleteCommentModal comment={comment} />}
+                                                buttonComponent={<Eraser strokeWidth={"2.05px"} className="toast-update-icon" />} />
+                                        }
                                         {sessionUser?.id == comment?.user_id && <OpenModalButton
-                                        onButtonClick={closeMenu}
-                                        modalComponent={<UpdateCommentFormModal commentId={comment?.id} defaultBody={comment?.body} />}
-                                        buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon"/>}
+                                            onButtonClick={closeMenu}
+                                            modalComponent={<UpdateCommentFormModal commentId={comment?.id} defaultBody={comment?.body} />}
+                                            buttonComponent={<PencilLine strokeWidth={"2.05px"} className="toast-update-icon" />}
                                         />}
                                         {comment?.created_at != comment?.updated_at && <div className="edited">Edited</div>}
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        ))
 
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
-            <div className="sub-content">
-                <div className="sub-content-container">
-                    <SubbreaditInfo subbreaditId={subbreaditId}/>
+                <div className="sub-content">
+                    <div className="sub-content-container">
+                        <SubbreaditInfo subbreaditId={subbreaditId} />
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     )
