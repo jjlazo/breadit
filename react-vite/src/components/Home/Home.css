@@ -7,18 +7,20 @@
     margin: 0;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+    overflow: scroll;
     /* background-color: red; */
     /* flex-direction: row; */
 }
 
 .container-content{
-    /* width: 100%;
-    background-color: red; */
+    /* width: 100%;*/
+    /* background-color: red;  */
     display: flex;
     max-width: 1200px;
     margin: 0px 20px;
     width: 100%;
+    height: fit-content;
+    position: relative;
     /* overflow: hidden; */
 }
 
@@ -27,7 +29,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    overflow: scroll;
+    /* overflow: scroll; */
     /* background-color: blue; */
 }
 
@@ -44,6 +46,9 @@
     height: 100%;
     min-width: 300px;
     justify-content: center;
+    position: sticky;
+    top: 5px;
+    right: -50%
 }
 
 .sub-content-bubble{
@@ -98,7 +103,7 @@
     right: 15px;
 }
 
-@media (max-width: 1200px){
+@media (max-width: 1000px){
     .sub-content{
         display: none;
     }

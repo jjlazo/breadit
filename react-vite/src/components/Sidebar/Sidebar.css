@@ -2,11 +2,14 @@
     display: flex;
     flex: 1;
     min-width: 110px;
-    height: 100%;
+    height: calc(100vh - 60px);
     border-right: #C4C4C4 1px solid;
     flex-direction: column;
     gap: 20px;
     background-color: white;
+    position: sticky;
+    top: 0px;
+    right: -50%
     /* background-color: blue; */
 }
 

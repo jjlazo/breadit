@@ -90,7 +90,7 @@ function Feed({ data }) {
 
     useEffect(()=>{
         if(user){
-        dispatch(getSubscriptions(user?.id))
+            dispatch(getSubscriptions(user?.id))
         }
     }, [])
 

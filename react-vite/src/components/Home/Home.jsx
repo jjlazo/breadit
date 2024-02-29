@@ -34,13 +34,13 @@ function Home() {
     return (
         <div className="home-container">
             <div className="container-content">
-            <Sidebar/>
-            <div className="feed">
-                <Feed data={postArr}/>
-            </div>
-            <div className="sub-content">
-                <TopCommunitiesInfo/>
-            </div>
+                <Sidebar/>
+                <div className="feed">
+                    <Feed data={postArr}/>
+                </div>
+                <div className="sub-content">
+                    <TopCommunitiesInfo/>
+                </div>
             </div>
             <div className="github clickable" onClick={() => redirectToExternalSite("https://github.com/jjlazo/breadit/")}>
                 <GitHub/>
