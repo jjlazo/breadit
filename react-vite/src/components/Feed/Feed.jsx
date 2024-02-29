@@ -35,39 +35,39 @@ function Feed({ data }) {
     let upvotedPosts = useSelector(voteActions.selectUpvotes)
     let downvotedPosts = useSelector(voteActions.selectDownvotes)
 
-    const handleUnauth  = () => {
-        setModalContent(<LoginFormModal/>);
-    }
+    // const handleUnauth  = () => {
+    //     setModalContent(<LoginFormModal/>);
+    // }
 
-    const upvoteToast = (e, id) => {
-        e.stopPropagation();
-        const upvote = Boolean(upvotedPosts[id]) || data.find(toast => toast.id == id)?.upvotes.includes(user?.id);
-        if (!user) {
-            // alert("sign up or in to upvote toasts!");
-            handleUnauth()
-        }
-        else if (user && upvote) {
-            dispatch(voteActions.fetchDeleteUpvote(id, user?.id));
-        }
-        else if (user && !upvote) {
-            dispatch(voteActions.fetchCreateUpvote(id, user?.id));
-        }
-    };
+    // const upvoteToast = (e, id) => {
+    //     e.stopPropagation();
+    //     const upvote = Boolean(upvotedPosts[id]) || data.find(toast => toast.id == id)?.upvotes.includes(user?.id);
+    //     if (!user) {
+    //         // alert("sign up or in to upvote toasts!");
+    //         handleUnauth()
+    //     }
+    //     else if (user && upvote) {
+    //         dispatch(voteActions.fetchDeleteUpvote(id, user?.id));
+    //     }
+    //     else if (user && !upvote) {
+    //         dispatch(voteActions.fetchCreateUpvote(id, user?.id));
+    //     }
+    // };
 
-    const downvoteToast = (e, id) => {
-        e.stopPropagation();
-        const downvote = Boolean(downvotedPosts[id]) || data.find(toast => toast.id == id)?.downvotes.includes(user?.id);
-        if (!user) {
-            // alert("sign up or in to downvote toasts!");
-            handleUnauth()
-        }
-        else if (user && downvote) {
-            dispatch(voteActions.fetchDeleteDownvote(id, user?.id));
-        }
-        else if (user && !downvote) {
-            dispatch(voteActions.fetchCreateDownvote(id, user?.id));
-        }
-    };
+    // const downvoteToast = (e, id) => {
+    //     e.stopPropagation();
+    //     const downvote = Boolean(downvotedPosts[id]) || data.find(toast => toast.id == id)?.downvotes.includes(user?.id);
+    //     if (!user) {
+    //         // alert("sign up or in to downvote toasts!");
+    //         handleUnauth()
+    //     }
+    //     else if (user && downvote) {
+    //         dispatch(voteActions.fetchDeleteDownvote(id, user?.id));
+    //     }
+    //     else if (user && !downvote) {
+    //         dispatch(voteActions.fetchCreateDownvote(id, user?.id));
+    //     }
+    // };
 
     const navigateToSubbreadit = (e, subbreaditId) => {
         e.stopPropagation()
@@ -104,7 +104,7 @@ function Feed({ data }) {
                     return (
                         <div key={post.id} onClick={() => navigate(`/subbreadit/${post.subbreadit_id}/toast/${post.id}`)} className="content">
                             <div className="toast-bubble">
-                                <div className="upvote">
+                                {/* <div className="upvote">
                                     <button className={`voting-button ${didUpvote ? "filled-up" : ""}`} type="button" onClick={(e) => upvoteToast(e, post?.id)}>
                                         <MoveUp className="arrows" />
                                     </button>
@@ -126,8 +126,8 @@ function Feed({ data }) {
                                     <button className={`voting-button ${didDownvote ? "filled-down" : ""}`} type="button" onClick={(e) => downvoteToast(e, post.id)}>
                                         <MoveDown className="arrows" />
                                     </button>
-                                </div>
-                                {/* <Votes post={post}/> */}
+                                </div> */}
+                                <Votes post={post}/>
                                 <div className="toast-container">
                                     <div className="toast-header">
                                         <img className="toast-toast" src={"https://i.ibb.co/1LvSt5B/Mask-group-1.png"} alt="" />
