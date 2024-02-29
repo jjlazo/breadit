@@ -10,42 +10,74 @@ function SubbreaditFormModal() {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  // const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
+  const [nameFocused, setNameFocused] = useState(false);
+  const [descriptionFocused, setDescriptionFocused] = useState(false);
   const { closeModal } = useModal();
 
-    const createSubbreadit = async (e) => {
-      e.preventDefault()
-      const response = await dispatch(subbreaditActions.addSubbreadit({
-        name,
-        description
-      }))
+  const createSubbreadit = async (e) => {
+    e.preventDefault()
+    const response = await dispatch(subbreaditActions.addSubbreadit({
+      name,
+      description
+    }))
+
+    if (response.errors) {
+      setErrors(response.errors);
+    }
+    else {
       closeModal()
       navigate(`/subbreadit/${response.id}`)
+    }
   }
 
   return (
     <>
       <h2>Create a subbreadit</h2>
       <form className="form" onSubmit={createSubbreadit}>
-        <label>
+        <div className="form-field">
+          <label htmlFor="name" className={name.length > 0 || nameFocused ? "form-label has-content" : "form-label"}>
+            Name
+            {errors.name && <span className="error-message">{errors.name}</span>}
+          </label>
           <input
+            id="name"
+            className="input"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="input"
-            placeholder="Name"
-            required
+            onChange={(e) => {
+              setName(e.target.value);
+              if (errors.name) {
+                const newErrors = { ...errors };
+                delete newErrors.name
+                setErrors(newErrors)
+              }
+            }}
+            onFocus={() => setNameFocused(true)}
+            onBlur={() => setNameFocused(false)}
           />
-        </label>
-        <label>
+        </div>
+        <div className="form-field">
+          <label htmlFor="description" className={description.length > 0 || descriptionFocused ? "form-label has-content" : "form-label"}>
+            Description
+            {errors.description && <span className="error-message">{errors.description}</span>}
+          </label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            id="description"
             className="textarea"
-            placeholder="Description"
-            required
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              if (errors.description) {
+                const newErrors = { ...errors };
+                delete newErrors.description
+                setErrors(newErrors)
+              }
+            }}
+            onFocus={() => setDescriptionFocused(true)}
+            onBlur={() => setDescriptionFocused(false)}
           />
-        </label>
+        </div>
         <button className="button" type="submit">create</button>
       </form>
     </>

@@ -63,7 +63,14 @@ function LoginFormModal() {
             id="email"
             type="text"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) {
+                const newErrors = {...errors};
+                delete newErrors.email
+                setErrors(newErrors)
+              }
+            }}
             className="input"
             onFocus={() => setEmailFocused(true)}
             onBlur={() => setEmailFocused(false)}
@@ -78,7 +85,14 @@ function LoginFormModal() {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (errors.password) {
+                const newErrors = {...errors};
+                delete newErrors.password
+                setErrors(newErrors)
+              }
+            }}
             className="input"
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}

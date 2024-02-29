@@ -1,15 +1,32 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import * as voteActions from "../../redux/votes"
 import { MoveUp, MoveDown } from 'lucide-react';
 import "./Feed.css"
-import { useDispatch, useSelector } from "react-redux";
-// import * as postActions from '../../redux/posts'
+import { useSelector, useDispatch } from 'react-redux';
+import { getSubscriptions } from '../../redux/subscriptions'
+
+const getUniqueSubscribedPosts = (posts, subscriptions) => {
+    const subscribed = [];
+    const other = [];
+
+    // Separate posts based on subscriptions
+    posts.forEach((post) => {
+        if (subscriptions.includes(post.subbreadit_id)) {
+            subscribed.push(post);
+        } else {
+            other.push(post);
+        }
+    });
+
+    return { subscribed, other };
+};
 
 function Feed({ data }) {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const user = useSelector(state => state.session.user);
+    const subscriptions = useSelector((state)=> state.subscriptions);
 
     let upvotedPosts = useSelector(voteActions.selectUpvotes)
     let downvotedPosts = useSelector(voteActions.selectDownvotes)
@@ -52,12 +69,26 @@ function Feed({ data }) {
         navigate(`/toasts/${toastId}`)
     }
 
-    const reversedData = data.sort((a, b) => b.id - a.id)
+    const reversedData = data.sort((a,b) => b.id-a.id)
 
-    return (
+    let postsToRender = reversedData;
+
+    if (user) {
+        const { subscribed, other } = getUniqueSubscribedPosts(reversedData, Object.values(subscriptions).map((sub )=> sub.id));
+        postsToRender = [...subscribed, ...other];
+    }
+
+    useEffect(()=>{
+        if(user){
+        dispatch(getSubscriptions(user.id))
+        }
+    }, [])
+
+
+    return(
         <>
             {
-                reversedData?.map((post) => {
+                postsToRender?.map((post) => {
                     const didUpvote = Boolean(upvotedPosts[post.id]) || post.upvotes.includes(user?.id);
                     const didDownvote = Boolean(downvotedPosts[post.id]) || post.downvotes.includes(user?.id);
                     return (
