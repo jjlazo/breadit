@@ -1,3 +1,5 @@
+import { REMOVE_USER } from "./session";
+
 export const CREATE_UPVOTE = 'Votes/CREATE_UPVOTE';
 export const CREATE_DOWNVOTE = 'Votes/CREATE_DOWNVOTE';
 export const READ_UPVOTES = 'Votes/READ_UPVOTES';
@@ -19,24 +21,28 @@ export const readDownvotes = (toasts) => ({
     toasts
 });
 
-export const createUpvote = (toast) => ({
+export const createUpvote = (toast, userId) => ({
     type: CREATE_UPVOTE,
-    toast
+    toast,
+    userId
 });
 
-export const createDownvote = (toast) => ({
+export const createDownvote = (toast, userId) => ({
     type: CREATE_DOWNVOTE,
-    toast
+    toast,
+    userId
 });
 
-export const deleteUpvote = (toastId) => ({
+export const deleteUpvote = (toastId, userId) => ({
     type: DELETE_UPVOTE,
-    toastId
+    toastId,
+    userId
 });
 
-export const deleteDownvote = (toastId) => ({
+export const deleteDownvote = (toastId, userId) => ({
     type: DELETE_DOWNVOTE,
-    toastId
+    toastId,
+    userId
 });
 
 export const fetchUpvotes = (id) => async dispatch => {
@@ -65,7 +71,7 @@ export const fetchDownvotes = (id) => async dispatch => {
     }
 }
 
-export const fetchCreateUpvote = (id) => async dispatch => {
+export const fetchCreateUpvote = (id, userId) => async dispatch => {
     const response = await fetch(`/api/posts/${id}/upvote`, {
         method: "POST",
         headers: {
@@ -75,7 +81,7 @@ export const fetchCreateUpvote = (id) => async dispatch => {
 
     if (response.ok) {
         const toast = await response.json()
-        dispatch(createUpvote(toast))
+        dispatch(createUpvote(toast, userId))
         return toast
     } else {
         const errors = await response.json()
@@ -83,7 +89,7 @@ export const fetchCreateUpvote = (id) => async dispatch => {
     }
 }
 
-export const fetchCreateDownvote = (id) => async dispatch => {
+export const fetchCreateDownvote = (id, userId) => async dispatch => {
     const response = await fetch(`/api/posts/${id}/downvote`, {
         method: "POST",
         headers: {
@@ -93,7 +99,7 @@ export const fetchCreateDownvote = (id) => async dispatch => {
 
     if (response.ok) {
         const toast = await response.json()
-        dispatch(createDownvote(toast))
+        dispatch(createDownvote(toast, userId))
         return toast
     } else {
         const errors = await response.json()
@@ -101,23 +107,23 @@ export const fetchCreateDownvote = (id) => async dispatch => {
     }
 }
 
-export const fetchDeleteUpvote = (id) => async dispatch => {
+export const fetchDeleteUpvote = (id, userId) => async dispatch => {
     const response = await fetch(`/api/posts/${id}/upvote`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
         },
     })
-
     if (response.ok) {
-        dispatch(deleteUpvote(id))
+        dispatch(deleteUpvote(id, userId))
+        return
     } else {
         const errors = await response.json()
         return errors
     }
 }
 
-export const fetchDeleteDownvote = (id) => async dispatch => {
+export const fetchDeleteDownvote = (id, userId) => async dispatch => {
     const response = await fetch(`/api/posts/${id}/downvote`, {
         method: "DELETE",
         headers: {
@@ -126,7 +132,8 @@ export const fetchDeleteDownvote = (id) => async dispatch => {
     })
 
     if (response.ok) {
-        dispatch(deleteDownvote(id))
+        dispatch(deleteDownvote(id, userId))
+        return
     } else {
         const errors = await response.json()
         return errors
@@ -136,7 +143,7 @@ export const fetchDeleteDownvote = (id) => async dispatch => {
 const votesReducer = (state = { upvotes: {}, downvotes: {} }, action) => {
     switch (action.type) {
         case READ_UPVOTES: {
-            const votesState = { ...state, upvotes: { ...state.upvotes } };
+            const votesState = {...state, upvotes: { ...state.upvotes }};
             if (action.toasts.Toasts.length) {
                 action.toasts.Toasts.forEach((toast) => {
                     votesState.upvotes[toast.id] = toast;
@@ -145,7 +152,7 @@ const votesReducer = (state = { upvotes: {}, downvotes: {} }, action) => {
             return votesState;
         }
         case READ_DOWNVOTES: {
-            const votesState = { ...state, downvotes: { ...state.downvotes } };
+            const votesState = {...state, downvotes: { ...state.downvotes }};
             if (action.toasts.Toasts.length) {
                 action.toasts.Toasts.forEach((toast) => {
                     votesState.downvotes[toast.id] = toast;
@@ -153,10 +160,16 @@ const votesReducer = (state = { upvotes: {}, downvotes: {} }, action) => {
             }
             return votesState;
         }
-        case CREATE_UPVOTE:
-            return { ...state, upvotes: { ...state.upvotes, [action.toast.id]: action.toast } };
-        case CREATE_DOWNVOTE:
-            return { ...state, downvotes: { ...state.downvotes, [action.toast.id]: action.toast } };
+        case CREATE_UPVOTE: {
+            const voteState = { ...state, upvotes: { ...state.upvotes, [action.toast.id]: action.toast }, downvotes: { ...state.downvotes } };
+            delete voteState.downvotes[action.toast.id]
+            return voteState
+        }
+        case CREATE_DOWNVOTE: {
+            const voteState = { ...state, downvotes: { ...state.downvotes, [action.toast.id]: action.toast }, upvotes: { ...state.upvotes} };
+            delete voteState.upvotes[action.toast.id]
+            return voteState
+        }
         case DELETE_UPVOTE: {
             const newState = { ...state, upvotes: { ...state.upvotes } };
             delete newState.upvotes[action.toastId];
@@ -167,6 +180,8 @@ const votesReducer = (state = { upvotes: {}, downvotes: {} }, action) => {
             delete newState.downvotes[action.toastId];
             return newState;
         }
+        case REMOVE_USER:
+            return { upvotes: {}, downvotes: {} }
         default:
             return state;
     }

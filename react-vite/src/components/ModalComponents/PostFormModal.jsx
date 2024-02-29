@@ -28,7 +28,7 @@ function PostFormModal({ subbreaditId }) {
     setImageLoading(true);
 
     const response = await dispatch(postActions.addPost(formData));
-    console.log(response);
+    // console.log(response);
 
     if (response.errors) {
       setErrors(response.errors);

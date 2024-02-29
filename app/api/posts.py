@@ -186,7 +186,7 @@ def create_upvote(id):
     user.upvoted_toasts.append(toast)
     db.session.commit()
 
-    return {"Upvote":  toast.to_dict()}
+    return toast.to_dict(), 201
 
 
 # Delete an upvote
@@ -194,11 +194,14 @@ def create_upvote(id):
 def delete_upvote(id):
     user = User.query.get(current_user.id)
     toast = Toast.query.get(id)
+    if user:
+        if toast in user.upvoted_toasts:
+            user.upvoted_toasts.remove(toast)
+            db.session.commit()
+            return {"message": "Successfully deleted"}, 201
+        return {"message": "Post not upvoted"}
+    return {"message": "Sign up to upvote toasts!"}
 
-    user.upvoted_toasts.remove(toast)
-    db.session.commit()
-
-    return {"message": "Successfully deleted"}, 201
 
 # Create an downvote
 @posts_routes.route("/<int:id>/downvote", methods=["POST"])
@@ -213,7 +216,7 @@ def create_downvote(id):
     user.downvoted_toasts.append(toast)
     db.session.commit()
 
-    return {"Downvote":  toast.to_dict()}
+    return  toast.to_dict(), 201
 
 
 # Delete an downvote
@@ -222,7 +225,10 @@ def delete_downvote(id):
     user = User.query.get(current_user.id)
     toast = Toast.query.get(id)
 
-    user.downvoted_toasts.remove(toast)
-    db.session.commit()
-
-    return {"message": "Successfully deleted"}, 201
+    if user:
+        if toast in user.downvoted_toasts:
+            user.downvoted_toasts.remove(toast)
+            db.session.commit()
+            return {"message": "Successfully deleted"}, 201
+        return {"message": "Post not downvoted"}
+    return {"message": "Sign up to downvote toasts!"}
