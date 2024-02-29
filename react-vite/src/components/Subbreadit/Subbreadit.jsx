@@ -18,7 +18,7 @@ function Subbreadits(){
     const sessionUser = useSelector(state => state.session.user)
     let posts = useSelector(state => state.posts)
 
-    let postArr = Object.values(posts).filter((subbreadit) => subbreadit.id == subbreaditId)
+    let postArr = Object.values(posts).filter((post) => post.subbreadit_id == subbreaditId)
 
     let subbreadits = useSelector(state => state.subbreadits)
     
