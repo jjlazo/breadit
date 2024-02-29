@@ -13,9 +13,11 @@ Live Site: https://breadit-poci.onrender.com
 - PostgreSQL
 - React
 - Redux
+- AWS S3
+- OAuth2
 
 
-This project uses Flask as the backend, React and Redux for the frontend rendering and data. Data is stored in a PostgreSQL database, and the backend interfaces with it through SQLAlchemy. Authentication is handled with a CSRF token, so once users sign in, they can remain signed in until that auth expires.
+This project uses Flask as the backend, React and Redux for the frontend rendering and data. Data is stored in a PostgreSQL database, and the backend interfaces with it through SQLAlchemy. Authentication is handled with a CSRF token, so once users sign in, they can remain signed in until that auth expires. Alternate authorization is handled through Google OAuth 2.0 which uses Access Tokens to grant users permissions on the Breadit application without having to create a new account.
 
 ## Features
 
@@ -35,11 +37,14 @@ Users can read and create comments on toasts. They can edit and delete their own
 
 ![toasts_comments](images/Toast_Comments.png)
 
-
-## Future Features
-
 ### Up-Votes/Down-Votes
-Users will be able to up-vote or down-vote a toast, allowing them another manner in which to give the original toaster feedback.
+Users can up-vote or down-vote a toast, allowing them another manner in which to give the original toaster feedback.
 
 ### OAuth
-Users will be able to sign up and log in with their Google account.
+Users can sign up and log in with their Google account.
+
+## Build prerequisites
+
+The pg_config program, it is usually installed by the libpq-dev package, if any errors arise:
+- sudo apt update
+- sudo apt-get install libpq-dev
