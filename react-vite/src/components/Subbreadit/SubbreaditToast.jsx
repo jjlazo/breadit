@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import Sidebar from "../Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
-import { Home, Signpost, MoveUp, MoveDown, Eraser, PencilLine, Reply, Flag } from 'lucide-react';
+import { MoveUp, MoveDown, Eraser, PencilLine, Reply, Flag } from 'lucide-react';
 import OpenModalButton from "../OpenModalButton";
 import SubbreaditInfo from "./SubbreaditInfo";
 import { CommentFormModal, UpdatePostFormModal, UpdateCommentFormModal } from "../ModalComponents";
 import { useDispatch, useSelector } from 'react-redux';
 import * as postActions from '../../redux/posts'
-import * as subbreaditActions from '../../redux/subbreadits'
+// import * as subbreaditActions from '../../redux/subbreadits'
 import * as commentActions from '../../redux/comments'
+import * as voteActions from '../../redux/votes'
 import "./Subbreadit.css"
 import DeletePostModal from "../ModalComponents/DeletePostModal";
 import DeleteCommentModal from "../ModalComponents/DeleteCommentModal";
@@ -26,16 +27,55 @@ function SubbreaditToast() {
     let postData = Object.values(post)
     let commentData = Object.values(comments)
 
+    let upvotedPosts = useSelector(voteActions.selectUpvotes)
+    let downvotedPosts = useSelector(voteActions.selectDownvotes)
+
+    const upvote = useMemo(() => {
+        return upvotedPosts.hasOwnProperty(toastId)
+    }, [upvotedPosts, toastId]);
+
+    const downvote = useMemo(() => {
+        return downvotedPosts.hasOwnProperty(toastId)
+    }, [downvotedPosts, toastId]);
+
     const deletePost = (e) => {
         e.preventDefault()
         dispatch(postActions.deletePost(toastId))
-        navigate(`/u/toasts/${sessionUser.id}`)
+        navigate(`/u/toasts/${sessionUser?.id}`)
     }
 
     const deleteComment = (e, commentId) => {
         e.preventDefault()
         dispatch(commentActions.deleteComment(commentId))
     }
+
+    const upvoteToast = (e, id) => {
+        e.stopPropagation();
+
+        if (!sessionUser) {
+            alert("sign up or in to upvote toasts!");
+        }
+        else if (sessionUser && upvote) {
+            dispatch(voteActions.fetchDeleteUpvote(id, sessionUser?.id));
+        }
+        else if (sessionUser && !upvote) {
+            dispatch(voteActions.fetchCreateUpvote(id, sessionUser?.id));
+        }
+    };
+
+    const downvoteToast = (e, id) => {
+        e.stopPropagation();
+
+        if (!sessionUser) {
+            alert("sign up or in to downvote toasts!");
+        }
+        else if (sessionUser && downvote) {
+            dispatch(voteActions.fetchDeleteDownvote(id, sessionUser?.id));
+        }
+        else if (sessionUser && !downvote) {
+            dispatch(voteActions.fetchCreateDownvote(id, sessionUser?.id));
+        }
+    };
 
     useEffect(() => {
         async function wrapperFn() {
@@ -46,7 +86,11 @@ function SubbreaditToast() {
         }
         wrapperFn()
         dispatch(commentActions.getComments(toastId))
-    }, [toastId])
+        if (sessionUser) {
+            dispatch(voteActions.fetchDownvotes(sessionUser?.id))
+            dispatch(voteActions.fetchUpvotes(sessionUser?.id))
+        }
+    }, [toastId, downvote, upvote])
 
     const closeMenu = () => setShowMenu(false);
 
@@ -69,11 +113,11 @@ function SubbreaditToast() {
                                 <Flag className="mod-flag" />
                             </div>}
                             <div className="upvote">
-                                <button className="voting-button">
+                                <button className={`voting-button ${upvote ? "filled-up" : ""}`} onClick={(e) => upvoteToast(e, postData[0]?.id)}>
                                     <MoveUp className="arrows" />
                                 </button>
-                                0
-                                <button className="voting-button">
+                                {postData[0] ? postData[0]?.upvotes.length - postData[0]?.downvotes.length : 0}
+                                <button className={`voting-button ${downvote ? "filled-down" : ""}`} onClick={(e) => downvoteToast(e, postData[0]?.id)}>
                                     <MoveDown className="arrows" />
                                 </button>
                             </div>

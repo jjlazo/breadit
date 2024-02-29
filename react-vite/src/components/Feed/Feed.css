@@ -12,7 +12,7 @@
     /* background-color: blue; */
     border-radius: 30px;
     display: flex;
-    gap: 14px; 
+    gap: 14px;
     margin: 15px 0px
 }
 
@@ -48,13 +48,21 @@
     background-color: #F6F6F6;
 }
 
+.filled-up {
+    background-color: rgb(143, 206, 49)
+}
+
+.filled-down {
+    background-color: rgb(239, 57, 57);
+}
+
 .toast-header{
     display: flex;
     align-items: center;
     gap: 16px
 }
 
-.toast-toast{ 
+.toast-toast{
     height: 45px;
     width: auto
 }

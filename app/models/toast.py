@@ -20,6 +20,8 @@ class Toast(db.Model):
     user = db.relationship('User', back_populates="toasts")
     subbreadit = db.relationship('Subbreadit', back_populates="toasts")
     comments = db.relationship("Comment", back_populates="toast", cascade="all,delete")
+    upvotes = db.relationship("User", secondary="upvotes", back_populates="upvoted_toasts")
+    downvotes = db.relationship("User", secondary="downvotes", back_populates="downvoted_toasts")
 
     def to_dict(self):
        return {
@@ -32,5 +34,7 @@ class Toast(db.Model):
            'subbreadit_id': self.subbreadit_id,
            'moderator': self.subbreadit.moderator_id,
            'subbreadit_name': self.subbreadit.name,
+           'upvotes': [user.id for user in self.upvotes],
+           'downvotes': [user.id for user in self.downvotes]
             #'comments': [comment.to_dict() for comment in self.comments],
        }

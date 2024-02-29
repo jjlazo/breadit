@@ -1,3 +1,5 @@
+import { CREATE_DOWNVOTE, CREATE_UPVOTE, DELETE_DOWNVOTE, DELETE_UPVOTE } from "./votes";
+
 export const LOAD_POSTS = 'posts/LOAD_POSTS';
 export const LOAD_POST = 'posts/LOAD_POST';
 export const CREATE_POST = 'posts/CREATE_POST';
@@ -166,6 +168,14 @@ const postsReducer = (state = {}, action) => {
       delete newState[action.postId];
       return newState;
     }
+    case CREATE_UPVOTE:
+    return { ...state, [action.toast.id]: { ...state[action.toast.id], upvotes: [ ...state[action.toast.id].upvotes, action.userId], downvotes: state[action.toast.id].downvotes.filter(id => id != action.userId) }}
+    case CREATE_DOWNVOTE:
+      return { ...state, [action.toast.id]: { ...state[action.toast.id], downvotes: [ ...state[action.toast.id].downvotes, action.userId], upvotes: state[action.toast.id].upvotes.filter(id => id != action.userId) }}
+    case DELETE_UPVOTE:
+      return { ...state, [action.toastId]: { ...state[action.toastId], upvotes: state[action.toastId].upvotes.filter(id => id != action.userId)}}
+    case DELETE_DOWNVOTE:
+      return { ...state, [action.toastId]: { ...state[action.toastId], downvotes: state[action.toastId].downvotes.filter(id => id != action.userId)}}
     default:
       return state;
   }

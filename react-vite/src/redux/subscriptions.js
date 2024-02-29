@@ -1,3 +1,5 @@
+import { REMOVE_USER } from "./session";
+
 export const LOAD_SUBSCRIPTIONS = 'subscriptions/LOAD_SUBSCRIPTIONS';
 export const CREATE_SUBSCRIPTIONS = 'subscriptions/CREATE_SUBSCRIPTIONS';
 export const REMOVE_SUBSCRIPTION = 'subscriptions/REMOVE_SUBSCRIPTION';
@@ -60,7 +62,7 @@ export const deleteSubscription = (subbreaditId) => async dispatch => {
             "Content-Type": "application/json"
         },
     })
-  
+
     if(response.ok){
         dispatch(removeSubscription(subbreaditId))
     }else{
@@ -91,7 +93,7 @@ const subscriptionReducer = (state = {}, action) => {
       delete newState[action.subbreaditId];
       return newState;
     }
-    case NUKE_SUBSCRIPTIONS: {
+    case REMOVE_USER: {
       return {}
     }
     default:

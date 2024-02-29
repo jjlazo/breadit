@@ -61,7 +61,6 @@ def create_post():
         if image:
             image.filename = get_unique_filename(image.filename)
             upload = upload_file_to_s3(image)
-            print(upload)
 
             if "url" not in upload:
                 return {"errors": {"message": "Image upload failed"}}
@@ -103,7 +102,7 @@ def update_post(id):
 
                 image.filename = get_unique_filename(image.filename)
                 upload = upload_file_to_s3(image)
-                print(upload)
+                # print(upload)
 
                 if "url" not in upload:
                     return {"errors": {"message": "Image upload failed"}}
@@ -173,3 +172,63 @@ def create_comment(id):
         return new_comment.to_dict()
 
     return form.errors, 400
+
+# Create an upvote
+@posts_routes.route("/<int:id>/upvote", methods=["POST"])
+def create_upvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    if toast in user.downvoted_toasts:
+        user.downvoted_toasts.remove(toast)
+        db.session.commit()
+
+    user.upvoted_toasts.append(toast)
+    db.session.commit()
+
+    return toast.to_dict(), 201
+
+
+# Delete an upvote
+@posts_routes.route("/<int:id>/upvote", methods=["DELETE"])
+def delete_upvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+    if user:
+        if toast in user.upvoted_toasts:
+            user.upvoted_toasts.remove(toast)
+            db.session.commit()
+            return {"message": "Successfully deleted"}, 201
+        return {"message": "Post not upvoted"}
+    return {"message": "Sign up to upvote toasts!"}
+
+
+# Create an downvote
+@posts_routes.route("/<int:id>/downvote", methods=["POST"])
+def create_downvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    if toast in user.upvoted_toasts:
+        user.upvoted_toasts.remove(toast)
+        db.session.commit()
+
+    user.downvoted_toasts.append(toast)
+    db.session.commit()
+
+    return  toast.to_dict(), 201
+
+
+# Delete an downvote
+@posts_routes.route("/<int:id>/downvote", methods=["DELETE"])
+def delete_downvote(id):
+    user = User.query.get(current_user.id)
+    toast = Toast.query.get(id)
+
+    if user:
+        if toast in user.downvoted_toasts:
+            user.downvoted_toasts.remove(toast)
+            db.session.commit()
+            return {"message": "Successfully deleted"}, 201
+        return {"message": "Post not downvoted"}
+    return {"message": "Sign up to downvote toasts!"}
