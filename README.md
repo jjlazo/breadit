@@ -17,7 +17,7 @@ Live Site: https://breadit-poci.onrender.com
 - OAuth2
 
 
-This project uses Flask as the backend, React and Redux for the frontend rendering and data. Data is stored in a PostgreSQL database, and the backend interfaces with it through SQLAlchemy. Authentication is handled with a CSRF token, so once users sign in, they can remain signed in until that auth expires. Alternate authorization is handled through Google OAuth 2.0 which uses Access Tokens to grant users permissions on the Breadit application without having to create a new account.
+This project uses Flask as the backend, React and Redux for the frontend rendering and data. Data is stored in a PostgreSQL database, and the backend interfaces with it through SQLAlchemy. Authentication is handled with a CSRF token, so once users sign in, they can remain signed in until that auth expires. Alternative authentication is handled through Google OAuth 2.0 which uses Access Tokens to grant users permissions on the Breadit application without having to create a new account. Images uploaded by users are stored in an AWS S3 bucket, providing users the ability to choose files from their local machine, and ensuring a reliable and consistent source when requesting an image resource.
 
 ## Features
 
