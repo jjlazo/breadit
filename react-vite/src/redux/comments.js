@@ -25,7 +25,7 @@ export const removeComment = (commentId) => ({
 
 export const getComments = (postId) => async dispatch => {
     const response = await fetch(`/api/posts/${postId}/comments`)
-  
+
     if(response.ok){
       const comments = await response.json()
       dispatch(loadComments(comments))
@@ -47,10 +47,10 @@ export const addComment = (postId, comment) => async dispatch => {
     if(response.ok){
         const comment = await response.json()
         dispatch(createComment(comment))
-        return response
+        return comment
     }else{
         const errors = await response.json()
-        return errors
+        return {"errors": errors}
     }
 }
 
@@ -62,14 +62,14 @@ export const updateComment = (commentId, comment) => async dispatch => {
         },
         body: JSON.stringify(comment)
     })
-  
+
     if(response.ok){
         const comment = await response.json()
         dispatch(editComment(comment))
-        return
+        return comment
     }else{
         const errors = await response.json()
-        return errors
+        return {"errors": errors}
     }
 }
 
@@ -80,7 +80,7 @@ export const deleteComment = (commentId) => async dispatch => {
             "Content-Type": "application/json"
         },
     })
-  
+
     if(response.ok){
         dispatch(removeComment(commentId))
         return

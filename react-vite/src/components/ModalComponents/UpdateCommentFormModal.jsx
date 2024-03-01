@@ -9,20 +9,49 @@ function UpdateCommentFormModal({ commentId, defaultBody }) {
   const dispatch = useDispatch();
   const [body, setBody] = useState(defaultBody);
   const sessionUser = useSelector((state) => state.session.user)
-  // const [errors, setErrors] = useState({});
+  const [bodyFocused, setBodyFocused] = useState(false);
+  const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-    const updateComment = (e, commentId) => {
-      e.preventDefault()
-      dispatch(commentActions.updateComment(commentId, {body}))
+  const updateComment = async (e, commentId) => {
+    e.preventDefault()
+    const response = await dispatch(commentActions.updateComment(commentId, { body }))
+
+    if (response.errors) {
+      setErrors(response.errors);
+    }
+    else {
       closeModal()
+    }
   }
 
   return (
     <>
       <h2>Update comment</h2>
       <form className="form" onSubmit={(e) => updateComment(e, commentId)}>
-        <label>
+        <div className="form-field">
+          <label htmlFor="body" className={body.length > 0 || bodyFocused ? "form-label has-content" : "form-label"}>
+            Body
+            {errors.body && <span className="error-message">{errors.body}</span>}
+          </label>
+          <textarea
+            id="body"
+            type="text"
+            value={body}
+            onChange={(e) => {
+              setBody(e.target.value);
+              if (errors.body) {
+                const newErrors = { ...errors };
+                delete newErrors.body
+                setErrors(newErrors)
+              }
+            }}
+            className="textarea"
+            onFocus={() => setBodyFocused(true)}
+            onBlur={() => setBodyFocused(false)}
+          />
+        </div>
+        {/* <label>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
@@ -30,7 +59,7 @@ function UpdateCommentFormModal({ commentId, defaultBody }) {
             placeholder="Comment"
             required
           />
-        </label>
+        </label> */}
         <button className="button" type="submit">update</button>
       </form>
     </>
