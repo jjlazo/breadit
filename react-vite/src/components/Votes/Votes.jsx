@@ -12,17 +12,6 @@ function Votes({ post }){
     const { setModalContent, setOnModalClose } = useModal();
     const dispatch = useDispatch()
 
-    let upvotedPosts = useSelector(voteActions.selectUpvotes)
-    let downvotedPosts = useSelector(voteActions.selectDownvotes)
-
-    const upvote = useMemo(() => {
-        return upvotedPosts.hasOwnProperty(post?.id)
-    }, [upvotedPosts, post?.id]);
-
-    const downvote = useMemo(() => {
-        return downvotedPosts.hasOwnProperty(post?.id)
-    }, [downvotedPosts, post?.id]);
-
     const handleUnauth  = () => {
         setModalContent(<LoginFormModal/>);
     }
@@ -31,13 +20,12 @@ function Votes({ post }){
         e.stopPropagation();
 
         if (!sessionUser) {
-            // alert("sign up or in to upvote toasts!");
             handleUnauth()
         }
-        else if (sessionUser && upvote) {
+        else if (post?.upvotes.includes(sessionUser.id)) {
             dispatch(voteActions.fetchDeleteUpvote(id, sessionUser?.id));
         }
-        else if (sessionUser && !upvote) {
+        else {
             dispatch(voteActions.fetchCreateUpvote(id, sessionUser?.id));
         }
     };
@@ -46,24 +34,23 @@ function Votes({ post }){
         e.stopPropagation();
 
         if (!sessionUser) {
-            // alert("sign up or in to downvote toasts!");
             handleUnauth()
         }
-        else if (sessionUser && downvote) {
+        else if (post?.downvotes.includes(sessionUser.id)) {
             dispatch(voteActions.fetchDeleteDownvote(id, sessionUser?.id));
         }
-        else if (sessionUser && !downvote) {
+        else {
             dispatch(voteActions.fetchCreateDownvote(id, sessionUser?.id));
         }
     };
 
     return(
         <div className="upvote">
-            <button className={`voting-button ${upvote ? "filled-up" : ""}`} onClick={(e) => upvoteToast(e, post?.id)}>
+            <button className={`voting-button ${post?.upvotes.includes(sessionUser?.id) ? "filled-up" : ""}`} onClick={(e) => upvoteToast(e, post?.id)}>
                 <MoveUp className="arrows" />
             </button>
             {post ? post?.upvotes.length - post?.downvotes.length : 0}
-            <button className={`voting-button ${downvote ? "filled-down" : ""}`} onClick={(e) => downvoteToast(e, post?.id)}>
+            <button className={`voting-button ${post?.downvotes.includes(sessionUser?.id) ? "filled-down" : ""}`} onClick={(e) => downvoteToast(e, post?.id)}>
                 <MoveDown className="arrows" />
             </button>
         </div>
@@ -71,4 +58,3 @@ function Votes({ post }){
 }
 
 export default Votes
-

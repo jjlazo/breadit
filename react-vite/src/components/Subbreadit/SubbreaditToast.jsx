@@ -28,72 +28,6 @@ function SubbreaditToast() {
     let postData = Object.values(post).filter((post) => post.id == toastId)
     let commentData = Object.values(comments)
 
-    let upvotedPosts = useSelector(voteActions.selectUpvotes)
-    let downvotedPosts = useSelector(voteActions.selectDownvotes)
-
-    const upvote = useMemo(() => {
-        return upvotedPosts.hasOwnProperty(toastId)
-    }, [upvotedPosts, toastId]);
-
-    const downvote = useMemo(() => {
-        return downvotedPosts.hasOwnProperty(toastId)
-    }, [downvotedPosts, toastId]);
-
-    const deletePost = (e) => {
-        e.preventDefault()
-        dispatch(postActions.deletePost(toastId))
-        navigate(`/u/toasts/${sessionUser?.id}`)
-    }
-
-    const deleteComment = (e, commentId) => {
-        e.preventDefault()
-        dispatch(commentActions.deleteComment(commentId))
-    }
-
-    const upvoteToast = (e, id) => {
-        e.stopPropagation();
-
-        if (!sessionUser) {
-            alert("sign up or in to upvote toasts!");
-        }
-        else if (sessionUser && upvote) {
-            dispatch(voteActions.fetchDeleteUpvote(id, sessionUser?.id));
-        }
-        else if (sessionUser && !upvote) {
-            dispatch(voteActions.fetchCreateUpvote(id, sessionUser?.id));
-        }
-    };
-
-    const downvoteToast = (e, id) => {
-        e.stopPropagation();
-
-        if (!sessionUser) {
-            alert("sign up or in to downvote toasts!");
-        }
-        else if (sessionUser && downvote) {
-            dispatch(voteActions.fetchDeleteDownvote(id, sessionUser?.id));
-        }
-        else if (sessionUser && !downvote) {
-            dispatch(voteActions.fetchCreateDownvote(id, sessionUser?.id));
-        }
-    };
-
-    // useEffect(() => {
-    //     async function wrapperFn() {
-    //         const response = await dispatch(postActions.getPostById(toastId))
-    //         if (response.errors) {
-    //             navigate('/errors', { state: { "statusCode": 404, "message": response.errors.message } })
-    //         }
-    //     }
-    //     wrapperFn()
-    // }, [toastId])
-
-    useEffect(() => {
-        if (sessionUser) {
-            dispatch(voteActions.fetchDownvotes(sessionUser?.id))
-            dispatch(voteActions.fetchUpvotes(sessionUser?.id))
-        }
-    }, [downvote, upvote])
 
     useEffect(() => {
         dispatch(commentActions.getComments(toastId))
@@ -119,15 +53,6 @@ function SubbreaditToast() {
                                 You're a moderator
                                 <Flag className="mod-flag" />
                             </div>}
-                            {/* <div className="upvote">
-                                <button className={`voting-button ${upvote ? "filled-up" : ""}`} onClick={(e) => upvoteToast(e, postData[0]?.id)}>
-                                    <MoveUp className="arrows" />
-                                </button>
-                                {postData[0] ? postData[0]?.upvotes.length - postData[0]?.downvotes.length : 0}
-                                <button className={`voting-button ${downvote ? "filled-down" : ""}`} onClick={(e) => downvoteToast(e, postData[0]?.id)}>
-                                    <MoveDown className="arrows" />
-                                </button>
-                            </div> */}
                             <Votes post={postData[0]}/>
                             <div className="toast-container">
                                 <div className="toast-header">
