@@ -28,46 +28,8 @@ const getUniqueSubscribedPosts = (posts, subscriptions) => {
 function Feed({ data }) {
     const navigate = useNavigate()
     const dispatch = useDispatch();
-    const { setModalContent, setOnModalClose } = useModal();
     const user = useSelector(state => state.session.user);
     const subscriptions = useSelector((state)=> state.subscriptions);
-
-    let upvotedPosts = useSelector(voteActions.selectUpvotes)
-    let downvotedPosts = useSelector(voteActions.selectDownvotes)
-
-    // const handleUnauth  = () => {
-    //     setModalContent(<LoginFormModal/>);
-    // }
-
-    // const upvoteToast = (e, id) => {
-    //     e.stopPropagation();
-    //     const upvote = Boolean(upvotedPosts[id]) || data.find(toast => toast.id == id)?.upvotes.includes(user?.id);
-    //     if (!user) {
-    //         // alert("sign up or in to upvote toasts!");
-    //         handleUnauth()
-    //     }
-    //     else if (user && upvote) {
-    //         dispatch(voteActions.fetchDeleteUpvote(id, user?.id));
-    //     }
-    //     else if (user && !upvote) {
-    //         dispatch(voteActions.fetchCreateUpvote(id, user?.id));
-    //     }
-    // };
-
-    // const downvoteToast = (e, id) => {
-    //     e.stopPropagation();
-    //     const downvote = Boolean(downvotedPosts[id]) || data.find(toast => toast.id == id)?.downvotes.includes(user?.id);
-    //     if (!user) {
-    //         // alert("sign up or in to downvote toasts!");
-    //         handleUnauth()
-    //     }
-    //     else if (user && downvote) {
-    //         dispatch(voteActions.fetchDeleteDownvote(id, user?.id));
-    //     }
-    //     else if (user && !downvote) {
-    //         dispatch(voteActions.fetchCreateDownvote(id, user?.id));
-    //     }
-    // };
 
     const navigateToSubbreadit = (e, subbreaditId) => {
         e.stopPropagation()
@@ -99,34 +61,9 @@ function Feed({ data }) {
         <>
             {
                 postsToRender?.map((post) => {
-                    const didUpvote = Boolean(upvotedPosts[post.id]) || post.upvotes.includes(user?.id);
-                    const didDownvote = Boolean(downvotedPosts[post.id]) || post.downvotes.includes(user?.id);
                     return (
                         <div key={post.id} onClick={() => navigate(`/subbreadit/${post.subbreadit_id}/toast/${post.id}`)} className="content">
                             <div className="toast-bubble">
-                                {/* <div className="upvote">
-                                    <button className={`voting-button ${didUpvote ? "filled-up" : ""}`} type="button" onClick={(e) => upvoteToast(e, post?.id)}>
-                                        <MoveUp className="arrows" />
-                                    </button>
-                                    {(() => {
-                                        const upvote = upvotedPosts[post.id];
-                                        const downvote = downvotedPosts[post.id];
-                                        let votes = 0;
-                                        if (upvote) {
-                                            votes = upvotedPosts[post?.id]?.upvotes?.length - upvotedPosts[post?.id]?.downvotes?.length
-                                        }
-                                        else if (downvote) {
-                                            votes = downvotedPosts[post?.id]?.upvotes?.length - downvotedPosts[post?.id]?.downvotes?.length
-                                        }
-                                        else {
-                                            votes = post.upvotes.length - post.downvotes.length
-                                        }
-                                        return votes;
-                                    })()}
-                                    <button className={`voting-button ${didDownvote ? "filled-down" : ""}`} type="button" onClick={(e) => downvoteToast(e, post.id)}>
-                                        <MoveDown className="arrows" />
-                                    </button>
-                                </div> */}
                                 <Votes post={post}/>
                                 <div className="toast-container">
                                     <div className="toast-header">

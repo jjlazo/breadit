@@ -12,18 +12,18 @@ function SubbreaditInfo({ }){
     const sessionUser = useSelector(state => state.session.user)
     let subbreadits = useSelector(state => state.subbreadits)
     let subscriptions = useSelector(state => state.subscriptions)
-    const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId))
-    const runOnce = useRef(false)
+    // const [isSubbed, setIsSubbed] = useState(subscriptions.hasOwnProperty(subbreaditId))
+    // const runOnce = useRef(false)
 
     const subbreaditData = subbreadits[subbreaditId]
 
     const handleSub = () => {
-        if(isSubbed){
+        if(subscriptions.hasOwnProperty(subbreaditId)){
             dispatch(subscriptionActions.deleteSubscription(subbreaditId))
         }else{
             dispatch(subscriptionActions.addSubscription(subbreaditId))
         }
-        setIsSubbed(!isSubbed)
+        // setIsSubbed(!isSubbed)
     }
 
     // useEffect(() => {
@@ -31,8 +31,8 @@ function SubbreaditInfo({ }){
     //         const response = await dispatch(subbreaditActions.getSubbreaditById(subbreaditId))
     //         if(response?.errors){
     //             navigate('/errors', {state: {"statusCode": 404, "message": response.errors.message}})
-    //         } 
-    //     } 
+    //         }
+    //     }
     //     wrapperFn()
     // }, [])
 
@@ -68,7 +68,8 @@ function SubbreaditInfo({ }){
                     <div className="sub-content-bubble-stats-column-text-sm">Ranking</div>
                 </div>
             </div>
-            {sessionUser?.id && <button onClick={handleSub} className={isSubbed ? "un subscription-button" : "subscription-button"}>{isSubbed ? "unsubscribe" : "subscribe"}</button>}
+            {/* {sessionUser?.id && <button onClick={handleSub} className={isSubbed ? "un subscription-button" : "subscription-button"}>{isSubbed ? "unsubscribe" : "subscribe"}</button>} */}
+            {sessionUser?.id && <button onClick={handleSub} className={subscriptions.hasOwnProperty(subbreaditId) ? "un subscription-button" : "subscription-button"}>{subscriptions.hasOwnProperty(subbreaditId)  ? "unsubscribe" : "subscribe"}</button>}
         </div>
     )
 }
