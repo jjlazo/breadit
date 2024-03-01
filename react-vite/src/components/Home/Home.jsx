@@ -52,6 +52,14 @@ function Home() {
         })
     }
 
+    const toggleShowLinks = (option) => {
+        const members = document.querySelectorAll(".team-member-container");
+
+        members.forEach(member => {
+            member.classList.toggle("hidden");
+        })
+    }
+
     const redirectToExternalSite = (url) => {
         window.location.href = url;
     }
@@ -75,7 +83,7 @@ function Home() {
                     <TeamMember name={"Juniper Lazo"} imageUrl="https://i.ibb.co/JkBwTgB/juniper-github.jpg" onClick={() => redirectToExternalSite("https://github.com/jjlazo")}/>
                     <TeamMember name={"Hillary Jackson"} imageUrl="https://i.ibb.co/Sc4h8p8/hillary-github.jpg" onClick={() => redirectToExternalSite("https://github.com/Nifallu")}/>
                 </div>
-                <div className="github-logo clickable" onClick={showLinks}>
+                <div className="github-logo clickable" onClick={toggleShowLinks}>
                     <GitHub />
                 </div>
             </div>
